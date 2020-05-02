@@ -1,0 +1,13 @@
+.description-box {
+  & .description {
+    margin-right: 5rem;
+  }
+
+  & .description__text {
+    font-size: 1.7rem;
+  }
+  
+  & .description__text:not(:last-child) {
+    margin-bottom: 2rem;
+  }
+} 

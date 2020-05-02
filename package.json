@@ -1,0 +1,43 @@
+{
+  "name": "natours",
+  "version": "1.0.0",
+  "description": "tours for active people",
+  "main": "app.js",
+  "scripts": {
+    "client-install": "npm install --prefix client",
+    "client": "npm start --prefix client",
+    "start:server:dev": "nodemon server.js",
+    "start:server:prod": "NODE_ENV=production nodemon server.js",
+    "start:dev": "concurrently \"npm run start:server:dev\" \"npm run client\"",
+    "start:prod": "concurrently \"npm run start:server:prod\" \"npm run client\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.1.0",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-mongo-sanitize": "^2.0.0",
+    "express-rate-limit": "^5.1.1",
+    "gravatar": "^1.8.0",
+    "helmet": "^3.22.0",
+    "hpp": "^0.2.3",
+    "html-to-text": "^5.1.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.10",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "nodemailer": "^6.4.6",
+    "passport-jwt": "^4.0.0",
+    "pug": "^2.0.4",
+    "sharp": "^0.25.2",
+    "slugify": "^1.4.0",
+    "stripe": "^8.46.0",
+    "validator": "^13.0.0",
+    "xss-clean": "^0.1.1"
+  }
+}

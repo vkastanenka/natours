@@ -1,0 +1,100 @@
+.story {
+  width: 75%;
+  margin: 0 auto;
+  box-shadow: 0 3rem 6rem rgba($color-black, 0.1);
+  background-color: rgba($color-white, 0.6);
+  border-radius: 0.3rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  padding-right: 6rem;
+  padding-left: 9rem;
+  font-size: $default-font-size;
+  transform: skewX(-12deg);
+
+  & > * {
+    transform: skewX(12deg);
+  }
+
+  @include respond(phone) {
+    & > * {
+      transform: skewX(0);
+    }
+  }
+
+  @include respond(tab-port) {
+    width: 100%;
+    padding: 4rem;
+    padding-left: 7rem;
+  }
+
+  @include respond(phone) {
+    transform: skewX(0);
+  }
+
+  &__shape {
+    width: 15rem;
+    height: 15rem;
+    float: left;
+    position: relative;
+    overflow: hidden;
+    // Best way to move an element that is floated is not to mess with margins, but transform
+    // Currently no way of having two transform properties applying at the same time
+    transform: translateX(-3rem) skewX(12deg);
+    border-radius: 50%;
+
+    -webkit-clip-path: circle(50% at 50% 50%);
+    clip-path: circle(50% at 50% 50%);
+
+    // Shape outside defines where the content floats around the element
+    // Inside can define the size of the circle, and the position of the center of the circle
+    // 1st 50%: Radius will be half the height and width of the element
+    // 2nd and 3rd 50%: Center of the circle: Exactly the center horizontally and vertically
+    // In order for this to work, the element must be floated, and must have defined dimensions
+    // Only works with webkit prefix in safari
+    -webkit-shape-outside: circle(50% at 50% 50%);
+    shape-outside: circle(50% at 50% 50%);
+    border-radius: none;
+
+    @include respond(phone) {
+      transform: translateX(-3rem) skewX(0);
+    }
+  }
+
+  &__img {
+    height: 100%;
+    transform: translateX(-4rem) scale(1.4);
+    transition: all 0.5s;
+    backface-visibility: hidden;
+  }
+
+  &__text {
+    transform: skewX(12deg);
+
+    @include respond(phone) {
+      transform: skewX(0);
+    }
+  }
+
+  &__caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 20%);
+    color: $color-white;
+    font-size: 1.7rem;
+    text-align: center;
+    opacity: 0;
+    transition: all 0.5s;
+    backface-visibility: hidden;
+  }
+
+  &:hover &__caption {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  &:hover &__img {
+    transform: translateX(-4rem) scale(1.2);
+    filter: blur(0.3rem) brightness(80%);
+  }
+}

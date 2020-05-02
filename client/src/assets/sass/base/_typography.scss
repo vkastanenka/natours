@@ -1,0 +1,131 @@
+body {
+  line-height: 1.6;
+  font-weight: 300;
+  font-family: "Lato", sans-serif;
+  color: $color-grey-dark;
+}
+
+.heading-primary {
+  color: $color-white;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 8rem;
+  backface-visibility: hidden;
+
+  &--main {
+    display: block;
+    font-size: 6rem;
+    font-weight: 400;
+    letter-spacing: 3.5rem;
+    animation: moveInLeft 1s ease-out;
+
+    // @include respond(phone) {
+    //   letter-spacing: 2rem;
+    //   font-size: 5rem;
+    // }
+  }
+
+  &--sub {
+    display: block;
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 1.74rem;
+
+    animation: moveInRight 1s ease-out;
+
+    // @include respond(phone) {
+    //   letter-spacing: 1rem;
+    // }
+  }
+}
+
+.heading-secondary {
+  text-transform: uppercase;
+  font-weight: 700;
+  background-image: linear-gradient(
+    90deg,
+    $color-primary-light,
+    $color-primary-dark
+  );
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+  letter-spacing: 0.15rem;
+
+  &--large {
+    font-size: 3.5rem;
+  }
+
+  &--small {
+    font-size: 2.25rem;
+  }
+
+  &--error {
+    background-image: linear-gradient(
+      to right,
+      $color-secondary-dark,
+      $color-secondary-dark
+    );
+    // font-size: 3.5rem;
+  }
+}
+
+.heading-tertiary {
+  font-size: $default-font-size;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.paragraph {
+  font-size: $default-font-size;
+
+  // &:not(:last-child) {
+  //   margin-bottom: 3rem;
+  // }
+}
+
+///////////////
+// Node Styling
+
+// .heading-primary,
+// .heading-tertirary {
+//   color: #fff;
+//   text-transform: uppercase;
+//   font-weight: 300;
+// }
+// .heading-primary span,
+// .heading-tertirary span {
+//   padding: 1rem 1.5rem;
+//   line-height: 1;
+//   -webkit-box-decoration-break: clone;
+//   box-decoration-break: clone;
+//   background-image: -webkit-gradient(
+//     linear,
+//     left top,
+//     right bottom,
+//     from(rgba(125, 213, 111, 0.85)),
+//     to(rgba(40, 180, 135, 0.85))
+//   );
+//   background-image: linear-gradient(
+//     to bottom right,
+//     rgba(125, 213, 111, 0.85),
+//     rgba(40, 180, 135, 0.85)
+//   );
+// }
+
+// .heading-primary {
+//   font-size: 5rem;
+//   text-align: center;
+//   width: 70%;
+//   margin: 0 auto;
+// }
+
+// .heading-tertirary {
+//   font-size: 2.75rem;
+//   text-align: right;
+//   position: absolute;
+//   bottom: 1rem;
+//   right: 2rem;
+//   width: 70%;
+//   z-index: 10;
+// }

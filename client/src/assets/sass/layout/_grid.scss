@@ -1,0 +1,92 @@
+// Standard to use is 1140px grid
+
+.row {
+  // Have enough available space, the width will be 114rem (1140px)
+  // If there is not enough width, if the viewport is smaller than the specified width, will simply fill 100% of the available space that it has
+  max-width: $grid-width;
+
+  padding: 0 3rem;
+
+  // Center
+  margin: 0 auto;
+
+  &:not(:last-child) {
+    // Margin for each row
+    margin-bottom: $gutter-vertical;
+
+    @include respond(tab-port) {
+      margin-bottom: $gutter-vertical-small;
+    }
+  }
+
+  @include respond(tab-land) {
+    padding: 0 5rem;
+  }
+
+  // Styling for when you want the items to stack rather than be horizontal with each other
+  @include respond(tab-port) {
+    max-width: 65rem;
+    padding: 0 2rem;
+  }
+
+  @include respond(phone) {
+    max-width: 50rem;
+    padding: 0 3rem;
+  }
+
+  @extend %clearfix; // Row will now have a complete height
+
+  // Selects all elements in which the class attribute STARTS with col-
+  // *= Means any classes that CONTAINS col-
+  // $= Means any classes that END with col-
+  [class^="col-"] {
+    // When all child elements are floated, the height collapses and becomes zero: Use clearfix hack like before the fix
+    float: left;
+
+    &:not(:last-child) {
+      margin-right: $gutter-horizontal;
+
+      // Styling for when you want the column items to stack rather than be next to each other
+      @include respond(tab-port) {
+        margin-right: 0;
+        margin-bottom: $gutter-vertical-small;
+      }
+    }
+
+    @include respond(tab-port) {
+      width: 100% !important;
+    }
+  }
+
+  .col-1-of-2 {
+    // calc() allows us to make calculations where we can mix units
+    // using sass variables in css functions requires #{}
+    width: calc((100% - #{$gutter-horizontal}) / 2);
+  }
+
+  .col-1-of-3 {
+    width: calc((100% - 2 * #{$gutter-horizontal}) / 3);
+  }
+
+  .col-2-of-3 {
+    width: calc(
+      2 * ((100% - 2 * #{$gutter-horizontal}) / 3) + #{$gutter-horizontal}
+    );
+  }
+
+  .col-1-of-4 {
+    width: calc((100% - 3 * #{$gutter-horizontal}) / 4);
+  }
+
+  .col-2-of-4 {
+    width: calc(
+      2 * ((100% - 3 * #{$gutter-horizontal}) / 4) + #{$gutter-horizontal}
+    );
+  }
+
+  .col-3-of-4 {
+    width: calc(
+      3 * ((100% - 3 * #{$gutter-horizontal}) / 4) + 2 * #{$gutter-horizontal}
+    );
+  }
+}

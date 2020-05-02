@@ -1,0 +1,69 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+
+  @include respond(big-desktop) { // width > 1800px?
+    font-size: 75%; // 1rem = 12px, 12/16 = 75%;
+  }
+
+  @include respond(tab-land) { // width < 1200px?
+    font-size: 56.25%; // 1rem = 9px, 9/16 = 56.25%;
+  }
+
+  @include respond(tab-port) { // width < 900px?
+    font-size: 50%; // 1rem = 8px, 8/16 = 50%
+  }
+}
+
+body {
+  padding: 3rem;
+  min-height: 100vh;
+
+  // node
+  // display: -webkit-box;
+  // display: -ms-flexbox;
+  // display: flex;
+  // -webkit-box-orient: vertical;
+  // -webkit-box-direction: normal;
+  // -ms-flex-direction: column;
+  // flex-direction: column;
+
+  @include respond(tab-port) { // width < 900px?
+    padding: 0;
+  }
+}
+
+:root {
+  --section-rotate: 9vw;
+}
+
+::-moz-selection {
+  background-color: #55c57a;
+  color: #fff;
+}
+
+::selection {
+  background-color: $color-primary;
+  color: $color-white;
+}
+
+///////////////
+// Node Styling
+.main {
+  background-color: #f7f7f7;
+  padding: 8rem 6rem;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+}
