@@ -7,23 +7,23 @@
 @import 'base/typography';
 @import 'base/utilities';
 
-@import 'components/alert-N';
+@import 'components/alert';
 @import 'components/bg-video';
-@import 'components/button-N';
+@import 'components/button';
 @import 'components/cards';
 @import 'components/composition';
-@import 'components/cta-N';
-@import 'components/description-box-N';
-@import 'components/error-N';
+@import 'components/cta';
+@import 'components/description-box';
+@import 'components/error';
 @import 'components/feature-box';
 @import 'components/form';
-@import 'components/heading-box-N';
+@import 'components/heading-box';
 @import 'components/mapboxgl';
 @import 'components/marker';
 @import 'components/overview-box';
 @import 'components/picture-box';
 @import 'components/popup';
-@import 'components/reviews-N';
+@import 'components/reviews';
 @import 'components/story';
 
 @import 'layout/footer';
@@ -31,10 +31,9 @@
 @import 'layout/header';
 @import 'layout/navbar';
 @import 'layout/navigation';
-@import 'layout/side-nav-N';
+@import 'layout/side-nav';
 
 @import 'pages/home';
 @import 'pages/tour';
-@import 'pages/user-view-N';
-
+@import 'pages/user-view';
 

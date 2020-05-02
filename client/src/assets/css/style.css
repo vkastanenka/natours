@@ -82,10 +82,17 @@ body {
 
 .main {
   background-color: #f7f7f7;
+  padding: 8rem 6rem;
   -webkit-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
   position: relative; }
+
+.line {
+  margin: 6rem 0;
+  width: 100%;
+  height: 1px;
+  background-color: #e0e0e0; }
 
 body {
   line-height: 1.6;
@@ -265,6 +272,51 @@ body {
 .btn-secondary:active {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
   transform: translateY(-0.05rem); }
+
+.btn-small, .btn-small:link, .btn-small:visited {
+  background-color: #55c57a;
+  color: #fff;
+  font-size: 1.4rem;
+  padding: 1.25rem 3rem;
+  border-radius: 10rem;
+  text-transform: uppercase;
+  position: relative;
+  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 400;
+  border: none; }
+
+.btn-small:hover {
+  background-color: #7dd56f; }
+
+.btn-text, .btn-text:link, .btn-text:visited {
+  color: #55c57a;
+  display: inline-block;
+  text-decoration: none;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid #55c57a;
+  padding: 3px;
+  transition: all 0.2s;
+  font-weight: 300;
+  font-size: 1.6rem;
+  cursor: pointer; }
+
+.btn-text:hover {
+  background-color: #55c57a;
+  color: #fff;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px); }
+
+.btn-text:active {
+  transform: translateY(0);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
+
+.btn-text:focus {
+  outline: none;
+  outline: 3px solid #55c57a;
+  outline-offset: 3px; }
 
 .card-container {
   max-width: 120rem;
@@ -643,127 +695,119 @@ body {
   border-radius: 5px;
   text-align: center; }
 
-@media only screen and (max-width: 56.25em) {
-  .form__heading, .form__button {
-    text-align: center; } }
-
-.form__input {
-  display: block;
-  font-family: inherit;
-  font-size: 1.5rem;
-  color: inherit;
-  padding: 1.5rem 2rem;
-  border: none;
-  border-radius: 4px;
-  text-align: center;
-  background-color: rgba(238, 238, 238, 0.5);
-  border-top: 3px solid transparent;
-  border-bottom: 3px solid transparent;
-  width: 90%;
-  margin: 0 auto;
-  transition: all 0.3s;
-  box-sizing: border-box; }
-  @media only screen and (max-width: 56.25em) {
-    .form__input {
-      width: 100%; }
-      .form__input::-webkit-input-placeholder {
-        text-align: center; } }
-  .form__input:focus {
-    outline: none;
-    border-bottom: 3px solid #55c57a;
-    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1); }
-    .form__input:focus:invalid {
-      border-bottom: 3px solid #ff7730; }
-  .form__input::-webkit-input-placeholder {
-    color: #bbb;
-    text-align: center; }
-
-.form__group:not(:last-child) {
-  margin-bottom: 2rem; }
-
-.form__label {
-  display: block;
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-top: 1rem;
-  transition: all 0.2s; }
-
-.form__input:placeholder-shown + .form__label {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-4rem); }
-
-.form__radio-group {
-  width: 49%;
-  display: inline-block; }
-  @media only screen and (max-width: 56.25em) {
-    .form__radio-group {
-      text-align: center; } }
-
-.form__radio-input {
-  display: none; }
-
-.form__radio-label {
-  font-size: 1.6rem;
-  cursor: pointer;
-  position: relative;
-  padding-left: 4.5rem; }
-
-.form__radio-button {
-  height: 3rem;
-  width: 3rem;
-  border: 5px solid #55c57a;
-  border-radius: 50%;
-  display: inline-block;
-  position: absolute;
-  left: 0;
-  top: -0.4rem; }
-  .form__radio-button::after {
-    content: "";
+.form {
+  text-align: center; }
+  .form__input {
     display: block;
-    height: 1.3rem;
-    width: 1.3rem;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #55c57a;
+    font-family: inherit;
+    font-size: 1.5rem;
+    color: inherit;
+    padding: 1.5rem 2rem;
+    border: none;
+    border-radius: 4px;
+    text-align: center;
+    background-color: rgba(238, 238, 238, 0.5);
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    width: 90%;
+    margin: 0 auto;
+    transition: all 0.3s;
+    box-sizing: border-box; }
+    @media only screen and (max-width: 56.25em) {
+      .form__input {
+        width: 100%; }
+        .form__input::-webkit-input-placeholder {
+          text-align: center; } }
+    .form__input:focus {
+      outline: none;
+      border-bottom: 3px solid #55c57a;
+      box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1); }
+      .form__input:focus:invalid {
+        border-bottom: 3px solid #ff7730; }
+    .form__input::-webkit-input-placeholder {
+      color: #bbb;
+      text-align: center; }
+  .form__group:not(:last-child) {
+    margin-bottom: 2rem; }
+  .form__label {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-top: 1rem;
+    transition: all 0.2s; }
+  .form__input:placeholder-shown + .form__label {
     opacity: 0;
-    transition: opacity 0.2s; }
-
-.form__radio-input:checked ~ .form__radio-label .form__radio-button::after {
-  opacity: 1; }
-
-.form__user-photo {
-  height: 7.5rem;
-  width: 7.5rem;
-  border-radius: 50%;
-  margin-right: 2rem; }
-
-.form__upload {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1; }
-  .form__upload:focus + label {
-    outline: 3px solid #55c57a;
-    outline-offset: 3px; }
-  .form__upload + label {
-    color: #55c57a;
+    visibility: hidden;
+    transform: translateY(-4rem); }
+  .form__radio-group {
+    width: 49%;
+    display: inline-block; }
+    @media only screen and (max-width: 56.25em) {
+      .form__radio-group {
+        text-align: center; } }
+  .form__radio-input {
+    display: none; }
+  .form__radio-label {
+    font-size: 1.6rem;
+    cursor: pointer;
+    position: relative;
+    padding-left: 4.5rem; }
+  .form__radio-button {
+    height: 3rem;
+    width: 3rem;
+    border: 5px solid #55c57a;
+    border-radius: 50%;
     display: inline-block;
-    text-decoration: none;
-    border-bottom: 1px solid #55c57a;
-    padding: 3px;
-    transition: all 0.2s;
-    cursor: pointer; }
-    .form__upload + label:hover {
+    position: absolute;
+    left: 0;
+    top: -0.4rem; }
+    .form__radio-button::after {
+      content: "";
+      display: block;
+      height: 1.3rem;
+      width: 1.3rem;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       background-color: #55c57a;
+      opacity: 0;
+      transition: opacity 0.2s; }
+  .form__radio-input:checked ~ .form__radio-label .form__radio-button::after {
+    opacity: 1; }
+  .form__photo-upload {
+    display: flex;
+    align-items: center;
+    font-size: 1.6rem; }
+  .form__user-photo {
+    height: 7.5rem;
+    width: 7.5rem;
+    border-radius: 50%;
+    margin-right: 2rem; }
+  .form__upload {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1; }
+    .form__upload:focus + label {
+      outline: 3px solid #55c57a;
+      outline-offset: 3px; }
+    .form__upload + label {
       color: #55c57a;
-      box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
-      transform: translateY(-2px); }
+      display: inline-block;
+      text-decoration: none;
+      border-bottom: 1px solid #55c57a;
+      padding: 3px;
+      transition: all 0.2s;
+      cursor: pointer; }
+      .form__upload + label:hover {
+        background-color: #55c57a;
+        color: #55c57a;
+        box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px); }
 
 .heading-box {
   position: absolute;
@@ -1453,13 +1497,7 @@ body {
   .side-nav li {
     margin: 1rem 0;
     border-left: 0 solid #fff;
-    transition: all 0.3s; }
-  .side-nav--active,
-  .side-nav li:hover {
-    border-left: 4px solid #fff !important; }
-  .side-nav--active a {
-    transform: translateX(-3px); }
-  .side-nav a:link, .side-nav a:visited {
+    transition: all 0.3s;
     padding: 1rem 4rem;
     display: flex;
     align-items: center;
@@ -1468,10 +1506,16 @@ body {
     text-transform: uppercase;
     font-weight: 400;
     text-decoration: none;
-    transition: all 0.3s; }
-  .side-nav a:hover, .side-nav a:active {
-    transform: translateX(3px); }
-  .side-nav svg {
+    transition: all 0.3s;
+    cursor: pointer; }
+    .side-nav li:hover {
+      transform: translateX(3px); }
+  .side-nav--active,
+  .side-nav li:hover {
+    border-left: 4px solid #fff !important; }
+  .side-nav--active a {
+    transform: translateX(-3px); }
+  .side-nav__icon {
     height: 1.9rem;
     width: 1.9rem;
     fill: #f7f7f7;

@@ -9,12 +9,7 @@
 }
 
 .form {
-  @include respond(tab-port) {
-    &__heading,
-    &__button {
-      text-align: center;
-    }
-  }
+  text-align: center;
 
   &__input {
     display: block;
@@ -102,13 +97,11 @@
     border-radius: 50%;
     display: inline-block;
 
-    // Parent just has to be specified, but doesn't necessarily have to be absolute
     position: absolute;
     left: 0;
     top: -0.4rem;
 
     &::after {
-      // Everytime we use a pseudo property, must set its content to empty, and a display property
       content: "";
       display: block;
       height: 1.3rem;
@@ -126,6 +119,12 @@
 
   &__radio-input:checked ~ &__radio-label &__radio-button::after {
     opacity: 1;
+  }
+
+  &__photo-upload {
+    display: flex;
+    align-items: center;
+    font-size: 1.6rem;
   }
 
   &__user-photo {

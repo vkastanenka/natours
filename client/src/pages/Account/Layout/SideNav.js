@@ -9,29 +9,29 @@ const SideNav = () => {
     <nav className="user-view__menu">
       <ul className="side-nav">
         <li className="side-nav--active">
-          <Icon type="settings" />| Settings
+          <Icon type="settings" className='side-nav__icon' />Settings
         </li>
         <li>
-          <Icon type="briefcase" />| My bookings
+          <Icon type="briefcase" className='side-nav__icon' />My bookings
         </li>
         <li>
-          <Icon type="star" />| My reviews
+          <Icon type="star" className='side-nav__icon' />My reviews
         </li>
         <li>
-          <Icon type="credit-card" />| Billing
+          <Icon type="credit-card" className='side-nav__icon' />Billing
         </li>
       </ul>
       <div className="admin-nav">
-        <h5 className="admin-nav__headin">Admin</h5>
+        <h5 className="admin-nav__heading">Admin</h5>
         <ul className="side-nav">
           <li>
-            <Icon type="map" />| Manage tours
+            <Icon type="map" className='side-nav__icon' />Manage tours
           </li>
           <li>
-            <Icon type="users" />| Manage users
+            <Icon type="users" className='side-nav__icon' />Manage users
           </li>
           <li>
-            <Icon type="star" />| Manage reviews
+            <Icon type="star" className='side-nav__icon' />Manage reviews
           </li>
         </ul>
       </div>

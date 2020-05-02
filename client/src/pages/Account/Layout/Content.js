@@ -2,85 +2,108 @@
 import React, { Component } from "react";
 
 // Components
-import FormInputGroup from "../../../components/Forms/FormInputGroup";
+import InputGroup from "../../../components/Inputs/InputGroup";
 
 class Content extends Component {
+  state = {
+    name: "",
+    email: "",
+    currentPassword: "",
+    newPassword: "",
+    newPasswordConfirm: "",
+  };
+
+  handleChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
   render() {
     return (
       <div className="user-view__content">
         <div className="user-view__form-container">
-          <h2 className="heading-secondary ma-bt-md">Your account settings</h2>
           <form className="form form-user-data">
-            <FormInputGroup
-              htmlFor="name"
-              label="Name"
+            <h2 className="heading-secondary heading-secondary--small ma-bt-md">
+              Your account settings
+            </h2>
+            <InputGroup
               type="text"
-              placeholder="Name"
-              value="Victoria Kastanenka"
-              required={true}
+              name="name"
               id="name"
-            />
-            <FormInputGroup
-              groupClass="ma-bt-md"
-              htmlFor="email"
-              label="Email Address"
-              type="email"
-              placeholder="Email Address"
-              value="admin@natours.io"
+              placeholder="Full name"
+              value={this.state.name}
               required={true}
+              onChange={(e) => this.handleChange(e)}
+              htmlFor="name"
+              label="Full name"
+            />
+            <InputGroup
+              type="email"
+              name="email"
               id="email"
+              placeholder="Email address"
+              value={this.state.email}
+              required={true}
+              onChange={(e) => this.handleChange(e)}
+              htmlFor="email"
+              label="Email address"
             />
             <div className="form__group form__photo-upload">
               <img
-                src={require("../../assets/images/users/default.jpg")}
+                src={require("../../../assets/images/users/default.jpg")}
                 alt="User Photo"
                 className="form__user-photo"
               />
               <button className="btn-text">Choose new photo</button>
             </div>
             <div className="form__group right">
-              <button className="btn btn--small btn--green">
-                Save settings
-              </button>
+              <button className="btn-small btn--green">Save settings</button>
             </div>
           </form>
         </div>
         <div className="line">&nbsp;</div>
         <div className="user-view__form-container">
-          <h2 className="heading-secondary ma-bt-md">Password Change</h2>
           <form className="form form-user-settings">
-            <FormInputGroup
-              htmlFor="password-current"
-              label="Current Password"
+            <h2 className="heading-secondary heading-secondary--small ma-bt-md">
+              Password Change
+            </h2>
+            <InputGroup
               type="password"
-              placeholder="••••••••"
-              required={true}
+              name="currentPassword"
+              id="currentPassword"
+              placeholder="Current password"
+              value={this.state.currentPassword}
               minLength="8"
-              id="password-current"
+              required={true}
+              onChange={(e) => this.handleChange(e)}
+              htmlFor="currentPassword"
+              label="Current password"
             />
-            <FormInputGroup
-              htmlFor="password"
-              label="New Password"
+            <InputGroup
               type="password"
-              placeholder="••••••••"
-              required={true}
+              name="newPassword"
+              id="newPassword"
+              placeholder="New password"
+              value={this.state.newPassword}
               minLength="8"
-              id="password"
+              required={true}
+              onChange={(e) => this.handleChange(e)}
+              htmlFor="newPassword"
+              label="New password"
             />
-            <FormInputGroup
-              groupClass="ma-bt-lg"
-              htmlFor="password-confirm"
-              label="Confirm New Password"
+            <InputGroup
               type="password"
-              placeholder="••••••••"
-              required={true}
+              name="newPasswordConfirm"
+              id="newPasswordConfirm"
+              placeholder="Confirm new password"
+              value={this.state.newPasswordConfirm}
               minLength="8"
-              id="password-confirm"
+              required={true}
+              onChange={(e) => this.handleChange(e)}
+              htmlFor="newPasswordConfirm"
+              label="Confirm new password"
             />
             <div className="form__group right">
-              <button className="btn btn--small btn--green">
-                Save Password
-              </button>
+              <button className="btn-small btn--green">Save Password</button>
             </div>
           </form>
         </div>
