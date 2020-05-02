@@ -5,14 +5,14 @@
 }
 
 .section-description {
-  background-color: #fcfcfc;
-  margin-top: calc(0px - $section-rotate);
+  background-color: $color-grey-light-1-dark;
+  margin-top: calc(0px - var(--section-rotate));
   display: flex;
 
   & > * {
     padding: 0 8vw;
     padding-top: 14vw;
-    padding-bottom: calc(1vw + $section-rotate);
+    padding-bottom: calc(1vw + var(--section-rotate));
     flex: 0 0 50%;
   }
 }
@@ -20,7 +20,7 @@
 .section-pictures {
   display: flex;
   clip-path: $clip-path--poly-2;
-  margin-top: calc(0px - $section-rotate);
+  margin-top: calc(0px - var(--section-rotate));
   position: relative;
   z-index: 1000;
 }
@@ -28,7 +28,7 @@
 .section-map {
   position: relative;
   height: 65rem;
-  margin-top: calc(0px - $section-rotate);
+  margin-top: calc(0px - var(--section-rotate));
 }
 
 #map {
@@ -39,19 +39,23 @@
 }
 
 .section-reviews {
-  margin-top: calc(0px - $section-rotate);
-  padding: calc(5rem + $section-rotate) 0;
+  margin-top: calc(0px - var(--section-rotate));
+  padding: calc(5rem + var(--section-rotate)) 0;
   position: relative;
   z-index: 1000;
-  background: linear-gradient(to right bottom, $color-primary-light, $color-primary-dark);
+  background: linear-gradient(
+    to right bottom,
+    $color-primary-light,
+    $color-primary-dark
+  );
   clip-path: $clip-path--poly-2;
 }
 
 .section-cta {
-  margin-top: calc(0px - $section-rotate);
+  margin-top: calc(0px - var(--section-rotate));
   padding: 3rem;
   padding-bottom: 11rem;
-  padding-top: calc(15rem + $section-rotate);
+  padding-top: calc(15rem + var(--section-rotate));
   // TODO:
   background-color: $color-grey-light-1;
 }

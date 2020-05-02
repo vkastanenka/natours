@@ -12,6 +12,7 @@ import Tours from "./Layout/Tours/Tours";
 import Stories from "./Layout/Stories";
 import Book from "./Layout/Book";
 import Popup from "./Layout/Popup";
+import Footer from '../../components/Layout/Footer';
 
 // Home page (route '/')
 const Home = () => {

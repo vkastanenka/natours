@@ -4,7 +4,6 @@
   grid-column-gap: 6rem;
   grid-auto-flow: column;
   overflow-x: scroll;
-  // -ms-scroll-snap-type: x mandatory;
   scroll-snap-type: x mandatory;
 
   &__card {
@@ -12,18 +11,10 @@
     padding: 4rem;
     background-color: $color-grey-light-1;
     border-radius: 3px;
-    // -webkit-box-shadow: $box-shadow--1;
     box-shadow: $box-shadow--1;
     scroll-snap-align: center;
-    // display: -webkit-box;
-    // display: -ms-flexbox;
     display: flex;
-    // -webkit-box-orient: vertical;
-    // -webkit-box-direction: normal;
-    // -ms-flex-direction: column;
     flex-direction: column;
-    // -webkit-box-align: center;
-    // -ms-flex-align: center;
     align-items: center;
   }
 
@@ -34,11 +25,7 @@
   }
 
   &__avatar {
-    // display: -webkit-box;
-    // display: -ms-flexbox;
     display: flex;
-    // -webkit-box-align: center;
-    // -ms-flex-align: center;
     align-items: center;
     margin-bottom: 2rem;
   }
@@ -64,8 +51,6 @@
 
   &__rating {
     margin-top: auto;
-    // display: -webkit-box;
-    // display: -ms-flexbox;
     display: flex;
   }
 
@@ -79,7 +64,7 @@
     }
 
     &--inactive {
-      fill: #bbb;
+      fill: $color-grey-light-3;
     }
   }
 }

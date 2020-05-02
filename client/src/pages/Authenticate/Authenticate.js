@@ -2,8 +2,7 @@
 import React, { Component } from "react";
 
 // Components
-import Auxiliary from "../../components/HigherOrder/Auxiliary";
-import Navbar from "../../components/Layout/Navbar";
+import PageLayout from "../../components/Layout/PageLayout";
 import InputGroup from "../../components/Inputs/InputGroup";
 
 class Authenticate extends Component {
@@ -117,10 +116,9 @@ class Authenticate extends Component {
     }
 
     return (
-      <Auxiliary>
-        <Navbar />
+      <PageLayout>
         <main className="main">{formContent}</main>
-      </Auxiliary>
+      </PageLayout>
     );
   }
 }

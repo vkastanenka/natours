@@ -9,11 +9,15 @@ const Pictures = () => {
           alt="The Park Camper Tour 1"
           className="picture-box__img picture-box__img--1"
         />
+      </div>
+      <div className="picture-box">
         <img
           src={require("../../../assets/images/tours/tour-5-2.jpg")}
           alt="The Park Camper Tour 2"
           className="picture-box__img picture-box__img--2"
         />
+      </div>
+      <div className="picture-box">
         <img
           src={require("../../../assets/images/tours/tour-5-3.jpg")}
           alt="The Park Camper Tour 3"

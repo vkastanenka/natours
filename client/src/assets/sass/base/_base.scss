@@ -7,6 +7,10 @@
   box-sizing: inherit;
 }
 
+:root {
+  --section-rotate: 9vw;
+}
+
 html {
   font-size: 62.5%;
   -webkit-box-sizing: border-box;
@@ -61,7 +65,7 @@ body {
 // Node Styling
 .main {
   background-color: #f7f7f7;
-  padding: 8rem 6rem;
+  // padding: 8rem 6rem;
   -webkit-box-flex: 1;
   -ms-flex: 1;
   flex: 1;

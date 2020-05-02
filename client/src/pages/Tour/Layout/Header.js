@@ -8,17 +8,15 @@ const Header = () => {
   return (
     <section className="section-header-tour">
       <div className="header-tour__hero">
-        <div className="header-tour__hero-overlay">
-          &nbsp;
-          <img
-            src={require("../../../assets/images/tours/tour-5-cover.jpg")}
-            alt="Tour 5"
-            className="header-tour__hero-img"
-          />
-        </div>
+        <div className="header-tour__hero-overlay">&nbsp;</div>
+        <img
+          src={require("../../../assets/images/tours/tour-5-cover.jpg")}
+          alt="Tour 5"
+          className="header-tour__hero-img"
+        />
       </div>
       <div className="heading-box">
-        <h1 className="heading-primary">
+        <h1 className="header-tour__heading">
           <span>The Park Camper Tour</span>
         </h1>
         <div className="heading-box__group">

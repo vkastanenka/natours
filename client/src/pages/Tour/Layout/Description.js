@@ -9,31 +9,31 @@ const Description = () => {
     <section className="section-description">
       <div className="overview-box">
         <div className="overview-box__group">
-          <h2 className="heading-secondary ma-bt-lg">Quick Facts</h2>
+          <h2 className="heading-secondary heading-secondary--small ma-bt-lg">Quick Facts</h2>
           <div className="overview-box__detail">
             <Icon className="overview-box__icon" type="calendar" />
             <span className="overview-box__label">Next date</span>
-            <span className="overview-box__text"> August 2021</span>
+            <span className="overview-box__text">August 2021</span>
           </div>
           <div className="overview-box__detail">
             <Icon className="overview-box__icon" type="trending-up" />
             <span className="overview-box__label">Difficulty</span>
-            <span className="overview-box__text"> Medium</span>
+            <span className="overview-box__text">Medium</span>
           </div>
           <div className="overview-box__detail">
             <Icon className="overview-box__icon" type="user" />
             <span className="overview-box__label">Participants</span>
-            <span className="overview-box__text"> 10 people</span>
+            <span className="overview-box__text">10 people</span>
           </div>
           <div className="overview-box__detail">
             <Icon className="overview-box__icon" type="star" />
             <span className="overview-box__label">Rating</span>
-            <span className="overview-box__text"> 4.9 / 5</span>
+            <span className="overview-box__text">4.9 / 5</span>
           </div>
         </div>
 
         <div className="overview-box__group">
-          <h2 className="heading-secondary ma-bt-lg">Your Tour Guides</h2>
+          <h2 className="heading-secondary heading-secondary--small ma-bt-lg">Your Tour Guides</h2>
           <div className="overview-box__detail">
             <img
               src={require("../../../assets/images/users/user-19.jpg")}
@@ -64,7 +64,7 @@ const Description = () => {
         </div>
       </div>
       <div className="description-box">
-        <h2 className="heading-secondary ma-bt-lg">
+        <h2 className="heading-secondary heading-secondary--small ma-bt-lg">
           About the Park Camper Tour
         </h2>
         <p className="description__text">

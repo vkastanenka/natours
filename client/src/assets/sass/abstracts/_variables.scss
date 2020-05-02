@@ -44,20 +44,17 @@ $gutter-vertical: 8rem;
 $gutter-vertical-small: 6rem;
 $gutter-horizontal: 6rem;
 
-// NODE
-$section-rotate: 9vh;
-
 // CLIP PATHS
 $clip-path--poly-1: polygon(
   0 0,
   100% 0,
-  100% calc(100% - $section-rotate),
+  100% calc(100% - var(--section-rotate)),
   0 100%
 );
 $clip-path--poly-2: polygon(
-  0 $section-rotate,
+  0 var(--section-rotate),
   100% 0,
-  100% calc(100% - $section-rotate),
+  100% calc(100% - var(--section-rotate)),
   0 100%
 );
 $clip-path--poly-3: polygon(0 0, 100% 0%, 100% 85%, 0% 100%);

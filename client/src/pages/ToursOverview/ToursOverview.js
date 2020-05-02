@@ -2,14 +2,12 @@
 import React from "react";
 
 // Components
-import Auxiliary from "../../components/HigherOrder/Auxiliary";
-import Navbar from "../../components/Layout/Navbar";
+import PageLayout from "../../components/Layout/PageLayout";
 import TourCardOverview from "./Layout/TourCardOverview";
 
 const ToursOverview = () => {
   return (
-    <Auxiliary>
-      <Navbar />
+    <PageLayout>
       <main className="main">
         <div className="card-container">
           <TourCardOverview />
@@ -20,7 +18,7 @@ const ToursOverview = () => {
           <TourCardOverview />
         </div>
       </main>
-    </Auxiliary>
+    </PageLayout>
   );
 };
 

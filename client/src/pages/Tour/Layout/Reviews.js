@@ -23,11 +23,17 @@ const Reviews = () => {
             numquam.
           </p>
           <div className="reviews__rating">
-            <Icon type='star' className='reviews__star--active' />
-            <Icon type='star' className='reviews__star--active' />
-            <Icon type='star' className='reviews__star--active' />
-            <Icon type='star' className='reviews__star--active' />
-            <Icon type='star' className='reviews__star--active' />
+            <Icon type="star" className="reviews__star reviews__star--active" />
+            <Icon type="star" className="reviews__star reviews__star--active" />
+            <Icon type="star" className="reviews__star reviews__star--active" />
+            <Icon
+              type="star"
+              className="reviews__star reviews__star--inactive"
+            />
+            <Icon
+              type="star"
+              className="reviews__star reviews__star--inactive"
+            />
           </div>
         </div>
       </div>
