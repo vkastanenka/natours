@@ -2,6 +2,8 @@
 import React, { Component } from "react";
 
 // Components
+import Auxiliary from "../../components/HigherOrder/Auxiliary";
+import Navbar from "../../components/Layout/Navbar";
 import InputGroup from "../../components/Inputs/InputGroup";
 
 class Authenticate extends Component {
@@ -12,7 +14,7 @@ class Authenticate extends Component {
     registerEmail: "",
     registerPassword: "",
     registerPasswordConfirm: "",
-    isRegistered: true,
+    isRegistered: false,
   };
 
   handleChange = (e) => {
@@ -114,7 +116,12 @@ class Authenticate extends Component {
       );
     }
 
-    return <main className="main">{formContent}</main>;
+    return (
+      <Auxiliary>
+        <Navbar />
+        <main className="main">{formContent}</main>
+      </Auxiliary>
+    );
   }
 }
 
