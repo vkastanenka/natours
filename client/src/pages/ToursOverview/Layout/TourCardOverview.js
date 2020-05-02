@@ -11,14 +11,14 @@ const TourCardOverview = () => {
         <div className="card__picture">
           <div className="card__picture-overlay">
             &nbsp;
-            <img
-              src={require("../../assets/images/tours/tour-1-cover.jpg")}
+          </div>
+          <img
+              src={require("../../../assets/images/tours/tour-1-cover.jpg")}
               alt="Tour 1"
               className="card__picture-img"
             />
-          </div>
         </div>
-        <h3 className="heading-tertiary">
+        <h3 className="card__heading">
           <span>The Forest Hiker</span>
         </h3>
       </div>
@@ -29,19 +29,19 @@ const TourCardOverview = () => {
           Breathtaking hike through the Canadian Banff National Park
         </p>
         <div className="card__data">
-          <Icon type="map-pin" />
+          <Icon type="map-pin" className="card__icon" />
           <span>Banff, Canada</span>
         </div>
         <div className="card__data">
-          <Icon type="calendar" />
+          <Icon type="calendar" className="card__icon" />
           <span>April, 2021</span>
         </div>
         <div className="card__data">
-          <Icon type="flag" />
+          <Icon type="flag" className="card__icon" />
           <span>3 stops</span>
         </div>
         <div className="card__data">
-          <Icon type="user" />
+          <Icon type="user" className="card__icon" />
           <span>25 people</span>
         </div>
       </div>

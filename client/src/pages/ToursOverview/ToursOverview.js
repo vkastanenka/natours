@@ -1,17 +1,27 @@
 // React
-import React from 'react';
+import React from "react";
 
 // Components
-import TourCardOver from './Layout/TourCardOverview';
+import Auxiliary from "../../components/HigherOrder/Auxiliary";
+import Navbar from "../../components/Layout/Navbar";
+import TourCardOverview from "./Layout/TourCardOverview";
 
 const ToursOverview = () => {
   return (
-    <main className="main">
-      <div className="card-container">
-        <TourCardOverview />
-      </div>
-    </main>
+    <Auxiliary>
+      <Navbar />
+      <main className="main">
+        <div className="card-container">
+          <TourCardOverview />
+          <TourCardOverview />
+          <TourCardOverview />
+          <TourCardOverview />
+          <TourCardOverview />
+          <TourCardOverview />
+        </div>
+      </main>
+    </Auxiliary>
   );
-}
+};
 
 export default ToursOverview;

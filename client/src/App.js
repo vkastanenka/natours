@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 // Components
 import Home from "./pages/Home/Home";
 import Authenticate from "./pages/Authenticate/Authenticate";
+import ToursOverview from './pages/ToursOverview/ToursOverview';
 import UndefinedPage from "./pages/ErrorPage/ErrorPage";
 import Footer from "./components/Layout/Footer";
 
@@ -19,6 +20,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/authenticate" component={Authenticate} />
+            <Route exact path="/tours" component={ToursOverview} />
             <Route path="/*" component={UndefinedPage} />
           </Switch>
           <Footer />
