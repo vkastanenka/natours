@@ -14,7 +14,6 @@
 @import 'components/composition';
 @import 'components/cta';
 @import 'components/description-box';
-@import 'components/error';
 @import 'components/feature-box';
 @import 'components/form';
 @import 'components/heading-box';
@@ -33,6 +32,7 @@
 @import 'layout/navigation';
 @import 'layout/side-nav';
 
+@import 'pages/error';
 @import 'pages/home';
 @import 'pages/tour';
 @import 'pages/user-view';

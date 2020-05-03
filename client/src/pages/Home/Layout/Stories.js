@@ -1,12 +1,22 @@
+// React
 import React from "react";
+
+// Components
+import Story from "../../../components/Story/Story";
 
 const Stories = () => {
   return (
     <section className="section-stories">
       <div className="bg-video">
         <video className="bg-video__content" autoplay muted loop>
-          <source src={require("../../../assets/images/video.mp4")} type="video/mp4" />
-          <source src={require("../../../assets/images/video.webm")} type="video/webm" />
+          <source
+            src={require("../../../assets/images/video.mp4")}
+            type="video/mp4"
+          />
+          <source
+            src={require("../../../assets/images/video.webm")}
+            type="video/webm"
+          />
           Your browser is not supported!
         </video>
       </div>
@@ -16,53 +26,29 @@ const Stories = () => {
       </div>
 
       <div className="row">
-        <div className="story">
-          <figure className="story__shape">
-            <img
-              src={require("../../../assets/images/nat-8.jpg")}
-              alt="Person on a tour"
-              className="story__img"
-            />
-            <figcaption className="story__caption">Mary Smith</figcaption>
-          </figure>
-          <div className="story__text">
-            <h3 className="heading-tertiary u-margin-bottom-small">
-              I had the best week ever with my family
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam,
-              ipsum sapiente aspernatur libero repellat quis consequatur ducimus
-              quam nisi exercitationem omnis earum qui. Aperiam, ipsum sapiente
-              aspernatur libero repellat quis consequatur ducimus quam nisi
-              exercitationem omnis earum qui.
-            </p>
-          </div>
-        </div>
+        <Story
+          imgURL={require("../../../assets/images/nat-8.jpg")}
+          name="Mary Smith"
+          title="I had the best week ever with my family"
+          story="Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam,
+        ipsum sapiente aspernatur libero repellat quis consequatur ducimus
+        quam nisi exercitationem omnis earum qui. Aperiam, ipsum sapiente
+        aspernatur libero repellat quis consequatur ducimus quam nisi
+        exercitationem omnis earum qui."
+        />
       </div>
 
       <div className="row">
-        <div className="story">
-          <figure className="story__shape">
-            <img
-              src={require("../../../assets/images/nat-9.jpg")}
-              alt="Person on a tour"
-              className="story__img"
-            />
-            <figcaption className="story__caption">Jack Wilson</figcaption>
-          </figure>
-          <div className="story__text">
-            <h3 className="heading-tertiary u-margin-bottom-small">
-              WOW! My life is completely different now
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam,
-              ipsum sapiente aspernatur libero repellat quis consequatur ducimus
-              quam nisi exercitationem omnis earum qui. Aperiam, ipsum sapiente
-              aspernatur libero repellat quis consequatur ducimus quam nisi
-              exercitationem omnis earum qui.
-            </p>
-          </div>
-        </div>
+        <Story
+          imgURL={require("../../../assets/images/nat-9.jpg")}
+          name="Jack Wilson"
+          title="I've never felt such tranquility"
+          story="Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam,
+          ipsum sapiente aspernatur libero repellat quis consequatur ducimus
+          quam nisi exercitationem omnis earum qui. Aperiam, ipsum sapiente
+          aspernatur libero repellat quis consequatur ducimus quam nisi
+          exercitationem omnis earum qui."
+        />
       </div>
 
       <div className="u-center-text u-margin-top-huge">

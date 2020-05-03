@@ -16,7 +16,7 @@ const Navbar = () => {
   return (
     <header className="header-tour">
       <nav className="navbar navbar--tours">
-        <Link className="navbar__el">All tours</Link>
+        <Link to='/tours' className="navbar__el">All tours</Link>
         <div className="header-tour__logo">
           <img
             src={require("../../assets/images/logo-white.png")}

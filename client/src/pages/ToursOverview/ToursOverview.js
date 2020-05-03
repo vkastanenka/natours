@@ -3,7 +3,7 @@ import React from "react";
 
 // Components
 import PageLayout from "../../components/Layout/PageLayout";
-import TourCardOverview from "./Layout/TourCardOverview";
+import TourCard from "../../components/Cards/TourCard";
 
 const ToursOverview = () => {
   const coverForestHiker = (
@@ -18,7 +18,7 @@ const ToursOverview = () => {
     <PageLayout>
       <main className="main">
         <div className="card-container">
-          <TourCardOverview
+          <TourCard
             cover={coverForestHiker}
             name='The Forest Hiker'
             duration='Easy 5 day tour'
@@ -31,7 +31,7 @@ const ToursOverview = () => {
             ratingValue='4.9'
             ratingCount='21'
           />
-          <TourCardOverview
+          <TourCard
             cover={coverForestHiker}
             name='The Forest Hiker'
             duration='Easy 5 day tour'
@@ -44,7 +44,7 @@ const ToursOverview = () => {
             ratingValue='4.9'
             ratingCount='21'
           />
-          <TourCardOverview
+          <TourCard
             cover={coverForestHiker}
             name='The Forest Hiker'
             duration='Easy 5 day tour'
@@ -57,7 +57,7 @@ const ToursOverview = () => {
             ratingValue='4.9'
             ratingCount='21'
           />
-          <TourCardOverview
+          <TourCard
             cover={coverForestHiker}
             name='The Forest Hiker'
             duration='Easy 5 day tour'
@@ -70,7 +70,7 @@ const ToursOverview = () => {
             ratingValue='4.9'
             ratingCount='21'
           />
-          <TourCardOverview
+          <TourCard
             cover={coverForestHiker}
             name='The Forest Hiker'
             duration='Easy 5 day tour'
@@ -83,7 +83,7 @@ const ToursOverview = () => {
             ratingValue='4.9'
             ratingCount='21'
           />
-          <TourCardOverview
+          <TourCard
             cover={coverForestHiker}
             name='The Forest Hiker'
             duration='Easy 5 day tour'

@@ -13,7 +13,7 @@ import CTA from "./Layout/CTA";
 const Tour = () => {
   return (
     <PageLayout>
-      <main className="main">
+      <main>
         <Header />
         <Description />
         <Pictures />

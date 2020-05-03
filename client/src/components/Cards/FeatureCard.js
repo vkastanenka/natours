@@ -3,9 +3,9 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // Styling
-import "../../../../../assets/css/icon-font.css";
+import "../../assets/css/icon-font.css";
 
-const FeatureBox = (props) => {
+const FeatureCard = (props) => {
   return (
     <div className="feature-box">
       <i className={`feature-box__icon icon-basic-${props.icon}`}></i>
@@ -17,10 +17,10 @@ const FeatureBox = (props) => {
   );
 };
 
-FeatureBox.propTypes = {
+FeatureCard.propTypes = {
   icon: PropTypes.string.isRequired,
   heading: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
 };
 
-export default FeatureBox;
+export default FeatureCard;

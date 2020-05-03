@@ -1,12 +1,15 @@
 import React from "react";
 
+import Register from '../../../components/Forms/Register';
+
 const Book = () => {
   return (
     <section class="section-book">
       <div class="row">
         <div class="book">
           <div class="book__form">
-            <form action="#" class="form">
+            <Register/>
+            {/* <form action="#" class="form">
               <div class="u-margin-bottom-medium">
                 <h2 class="heading-secondary">Start booking now</h2>
               </div>
@@ -69,6 +72,7 @@ const Book = () => {
                 <button class="btn btn--green">Next step &rarr;</button>
               </div>
             </form>
+           */}
           </div>
           
         </div>

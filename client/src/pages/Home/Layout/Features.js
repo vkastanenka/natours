@@ -2,7 +2,7 @@
 import React from "react";
 
 // Components
-import FeatureBox from "./Layout/FeatureBox";
+import FeatureBox from "../../../components/Cards/FeatureCard";
 
 // Features section of home page
 const Features = () => {

@@ -2,60 +2,60 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer class="footer">
-      <div class="footer__logo-box">
-        <picture class="footer__logo">
+    <footer className="footer">
+      <div className="footer__logo-box">
+        <picture className="footer__logo">
           <source
-            srcset={`${require("../../assets/images/logo-green-small-1x.png")} 1x, ${require("../../assets/images/logo-green-small-2x.png")} 2x`}
+            srcSet={`${require("../../assets/images/logo-green-small-1x.png")} 1x, ${require("../../assets/images/logo-green-small-2x.png")} 2x`}
             media="(max-width: 37.5em)"
           />
           <img
-            srcset={`${require("../../assets/images/logo-green-small-1x.png")} 1x, ${require("../../assets/images/logo-green-small-2x.png")} 2x`}
+            srcSet={`${require("../../assets/images/logo-green-small-1x.png")} 1x, ${require("../../assets/images/logo-green-small-2x.png")} 2x`}
             alt="Full logo"
             src={require("../../assets/images/logo-green-2x.png")}
           />
         </picture>
       </div>
-      <div class="row">
-        <div class="col-1-of-2">
-          <div class="footer__navigation">
-            <ul class="footer__list">
-              <li class="footer__item">
-                <a href="#" class="footer__link">
+      <div className="row">
+        <div className="col-1-of-2">
+          <div className="footer__navigation">
+            <ul className="footer__list">
+              <li className="footer__item">
+                <a href="#" className="footer__link">
                   Company
                 </a>
               </li>
-              <li class="footer__item">
-                <a href="#" class="footer__link">
+              <li className="footer__item">
+                <a href="#" className="footer__link">
                   Contact us
                 </a>
               </li>
-              <li class="footer__item">
-                <a href="#" class="footer__link">
+              <li className="footer__item">
+                <a href="#" className="footer__link">
                   Carrers
                 </a>
               </li>
-              <li class="footer__item">
-                <a href="#" class="footer__link">
+              <li className="footer__item">
+                <a href="#" className="footer__link">
                   Privacy policy
                 </a>
               </li>
-              <li class="footer__item">
-                <a href="#" class="footer__link">
+              <li className="footer__item">
+                <a href="#" className="footer__link">
                   Terms
                 </a>
               </li>
             </ul>
           </div>
         </div>
-        <div class="col-1-of-2">
-          <p class="footer__copyright">
+        <div className="col-1-of-2">
+          <p className="footer__copyright">
             Built by{" "}
-            <a href="#" class="footer__link">
+            <a href="#" className="footer__link">
               Jonas Schmedtmann
             </a>{" "}
             for his online course{" "}
-            <a href="#" class="footer__link">
+            <a href="#" className="footer__link">
               Advanced CSS and Sass
             </a>
             . Copyright &copy; by Jonas Schmedtmann. You are 100% allowed to use

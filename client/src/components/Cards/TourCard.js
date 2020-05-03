@@ -3,9 +3,9 @@ import React from "react";
 import PropTypes from 'prop-types';
 
 // Components
-import Icon from "../../../components/Icon/Icon";
+import Icon from "../Icon/Icon";
 
-const TourCardOverview = (props) => {
+const TourCard = (props) => {
   return (
     <div className="card">
       <div className="card__header">
@@ -55,7 +55,7 @@ const TourCardOverview = (props) => {
   );
 };
 
-TourCardOverview.propTypes = {
+TourCard.propTypes = {
   cover: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
   duration: PropTypes.string.isRequired,
@@ -69,4 +69,4 @@ TourCardOverview.propTypes = {
   ratingCount: PropTypes.string.isRequired,
 }
 
-export default TourCardOverview;
+export default TourCard;

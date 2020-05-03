@@ -8,7 +8,7 @@ import Authenticate from "./pages/Authenticate/Authenticate";
 import Account from './pages/Account/Account';
 import ToursOverview from './pages/ToursOverview/ToursOverview';
 import Tour from './pages/Tour/Tour';
-import UndefinedPage from "./pages/ErrorPage/ErrorPage";
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
 
 // Styling
 import "./assets/css/style.css";
@@ -24,7 +24,7 @@ class App extends Component {
             <Route exact path="/account" component={Account} />
             <Route exact path="/tours" component={ToursOverview} />
             <Route exact path="/tour" component={Tour} />
-            <Route path="/*" component={UndefinedPage} />
+            <Route path="/*" component={ErrorPage} />
           </Switch>
         </BrowserRouter>
       </div>

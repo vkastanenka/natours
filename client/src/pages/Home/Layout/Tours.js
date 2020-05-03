@@ -1,6 +1,6 @@
 import React from "react";
 
-import TourCardHome from "./Layout/TourCardHome";
+import TourCardRotate from "../../../components/Cards/TourCardRotate";
 
 const Tours = () => {
   return (
@@ -10,7 +10,7 @@ const Tours = () => {
       </div>
 
       <div className="card-container">
-        <TourCardHome
+        <TourCardRotate
           pictureNumer="1"
           headingNumber="1"
           heading="The Sea Explorer"
@@ -22,7 +22,7 @@ const Tours = () => {
           backNumber="1"
           price="297"
         />
-        <TourCardHome
+        <TourCardRotate
           pictureNumer="2"
           headingNumber="2"
           heading="The Forest Hiker"
@@ -34,7 +34,7 @@ const Tours = () => {
           backNumber="2"
           price="497"
         />
-        <TourCardHome
+        <TourCardRotate
           pictureNumer="3"
           headingNumber="3"
           heading="The Snow Adventurer"

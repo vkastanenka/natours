@@ -2,7 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const TourCardHome = (props) => {
+const TourCardRotate = (props) => {
   return (
     <div className="card-rotate">
       <div className="card-rotate__side card-rotate__side--front">
@@ -45,7 +45,7 @@ const TourCardHome = (props) => {
   );
 };
 
-TourCardHome.propTypes = {
+TourCardRotate.propTypes = {
   pictureNumber: PropTypes.string.isRequired,
   headingNumber: PropTypes.string.isRequired,
   heading: PropTypes.string.isRequired,
@@ -58,4 +58,4 @@ TourCardHome.propTypes = {
   price: PropTypes.string.isRequired,
 };
 
-export default TourCardHome;
+export default TourCardRotate;
