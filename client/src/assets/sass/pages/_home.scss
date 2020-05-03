@@ -58,10 +58,6 @@
     text-align: center;
   }
 
-  & > :first-child, :nth-child(2) {
-    margin-bottom: 4rem;
-  }
-
   // @include respond(tab-port) {
   //   padding: 22rem 0 14rem 0;
   // }

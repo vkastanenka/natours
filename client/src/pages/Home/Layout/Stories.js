@@ -8,7 +8,7 @@ const Stories = () => {
   return (
     <section className="section-stories">
       <div className="bg-video">
-        <video className="bg-video__content" autoplay muted loop>
+        <video className="bg-video__content" autoPlay muted loop>
           <source
             src={require("../../../assets/images/video.mp4")}
             type="video/mp4"
@@ -21,8 +21,8 @@ const Stories = () => {
         </video>
       </div>
 
-      <div className="u-center-text u-margin-bottom-big">
-        <h2 className="heading-secondary">We make people genuinely happy</h2>
+      <div className="u-center-text ma-bt-lg">
+        <h2 className="heading-secondary heading-secondary--large">We make people genuinely happy</h2>
       </div>
 
       <div className="row">
@@ -51,7 +51,7 @@ const Stories = () => {
         />
       </div>
 
-      <div className="u-center-text u-margin-top-huge">
+      <div className="u-center-text">
         <button className="btn-text">
           Read all stories &rarr;
         </button>

@@ -37,11 +37,11 @@ const Navigation = () => {
               <span>04</span>Stories
             </a>
           </li>
-          <li className="navigation__item">
+          {/* <li className="navigation__item">
             <a href="#" className="navigation__link">
               <span>05</span>Book now
             </a>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </div>

@@ -8,15 +8,15 @@ import TourCardRotate from "../../../components/Cards/TourCardRotate";
 const Tours = () => {
   return (
     <section className="section-tours" id="section-tours">
-      <div>
+      <div className='ma-bt-lg'>
         <h2 className="heading-secondary heading-secondary--large">
           Most popular tours
         </h2>
       </div>
 
-      <div className="card-grid">
+      <div className="card-grid ma-bt-xlg">
         <TourCardRotate
-          pictureNumer="1"
+          pictureNumber="1"
           headingNumber="1"
           heading="The Sea Explorer"
           numDays="3"
@@ -28,7 +28,7 @@ const Tours = () => {
           price="297"
         />
         <TourCardRotate
-          pictureNumer="2"
+          pictureNumber="2"
           headingNumber="2"
           heading="The Forest Hiker"
           numDays="7"
@@ -40,7 +40,7 @@ const Tours = () => {
           price="497"
         />
         <TourCardRotate
-          pictureNumer="3"
+          pictureNumber="3"
           headingNumber="3"
           heading="The Snow Adventurer"
           numDays="5"
