@@ -5,6 +5,7 @@
     font-size: 1.6rem;
     padding: 1.4rem 3rem;
     border-radius: 10rem;
+    font-weight: 300;
     text-transform: uppercase;
     text-decoration: none;
     display: inline-block;
@@ -33,6 +34,10 @@
       transform: scale(1);
       opacity: 1;
     }
+  }
+
+  &:focus {
+    outline: none;
   }
 
   &--white {

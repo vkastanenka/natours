@@ -1,5 +1,6 @@
 // React
 import React from "react";
+import { Link as ScrollLink } from "react-scroll";
 
 // Header for home page
 const Header = () => {
@@ -20,9 +21,17 @@ const Header = () => {
             <span className="heading-primary--sub">is where life happens</span>
           </h1>
 
-          <a href="#section-tours" class="btn btn--white btn--animated">
-            Discover our tours
-          </a>
+          <button class="btn btn--white btn--animated">
+            <ScrollLink
+              to="section-tours"
+              spy={true}
+              smooth={true}
+              offset={0}
+              duration={500}
+            >
+              Discover our tours
+            </ScrollLink>
+          </button>
         </div>
       </div>
     </header>
