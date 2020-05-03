@@ -17,7 +17,7 @@ const ToursOverview = () => {
   return (
     <PageLayout>
       <main className="main">
-        <div className="card-container">
+        <div className="card-grid">
           <TourCard
             cover={coverForestHiker}
             name='The Forest Hiker'

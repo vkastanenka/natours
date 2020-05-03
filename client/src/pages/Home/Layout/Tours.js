@@ -1,15 +1,20 @@
+// React
 import React from "react";
+import { Link } from "react-router-dom";
 
+// Components
 import TourCardRotate from "../../../components/Cards/TourCardRotate";
 
 const Tours = () => {
   return (
     <section className="section-tours" id="section-tours">
-      <div className="u-center-text u-margin-bottom-big">
-        <h2 className="heading-secondary">Most popular tours</h2>
+      <div>
+        <h2 className="heading-secondary heading-secondary--large">
+          Most popular tours
+        </h2>
       </div>
 
-      <div className="card-container">
+      <div className="card-grid">
         <TourCardRotate
           pictureNumer="1"
           headingNumber="1"
@@ -48,10 +53,10 @@ const Tours = () => {
         />
       </div>
 
-      <div className="u-center-text u-margin-top-huge">
-        <a href="#" className="btn btn--green">
-          Discover all tours
-        </a>
+      <div>
+        <Link to="/tours">
+          <button className="btn btn--green">Discover all tours</button>
+        </Link>
       </div>
     </section>
   );

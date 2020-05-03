@@ -52,9 +52,9 @@ const Stories = () => {
       </div>
 
       <div className="u-center-text u-margin-top-huge">
-        <a href="#" className="btn-text">
+        <button className="btn-text">
           Read all stories &rarr;
-        </a>
+        </button>
       </div>
     </section>
   );
