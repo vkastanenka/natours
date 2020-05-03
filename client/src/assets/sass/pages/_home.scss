@@ -2,13 +2,11 @@
   height: 90vh;
   position: relative;
 
-  -webkit-clip-path: polygon(0 0, 100% 0, 100% 83vh, 0 100%);
   clip-path: $clip-path--poly-1;
   height: 95vh;
 
-  @include respond(phone) {
+  @include respond(bp-smaller) {
     height: 100vh;
-    -webkit-clip-path: polygon(0 0, 100% 0, 100% 90vh, 0% 100%);
     clip-path: polygon(0 0, 100% 0, 100% 90vh, 0% 100%);
   }
 }

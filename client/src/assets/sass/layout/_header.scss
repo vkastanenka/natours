@@ -26,10 +26,28 @@
     position: absolute;
     top: 4rem;
     left: 4rem;
+
+    @include respond(bp-smallest) {
+      top: 3rem;
+      left: 3rem;
+    }
+
+    @include respond(bp-mobile) {
+      top: 2.5rem;
+      left: 2.5rem;
+    }
   }
 
   &__logo {
     height: 3.5rem;
+
+    @include respond(bp-smallest) {
+      height: 3.25rem;
+    }
+
+    @include respond(bp-mobile) {
+      height: 3rem;
+    }
   }
 
   &__text-box {
@@ -39,7 +57,7 @@
     transform: translate(-50%, -50%);
     text-align: center;
 
-    @include respond(phone) {
+    @include respond(bp-smaller) {
       top: 50%;
     }
   }

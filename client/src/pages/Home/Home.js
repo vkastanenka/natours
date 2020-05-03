@@ -21,14 +21,14 @@ const Home = () => {
       <Navigation />
       <Header />
       <main>
-        <About />
-        <Features />
-        <Tours />
-        <Stories />
+        {/* <About /> */}
+        {/* <Features /> */}
+        {/* <Tours /> */}
+        {/* <Stories /> */}
         {/* <Book /> */}
       </main>
-      <Footer />
-      <Popup />
+      {/* <Footer /> */}
+      {/* <Popup /> */}
     </Auxiliary>
   );
 };

@@ -14,18 +14,22 @@
     z-index: 2000;
     box-shadow: 0 1rem 3rem rgba($color-black, 0.1);
 
-    // Center hamburger
     text-align: center;
     cursor: pointer;
 
-    @include respond(tab-port) {
-      top: 4rem;
-      right: 4rem;
+    @include respond(bp-medium) {
+      top: 2.5rem;
+      right: 2.5rem;
     }
 
-    @include respond(phone) {
-      top: 3rem;
-      right: 3rem;
+    @include respond(bp-smallest) {
+      height: 6rem;
+      width: 6rem;
+    }
+
+    @include respond(bp-mobile) {
+      top: 2rem;
+      right: 2rem;
     }
   }
 
@@ -33,26 +37,23 @@
     height: 6rem;
     width: 6rem;
     border-radius: 50%;
-    // Similar to absolute, but doesn't change position as we scroll the page => Also takes the element out of the flow => Allows us to specify it in relation to a positioned element with top, right, bottom, left properties
     position: fixed;
     top: 6.5rem;
     right: 6.5rem;
 
-    // Linear gradient goes from one side to another, while the radial gradient starts in the middle of an element, while radial starts from the center and goes outwards in all directions
     background-image: radial-gradient($color-primary-light,
         $color-primary-dark);
-    // z-index only works on an element whose position is defined
     z-index: 1000;
     transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
 
-    @include respond(tab-port) {
-      top: 4.5rem;
-      right: 4.5rem;
+    @include respond(bp-medium) {
+      top: 3rem;
+      right: 3rem;
     }
 
-    @include respond(phone) {
-      top: 3.5rem;
-      right: 3.5rem;
+    @include respond(bp-smallest) {
+      height: 4rem;
+      width: 4rem;
     }
   }
 
@@ -69,13 +70,7 @@
   }
 
   &__list {
-    // This center postioning is a great candidate for a mixin ^ w ^
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    // Without this, the nav list will move in weird from the side
+    @extend %abs-center;
     width: 100%;
     z-index: 10000000;
     text-align: center;
@@ -101,11 +96,13 @@
           transparent 0%,
           transparent 50%,
           $color-white 50%);
-
-      // Background-size will move the gradient
       background-size: 220%;
       transition: all 0.4s;
       border-radius: 10rem;
+
+      @include respond(bp-small) {
+        font-size: 2.5rem;
+      }
 
       span {
         margin-right: 1.5rem;
@@ -114,7 +111,6 @@
 
       &:hover,
       &:active {
-        // Will cause background gradient to shift ???
         background-position: 100%;
         color: $color-primary;
         transform: translateX(1rem);
@@ -122,7 +118,6 @@
     }
   }
 
-  // FUNCTIONALITY
   &__checkbox:checked~&__background {
     transform: scale(80);
   }
@@ -132,10 +127,13 @@
     width: 100%;
   }
 
-  // ICON
   &__icon {
     position: relative;
     margin-top: 3.4rem;
+
+    @include respond(bp-smallest) {
+      margin-top: 2.9rem;
+    }
 
     &,
     &::before,
@@ -143,8 +141,15 @@
       width: 3rem;
       height: 0.2rem;
       background-color: $color-grey-dark-3;
-      // Display property must be set for pseudo elements
       display: inline-block;
+
+      @include respond(bp-smallest) {
+        width: 2.5rem;
+      }
+
+      @include respond(bp-mobile) {
+        width: 2.25rem;
+      }
     }
 
     &::before,
@@ -157,10 +162,18 @@
 
     &::before {
       top: -0.8rem;
+
+      @include respond(bp-smallest) {
+        top: -0.6rem;
+      }
     }
 
     &::after {
       top: 0.8rem;
+
+      @include respond(bp-smallest) {
+        top: 0.6rem;
+      }
     }
   }
 
@@ -173,14 +186,9 @@
   }
 
   &__checkbox:checked+&__button &__icon {
-    // Want lines to disappear: Don't want to change its size (this element has a size)
-    // However, the after and before pseudo elements depend on this size
-    // Positioned in relation to that size
-    // Remove that size: Width and height of the element, would change the positions of the before and after (don't want)
     background-color: transparent;
   }
 
-  // Rotating the before and afters into a cross
   &__checkbox:checked + &__button &__icon::before {
     top: 0;
     transform: rotate(135deg) translateY(-0.1rem);
