@@ -91,7 +91,7 @@ body {
   padding: 8rem 6rem;
   flex: 1;
   position: relative; }
-  @media only screen and (max-width: 25em) {
+  @media only screen and (max-width: 37.5em) {
     .main {
       padding: 5rem 3rem; } }
 
@@ -1190,6 +1190,9 @@ body {
     .card-grid {
       grid-template-columns: 1fr;
       max-width: 80%; } }
+  @media only screen and (max-width: 31.25em) {
+    .card-grid {
+      max-width: 100%; } }
 
 .row {
   max-width: 114rem;
@@ -1649,14 +1652,14 @@ body {
 
 .section-tours {
   background-color: #f7f7f7;
-  padding: 24rem 0 14rem 0;
+  padding: 24rem 6rem 14rem 6rem;
   margin-top: -10rem; }
   .section-tours > :first-child,
   .section-tours :last-child {
     text-align: center; }
   @media only screen and (max-width: 37.5em) {
     .section-tours {
-      padding: 22rem 0 14rem 0; } }
+      padding: 22rem 3rem 14rem 3rem; } }
 
 .section-stories {
   padding: 14rem 0;

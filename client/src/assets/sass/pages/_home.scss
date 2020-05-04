@@ -55,7 +55,7 @@
 
 .section-tours {
   background-color: $color-grey-light-1;
-  padding: 24rem 0 14rem 0;
+  padding: 24rem 6rem 14rem 6rem;
   margin-top: -10rem;
 
   & > :first-child,
@@ -64,7 +64,7 @@
   }
 
   @include respond(bp-small) {
-    padding: 22rem 0 14rem 0;
+    padding: 22rem 3rem 14rem 3rem;
   }
 }
 

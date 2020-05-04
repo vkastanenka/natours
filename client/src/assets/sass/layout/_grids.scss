@@ -22,6 +22,10 @@
     grid-template-columns: 1fr;
     max-width: 80%;
   }
+
+  @include respond(bp-smaller) {
+    max-width: 100%;
+  }
 }
 
 .row {
