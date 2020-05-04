@@ -83,6 +83,15 @@ body {
 
   &--large {
     font-size: 3.5rem;
+
+    @include respond(bp-smallest) {
+      font-size: 3.25rem;
+      letter-spacing: 0rem;
+    }
+
+    @include respond(bp-mobile) {
+      font-size: 3rem;
+    }
   }
 
   &--small {

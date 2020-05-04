@@ -42,13 +42,13 @@
     &:not(:last-child) {
       margin-right: $gutter-horizontal;
 
-      @include respond(tab-port) {
+      @include respond(bp-small) {
         margin-right: 0;
         margin-bottom: $gutter-vertical-small;
       }
     }
 
-    @include respond(tab-port) {
+    @include respond(bp-small) {
       width: 100% !important;
     }
   }

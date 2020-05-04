@@ -83,19 +83,6 @@ const ToursOverview = () => {
             ratingValue='4.9'
             ratingCount='21'
           />
-          <TourCard
-            cover={coverForestHiker}
-            name='The Forest Hiker'
-            duration='Easy 5 day tour'
-            description='Breathtaking hike through the Canadian Banff National Park'
-            location='Banff, Canada'
-            date='April, 2021'
-            stops='3 stops'
-            participants='25 people'
-            price='297'
-            ratingValue='4.9'
-            ratingCount='21'
-          />
         </div>
       </main>
     </PageLayout>

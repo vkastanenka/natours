@@ -21,9 +21,9 @@ const Home = () => {
       <Navigation />
       <Header />
       <main>
-        {/* <About /> */}
-        {/* <Features /> */}
-        {/* <Tours /> */}
+        <About />
+        <Features />
+        <Tours />
         {/* <Stories /> */}
         {/* <Book /> */}
       </main>

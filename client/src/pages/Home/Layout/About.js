@@ -30,6 +30,7 @@ const About = () => {
             Learn more &rarr;
           </button>
         </div>
+        
         <div className="col-1-of-2">
           <div className="composition">
             <img
