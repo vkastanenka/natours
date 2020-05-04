@@ -32,7 +32,7 @@ const Footer = () => {
               </li>
               <li className="footer__item">
                 <a href="#" className="footer__link">
-                  Carrers
+                  Careers
                 </a>
               </li>
               <li className="footer__item">
@@ -50,18 +50,7 @@ const Footer = () => {
         </div>
         <div className="col-1-of-2">
           <p className="footer__copyright">
-            Built by{" "}
-            <a href="#" className="footer__link">
-              Jonas Schmedtmann
-            </a>{" "}
-            for his online course{" "}
-            <a href="#" className="footer__link">
-              Advanced CSS and Sass
-            </a>
-            . Copyright &copy; by Jonas Schmedtmann. You are 100% allowed to use
-            this webpage for both personal and commercial use, but NOT to claim
-            it as your own design. A credit to the original author, Jonas
-            Schmedtmann, is of course highly appreciated!
+            Built by Victoria Kastanenka for her online portfolio. This project is an expansion and combination of two projects from the courses Advanced CSS and Sass, and Node.js, Express, MongoDB & More by Jonas Schmedtmann. The original project was built around server side rendering while this one has been altered to utilize React for the front end architecture. Other additions include offering users opportunities to use API features not found in the original project, such as writing reviews for users, or offering admin features such as editing reviews, adding tours, and more. Responsive design was also elaborated upon to include mobile devices with a minimum width of 320 px. As mentioned before the front end was built using React and Sass, while Node.js, Express, Mongoose, and MongoDB were used to build the back end architecture. 
           </p>
         </div>
       </div>

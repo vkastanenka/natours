@@ -1,16 +1,14 @@
 .footer {
   background-color: $color-grey-dark-3;
-  padding: 10rem 0;
+  padding: 8rem 0;
   font-size: 1.4rem;
   color: $color-grey-light-1;
 
   &__logo-box {
-    // The image is an inline element, so text-align center will center the image
-    // Inline elements behave just like text
     text-align: center;
     margin-bottom: 8rem;
 
-    @include respond(tab-port) {
+    @include respond(bp-small) {
       margin-bottom: 6rem;
     }
   }
@@ -23,10 +21,9 @@
   &__navigation {
     border-top: 0.1rem solid $color-grey-dark;
     padding-top: 2rem;
-    // inline-block doesn't display the whole width, just the total amount that the content needs
     display: inline-block;
 
-    @include respond(tab-port) {
+    @include respond(bp-small) {
       width: 100%;
       text-align: center;
     }
@@ -42,16 +39,16 @@
     &:not(:last-child) {
       margin-right: 1.5rem;
 
-      @include respond(tab-land) {
+      @include respond(bp-medium) {
         margin-right: 0.6rem;
       }
 
-      @include respond(tab-port) {
+      @include respond(bp-small) {
         margin-right: 5rem;
       }
 
-      @include respond(phone) {
-        margin-right: 1.5rem;
+      @include respond(bp-smaller) {
+        margin-right: 2rem;
       }
     }
   }
@@ -61,7 +58,6 @@
     &:link,
     &:visited {
       color: inherit;
-      // background-color: $color-grey-dark-3;
       text-decoration: none;
       text-transform: uppercase;
       display: inline-block;
@@ -71,7 +67,6 @@
     &:hover,
     &:active {
       color: $color-primary;
-      box-shadow: 0 1rem 2rem rgba($color-black, 0.4);
       transform: scale(1.05);
     }
   }
@@ -83,72 +78,9 @@
     float: right;
 
 
-    @include respond(tab-port) {
+    @include respond(bp-small) {
       width: 100%;
       float: none;
     }
   }
 }
-
-///////////////
-// Node Styling
-
-// .footer {
-//   background-color: #f7f7f7;
-//   padding: 6rem 4rem 3rem 4rem;
-//   font-size: 1.4rem;
-//   display: grid;
-//   grid-template-columns: auto auto;
-//   grid-row-gap: 0.75rem;
-//   -webkit-box-pack: justify;
-//   -ms-flex-pack: justify;
-//   justify-content: space-between;
-// }
-// @media only screen and (max-width: 50em) {
-//   .footer {
-//     grid-template-columns: 1fr;
-//     grid-row-gap: 1.25rem;
-//     justify-items: center;
-//   }
-// }
-// .footer__logo {
-//   grid-row: 1 / 3;
-//   -ms-flex-item-align: center;
-//   align-self: center;
-// }
-// @media only screen and (max-width: 50em) {
-//   .footer__logo {
-//     grid-row: 1;
-//   }
-// }
-// .footer__logo img {
-//   height: 3rem;
-// }
-// .footer__nav {
-//   list-style: none;
-//   display: -webkit-box;
-//   display: -ms-flexbox;
-//   display: flex;
-// }
-// .footer__nav li {
-//   margin-left: 1.5rem;
-// }
-// .footer__nav a {
-//   color: #777;
-//   text-decoration: none !important;
-//   -webkit-transition: all 0.2s;
-//   transition: all 0.2s;
-// }
-// .footer__nav a:hover,
-// .footer__nav a:active {
-//   color: #55c57a;
-// }
-// .footer__copyright {
-//   justify-self: end;
-//   color: #999;
-// }
-// @media only screen and (max-width: 50em) {
-//   .footer__copyright {
-//     justify-self: center;
-//   }
-// }
