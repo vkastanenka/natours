@@ -907,6 +907,12 @@ body {
     padding-bottom: 15%; }
   .picture-box__img--3 {
     padding-bottom: 27%; }
+  @media only screen and (max-width: 37.5em) {
+    .picture-box__img--1, .picture-box__img--2, .picture-box__img--3 {
+      padding: 2rem 5rem; } }
+  @media only screen and (max-width: 25em) {
+    .picture-box__img--1, .picture-box__img--2, .picture-box__img--3 {
+      padding: 2rem 3rem; } }
 
 .popup {
   position: fixed;
@@ -1745,6 +1751,10 @@ body {
   margin-top: calc(0px - var(--section-rotate));
   position: relative;
   z-index: 1000; }
+  @media only screen and (max-width: 37.5em) {
+    .section-pictures {
+      flex-direction: column;
+      clip-path: none; } }
 
 .section-map {
   position: relative;

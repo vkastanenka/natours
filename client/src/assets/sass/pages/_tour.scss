@@ -51,6 +51,11 @@
   margin-top: calc(0px - var(--section-rotate));
   position: relative;
   z-index: 1000;
+
+  @include respond(bp-small) {
+    flex-direction: column;
+    clip-path: none;
+  }
 }
 
 .section-map {
