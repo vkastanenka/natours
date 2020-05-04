@@ -835,6 +835,10 @@ body {
     width: 7.5rem;
     border-radius: 50%;
     margin-right: 2rem; }
+    @media only screen and (max-width: 25em) {
+      .form__user-photo {
+        height: 6rem;
+        width: 6rem; } }
   .form__upload {
     width: 0.1px;
     height: 0.1px;
@@ -1653,6 +1657,9 @@ body {
 
 .admin-nav {
   margin-top: 5.5rem; }
+  @media only screen and (max-width: 37.5em) {
+    .admin-nav {
+      margin-top: 3rem; } }
   .admin-nav__heading {
     margin: 0 5rem 1.5rem 4rem;
     padding-bottom: 3px;
@@ -1813,10 +1820,16 @@ body {
   overflow: hidden;
   box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.06);
   display: flex; }
+  @media only screen and (max-width: 37.5em) {
+    .user-view {
+      flex-direction: column; } }
   .user-view__menu {
     flex: 32rem 0 0;
     background-image: linear-gradient(to right bottom, #7dd56f, #28b487);
     padding: 4rem 0; }
+    @media only screen and (max-width: 50em) {
+      .user-view__menu {
+        flex: 26rem 0 0; } }
   .user-view__content {
     flex: 1;
     padding: 7rem 0; }
@@ -1824,3 +1837,6 @@ body {
     max-width: 68rem;
     margin: 0 auto;
     padding: 0 8rem; }
+    @media only screen and (max-width: 50em) {
+      .user-view__form-container {
+        padding: 0 4rem; } }
