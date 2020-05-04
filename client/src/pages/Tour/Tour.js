@@ -15,8 +15,8 @@ const Tour = () => {
     <PageLayout>
       <main>
         <Header />
-        {/* <Description /> */}
-        {/* <Pictures /> */}
+        <Description />
+        <Pictures />
         {/* <Map /> */}
         {/* <Reviews /> */}
         {/* <CTA /> */}

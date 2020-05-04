@@ -9,11 +9,39 @@
   margin-top: calc(0px - var(--section-rotate));
   display: flex;
 
+  @include respond(bp-small) {
+    flex-direction: column;
+  }
+
   & > * {
     padding: 0 8vw;
     padding-top: 14vw;
     padding-bottom: calc(1vw + var(--section-rotate));
     flex: 0 0 50%;
+  }
+
+  & > :first-child {
+    @include respond(bp-small) {
+      padding-top: 17vw;
+      padding-bottom: 4vh;
+    }
+
+    @include respond(bp-smaller) {
+      padding-top: 20vw;
+      padding-bottom: 12vh;
+    }
+  }
+
+  & > :last-child {
+    @include respond(bp-small) {
+      padding-top: 12vh;
+      padding-bottom: 17vh;
+    }
+
+    @include respond(bp-smaller) {
+      padding-top: 12vh;
+      padding-bottom: 14vh;
+    }
   }
 }
 
