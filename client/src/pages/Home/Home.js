@@ -24,10 +24,10 @@ const Home = () => {
         <About />
         <Features />
         <Tours />
-        {/* <Stories /> */}
+        <Stories />
         {/* <Book /> */}
       </main>
-      {/* <Footer /> */}
+      <Footer />
       {/* <Popup /> */}
     </Auxiliary>
   );

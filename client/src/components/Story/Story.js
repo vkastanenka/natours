@@ -14,7 +14,7 @@ const Story = props => {
         <figcaption className="story__caption">{props.name}</figcaption>
       </figure>
       <div className="story__text">
-        <h3 className="heading-tertiary u-margin-bottom-small">
+        <h3 className="heading-tertiary ma-bt-sm">
           {props.title}
         </h3>
         <p>

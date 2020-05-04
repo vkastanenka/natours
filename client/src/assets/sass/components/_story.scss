@@ -15,19 +15,19 @@
     transform: skewX(12deg);
   }
 
-  @include respond(phone) {
+  @include respond(bp-small) {
     & > * {
       transform: skewX(0);
     }
   }
 
-  @include respond(tab-port) {
+  @include respond(bp-medium) {
     width: 100%;
     padding: 4rem;
     padding-left: 7rem;
   }
 
-  @include respond(phone) {
+  @include respond(bp-small) {
     transform: skewX(0);
   }
 
@@ -37,25 +37,14 @@
     float: left;
     position: relative;
     overflow: hidden;
-    // Best way to move an element that is floated is not to mess with margins, but transform
-    // Currently no way of having two transform properties applying at the same time
     transform: translateX(-3rem) skewX(12deg);
     border-radius: 50%;
 
-    -webkit-clip-path: circle(50% at 50% 50%);
     clip-path: circle(50% at 50% 50%);
-
-    // Shape outside defines where the content floats around the element
-    // Inside can define the size of the circle, and the position of the center of the circle
-    // 1st 50%: Radius will be half the height and width of the element
-    // 2nd and 3rd 50%: Center of the circle: Exactly the center horizontally and vertically
-    // In order for this to work, the element must be floated, and must have defined dimensions
-    // Only works with webkit prefix in safari
-    -webkit-shape-outside: circle(50% at 50% 50%);
     shape-outside: circle(50% at 50% 50%);
     border-radius: none;
 
-    @include respond(phone) {
+    @include respond(bp-small) {
       transform: translateX(-3rem) skewX(0);
     }
   }
@@ -70,7 +59,7 @@
   &__text {
     transform: skewX(12deg);
 
-    @include respond(phone) {
+    @include respond(bp-small) {
       transform: skewX(0);
     }
   }

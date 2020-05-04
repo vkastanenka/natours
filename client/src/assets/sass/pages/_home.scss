@@ -63,32 +63,32 @@
     text-align: center;
   }
 
-  // @include respond(tab-port) {
-  //   padding: 22rem 0 14rem 0;
-  // }
+  @include respond(bp-small) {
+    padding: 22rem 0 14rem 0;
+  }
 }
 
 .section-stories {
   padding: 14rem 0;
   position: relative;
 
-  @include respond(tab-port) {
+  @include respond(bp-small) {
     padding: 12rem 0;
   }
 }
 
-.section-book {
-  padding: 15rem 0;
-  background-image: linear-gradient(
-    135deg,
-    $color-primary-light,
-    $color-primary-dark
-  );
+// .section-book {
+//   padding: 15rem 0;
+//   background-image: linear-gradient(
+//     135deg,
+//     $color-primary-light,
+//     $color-primary-dark
+//   );
 
-  @include respond(tab-port) {
-    padding: 12rem 0;
-  }
-}
+//   @include respond(tab-port) {
+//     padding: 12rem 0;
+//   }
+// }
 
 // .book {
 //   background-image: linear-gradient(
