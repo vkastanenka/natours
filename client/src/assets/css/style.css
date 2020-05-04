@@ -89,10 +89,11 @@ body {
 .main {
   background-color: #f7f7f7;
   padding: 8rem 6rem;
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
   flex: 1;
   position: relative; }
+  @media only screen and (max-width: 25em) {
+    .main {
+      padding: 5rem 3rem; } }
 
 .line {
   margin: 6rem 0;
@@ -174,6 +175,9 @@ body {
         font-size: 3rem; } }
   .heading-secondary--small {
     font-size: 2.25rem; }
+    @media only screen and (max-width: 25em) {
+      .heading-secondary--small {
+        font-size: 2.1rem; } }
   .heading-secondary--error {
     background-image: linear-gradient(to right, #ff7730, #ff7730); }
 
@@ -720,6 +724,12 @@ body {
   padding: 5rem 7rem;
   border-radius: 5px;
   text-align: center; }
+  @media only screen and (max-width: 31.25em) {
+    .authenticate-form {
+      padding: 5rem 3rem; } }
+  @media only screen and (max-width: 25em) {
+    .authenticate-form {
+      padding: 5rem 2rem; } }
 
 .form {
   text-align: center; }
@@ -1270,8 +1280,14 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center; }
+  @media only screen and (max-width: 31.25em) {
+    .header-tour {
+      padding: 0 3rem; } }
   .header-tour__logo img {
     height: 3.5rem; }
+    @media only screen and (max-width: 25em) {
+      .header-tour__logo img {
+        display: none; } }
   .header-tour__hero {
     height: 100%; }
   .header-tour__hero-img {
@@ -1304,10 +1320,22 @@ body {
   align-items: center; }
   .navbar--tours {
     flex: 0 1 40%; }
+    @media only screen and (max-width: 37.5em) {
+      .navbar--tours {
+        flex: 0 1 50%; } }
+    @media only screen and (max-width: 25em) {
+      .navbar--tours {
+        flex: 0 1 35%; } }
   .navbar--user {
     flex: 0 1 40%;
     display: flex;
     justify-content: flex-end; }
+    @media only screen and (max-width: 37.5em) {
+      .navbar--user {
+        flex: 0 1 50%; } }
+    @media only screen and (max-width: 25em) {
+      .navbar--user {
+        flex: 0 1 65%; } }
   .navbar__el, .navbar__el:link, .navbar__el:visited {
     color: #f7f7f7;
     text-transform: uppercase;

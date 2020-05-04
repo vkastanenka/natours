@@ -73,17 +73,15 @@
   justify-content: space-between;
   align-items: center;
 
-  @include respond(tab) {
-    flex-direction: column;
+  @include respond(bp-smaller) {
+    padding: 0 3rem;
   }
 
   &__logo img {
     height: 3.5rem;
 
-    @include respond(tab) {
-      -webkit-box-ordinal-group: 0;
-      order: -1;
-      margin-bottom: 1.5rem;
+    @include respond(bp-smallest) {
+      display: none;
     }
   }
 

@@ -96,6 +96,10 @@ body {
 
   &--small {
     font-size: 2.25rem;
+
+    @include respond(bp-smallest) {
+      font-size: 2.1rem;
+    }
   }
 
   &--error {

@@ -8,7 +8,7 @@ import Register from "../../components/Forms/Register";
 
 class Authenticate extends Component {
   state = {
-    isRegistered: false,
+    isRegistered: true,
   };
 
   render() {
