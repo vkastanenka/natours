@@ -18,8 +18,8 @@ const Tour = () => {
         <Description />
         <Pictures />
         <Map />
-        {/* <Reviews /> */}
-        {/* <CTA /> */}
+        <Reviews />
+        <CTA />
       </main>
     </PageLayout>
   );

@@ -647,6 +647,15 @@ body {
   padding: 9rem 5rem 9rem 21rem;
   border-radius: 2rem;
   box-shadow: 0 3rem 8rem 0.5rem rgba(0, 0, 0, 0.15); }
+  @media only screen and (max-width: 37.5em) {
+    .cta {
+      padding: 5rem; } }
+  @media only screen and (max-width: 25em) {
+    .cta {
+      padding: 4rem; } }
+  @media only screen and (max-width: 37.5em) {
+    .cta__imgs {
+      display: none; } }
   .cta__img {
     height: 15rem;
     width: 15rem;
@@ -678,9 +687,22 @@ body {
     grid-gap: 0.7rem;
     grid-auto-flow: column;
     align-items: center; }
+    @media only screen and (max-width: 37.5em) {
+      .cta__content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        text-align: center; } }
+    @media only screen and (max-width: 37.5em) {
+      .cta__content > :first-child {
+        margin-bottom: 1rem; } }
   .cta__text {
     font-size: 1.9rem;
-    font-weight: 400; }
+    font-weight: 400;
+    margin-right: 2rem; }
+    @media only screen and (max-width: 37.5em) {
+      .cta__text {
+        margin-bottom: 3rem; } }
 
 .description-box .description {
   margin-right: 5rem; }
