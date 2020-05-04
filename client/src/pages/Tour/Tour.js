@@ -15,11 +15,11 @@ const Tour = () => {
     <PageLayout>
       <main>
         <Header />
-        <Description />
-        <Pictures />
-        <Map />
-        <Reviews />
-        <CTA />
+        {/* <Description /> */}
+        {/* <Pictures /> */}
+        {/* <Map /> */}
+        {/* <Reviews /> */}
+        {/* <CTA /> */}
       </main>
     </PageLayout>
   );
