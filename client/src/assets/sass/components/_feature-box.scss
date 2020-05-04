@@ -7,7 +7,7 @@
   box-shadow: 0 1.5rem 4rem rgba($color-black, 0.15);
   transition: transform 0.3s;
 
-  @include respond(tab-port) {
+  @include respond(bp-medium) {
     padding: 4rem 1rem;
   }
 
@@ -25,7 +25,7 @@
     -webkit-background-clip: text;
     color: transparent;
 
-    @include respond(tab-port) {
+    @include respond(bp-medium) {
       margin-bottom: 0;
     }
   }

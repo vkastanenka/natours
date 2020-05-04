@@ -1,9 +1,27 @@
 .card-grid {
-  max-width: 120rem;
+  // max-width: 120rem;
+  max-width: 82%;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 7rem;
+
+  @include respond(bp-larger) {
+    max-width: 94%;
+  }
+
+  @include respond(bp-larger) {
+    grid-gap: 5rem;
+  }
+
+  @include respond(bp-medium) {
+    grid-gap: 4rem;
+  }
+
+  @include respond(bp-small) {
+    grid-template-columns: 1fr;
+    max-width: 80%;
+  }
 }
 
 .row {
@@ -14,16 +32,16 @@
   &:not(:last-child) {
     margin-bottom: $gutter-vertical;
 
-    @include respond(tab-port) {
+    @include respond(bp-small) {
       margin-bottom: $gutter-vertical-small;
     }
   }
 
-  @include respond(tab-land) {
+  @include respond(bp-medium) {
     padding: 0 5rem;
   }
 
-  @include respond(tab-port) {
+  @include respond(bp-small) {
     max-width: 65rem;
     padding: 0 2rem;
   

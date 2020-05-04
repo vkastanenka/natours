@@ -562,27 +562,31 @@ body {
   @media only screen and (max-width: 56.25em), only screen and (hover: none) {
     .card-rotate {
       height: auto;
-      border-radius: 0.3rem;
+      border-radius: 3px;
       background-color: #fff;
       box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.15); }
       .card-rotate__side {
-        height: 80%;
+        height: auto;
         position: relative;
         box-shadow: none; }
         .card-rotate__side--back {
           transform: rotateY(0);
-          clip-path: polygon(0 14%, 100% 0, 100% 100%, 0 100%); }
+          clip-path: polygon(0 15%, 100% 0, 100% 100%, 0% 100%); }
       .card-rotate:hover .card-rotate__side--front {
         transform: rotateY(0); }
       .card-rotate__details {
-        padding: 3rem 2rem; }
-      .card-rotate__price--box {
-        margin-top: -2rem; }
-      .card-rotate__price--value {
-        font-size: 5rem; }
-      .card-rotate__button {
-        margin-bottom: 8rem;
-        margin-top: 25rem; } }
+        padding: 1rem 3rem; }
+      .card-rotate__cta {
+        position: relative;
+        top: 0%;
+        left: 0;
+        transform: translate(0);
+        width: 100%;
+        padding: 5rem 4rem 4rem 4rem; }
+      .card-rotate__price-box {
+        margin-bottom: 3rem; }
+      .card-rotate__price-value {
+        font-size: 4rem; } }
 
 .composition {
   position: relative; }
@@ -691,6 +695,9 @@ body {
   border-radius: 0.3rem;
   box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.15);
   transition: transform 0.3s; }
+  @media only screen and (max-width: 50em) {
+    .feature-box {
+      padding: 4rem 1rem; } }
   .feature-box__icon {
     font-size: 8rem;
     margin-bottom: 0.5rem;
@@ -699,6 +706,9 @@ body {
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent; }
+    @media only screen and (max-width: 50em) {
+      .feature-box__icon {
+        margin-bottom: 0; } }
   .feature-box:hover {
     transform: translateY(-1.5rem) scale(1.03); }
 
@@ -1118,11 +1128,24 @@ body {
     float: right; }
 
 .card-grid {
-  max-width: 120rem;
+  max-width: 82%;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 7rem; }
+  @media only screen and (max-width: 75em) {
+    .card-grid {
+      max-width: 94%; } }
+  @media only screen and (max-width: 75em) {
+    .card-grid {
+      grid-gap: 5rem; } }
+  @media only screen and (max-width: 50em) {
+    .card-grid {
+      grid-gap: 4rem; } }
+  @media only screen and (max-width: 37.5em) {
+    .card-grid {
+      grid-template-columns: 1fr;
+      max-width: 80%; } }
 
 .row {
   max-width: 114rem;
@@ -1130,6 +1153,16 @@ body {
   margin: 0 auto; }
   .row:not(:last-child) {
     margin-bottom: 8rem; }
+    @media only screen and (max-width: 37.5em) {
+      .row:not(:last-child) {
+        margin-bottom: 6rem; } }
+  @media only screen and (max-width: 50em) {
+    .row {
+      padding: 0 5rem; } }
+  @media only screen and (max-width: 37.5em) {
+    .row {
+      max-width: 65rem;
+      padding: 0 2rem; } }
   .row [class^="col-"] {
     float: left; }
     .row [class^="col-"]:not(:last-child) {
