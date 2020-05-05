@@ -1,121 +1,155 @@
-const crypto = require("crypto");
+const slugify = require("slugify");
 const mongoose = require("mongoose");
-const validator = require("validator");
-const bcrypt = require("bcryptjs");
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "Please tell us your name!"]
-  },
-  email: {
-    type: String,
-    required: [true, "Please provide your email!"],
-    unique: true,
-    lowercase: true,
-    validate: [validator.isEmail]
-  },
-  photo: {
-    type: String,
-    default: 'default.jpg'
-  },
-  role: {
-    type: String,
-    enum: ["user", "guide", "lead-guide", "admin"],
-    default: "user"
-  },
-  password: {
-    type: String,
-    required: [true, "Please provide a password!"],
-    minlength: 8,
-    select: false
-  },
-  passwordConfirm: {
-    type: String,
-    required: [true, "Please confirm your password!"],
-    validate: {
-      // This only works on .save() for updating or .create() for create
-      validator: function(el) {
-        return el === this.password;
+const tourSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "A tour must have a name"],
+      unique: true,
+      trim: true,
+      maxLength: [40, "A tour name must have at most 40 characters"],
+      minLength: [10, "A tour name must have at least 10 characters"],
+    },
+    slug: String,
+    duration: {
+      type: Number,
+      required: [true, "A tour must have a duration"],
+    },
+    maxGroupSize: {
+      type: Number,
+      required: [true, "A tour must have a group size"],
+    },
+    difficulty: {
+      type: String,
+      required: [true, "A tour must have a difficulty"],
+      enum: {
+        values: ["easy", "medium", "difficult"],
+        message: "Difficulty must be: easy, medium, difficult",
       },
-      message: "Passwords are not the same!"
-    }
+    },
+    ratingsAverage: {
+      type: Number,
+      default: 4.5,
+      max: [5, "A rating must be at most 5.0"],
+      min: [1, "A rating must be at least 1.0"],
+      set: (val) => Math.round(val * 10) / 10,
+    },
+    ratingsQuantity: {
+      type: Number,
+      default: 0,
+    },
+    price: {
+      type: Number,
+      required: [true, "A tour must have a price"],
+    },
+    priceDiscount: {
+      type: Number,
+    },
+    summary: {
+      type: String,
+      required: [true, "A tour must have a description"],
+      trim: true,
+    },
+    description: {
+      type: String,
+      trim: true,
+    },
+    imageCover: {
+      type: String,
+      required: [true, "A tour must have a cover image"],
+    },
+    images: [String],
+    createdAt: {
+      type: Date,
+      default: Date.now(),
+      select: false,
+    },
+    startDates: [Date],
+    secretTour: {
+      type: Boolean,
+      default: false,
+    },
+    startLocation: {
+      type: {
+        type: String,
+        default: "Point",
+        enum: ["Point"]
+      },
+      coordinates: [Number],
+      address: String,
+      description: String
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: "Point",
+          enum: ["Point"]
+        },
+        coordinates: [Number],
+        address: String,
+        description: String,
+        day: Number
+      }
+    ],
+    guides: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+      },
+    ],
   },
-  passwordChangedAt: Date,
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-  active: {
-    type: Boolean,
-    default: true,
-    select: false
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
+);
+
+/////////////////
+// Model Indexing
+tourSchema.index({ startLocation: "2dsphere" });
+// Sort by cheapest to most expensive / highest rated to lowest rated
+tourSchema.index({ price: 1, ratingsAverage: -1 });
+
+/////////////////////
+// Virtual Properties
+
+// Adds a review property to the tour (only utilized in Get Tour By ID)
+tourSchema.virtual("reviews", {
+  ref: "Review",
+  localField: "_id",
+  foreignField: "tour",
+  justOne: false,
 });
 
-// Password encryption will happen between the moment where it's actually persisted to the database
-userSchema.pre("save", async function(next) {
-  // Do not want to re-encrpt password if not being updated
-  // .isModified() is a method we have on all documents which we can use is a certain field has been modified
-  // If password has NOT been modified, return from this function
-  if (!this.isModified("password")) return next();
+//////////////////////
+// Document Middleware
 
-  this.password = await bcrypt.hash(this.password, 12);
-
-  // Do not persist passwordConfirm to the database (only needed for above validation)
-  this.passwordConfirm = undefined;
+// Pre-save create a slug of the tour's name
+tourSchema.pre("save", function (next) {
+  this.slug = slugify(this.name, { lower: true });
   next();
 });
 
-userSchema.pre("save", function(next) {
-  // If the document is new or password hsan't been modified, simply return
-  if (!this.isModified("password") || this.isNew) return next();
+///////////////////
+// Query Middleware
 
-  // Sometimes, saving to the database is a bit slower than issuing the JSON web token => Makes it so that the changed password timestamp is sometimes set a bit after the JWT has been created => User won't be able to log in using the new token (fix by subtracting 1 second)
-  this.passwordChangedAt = Date.now() - 1000;
+// Pre-find exclude tours designated as secret
+tourSchema.pre(/^find/, function (next) {
+  this.find({ secretTour: { $ne: true } });
   next();
 });
 
-userSchema.pre(/^find/, function(next) {
-  // this points to the current query => Will only show users whose active state is set to true
-  this.find({ active: { $ne: false } });
+// Pre-find populate guides field with names
+tourSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "guides",
+    select: "-__v -passwordChangedAt",
+  });
   next();
 });
 
-// Instance method => Will be available on all documents of a certain collection
-userSchema.methods.correctPassword = async function(
-  candidatePassword,
-  userPassword
-) {
-  return await bcrypt.compare(candidatePassword, userPassword);
-};
+const Tour = mongoose.model("Tour", tourSchema);
 
-userSchema.methods.changedPasswordAfter = async function(JWTTimestamp) {
-  if (this.passwordChangedAt) {
-    // Make both timestamps equivalent formats
-    const changedTimestamp = parseInt(
-      this.passwordChangedAt.getTime() / 1000,
-      10
-    );
-    return JWTTimestamp < changedTimestamp; // 100 < 200: true
-  }
-
-  // False means password hasn't been changed
-  return false;
-};
-
-userSchema.methods.createPasswordResetToken = function() {
-  // Password reset token should be a random string => Does not need to be as cryptographically strong as the password hash
-  const resetToken = crypto.randomBytes(32).toString("hex");
-  this.passwordResetToken = crypto
-    .createHash("sha256")
-    .update(resetToken)
-    .digest("hex");
-
-  // Will expire in 10 minutes
-  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-
-  return resetToken;
-};
-
-const User = mongoose.model("User", userSchema);
-
-module.exports = User;
+module.exports = Tour;
