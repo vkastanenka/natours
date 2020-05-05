@@ -1,28 +1,19 @@
-const User = require("./../models/userModel");
+// Utilities
 const sharp = require("sharp");
-const catchAsync = require("./../utils/catchAsync");
-const AppError = require("./../utils/appError");
-const factory = require("./handlerFactory");
 const multer = require("multer");
+const factory = require("./handlerFactory");
 
-// Storage: Complete definition of how we want to store our files
-// const multerStorage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     // First argument is error if there is one, second is the destination
-//     cb(null, 'public/img/users')
-//   },
-//   filename: (req, file, cb) => {
-//     // Giving our files some unique filenames
-//     // user-userID-timestamp: user-12345654356-124565356.jpeg
+// Error Handling
+const AppError = require("./../utils/appError");
+const catchAsync = require("./../utils/catchAsync");
 
-//     // Extension
-//     const ext = file.mimetype.split('/')[1];
-//     cb(null, `user-${req.user.id}-${Date.now()}.${ext}`)
-//   }
-// });
+// Models
+const User = require("./../models/userModel");
 
-// MULTER: TODO
+///////////////
+// Middleware
 
+// Store the file in memory as a Buffer object
 const multerStorage = multer.memoryStorage();
 
 // Test if the file is an image
@@ -37,53 +28,65 @@ const multerFilter = (req, file, cb) => {
 // Configuring multer upload
 const upload = multer({
   storage: multerStorage,
-  fileFilter: multerFilter
+  fileFilter: multerFilter,
 });
 
-exports.uploadUserPhoto = upload.single("photo"); // Creates req.file
+// Accept a single file with the name 'photo' => File stored in req.file
+exports.uploadUserPhoto = upload.single("photo");
 
-// Image processing
+// Image processing (resizing, formatting, quality, and file location)
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
 
   // Need to define filename property to save to database
   req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
 
-  // When doing image processing after saving the file, better to save to memory than to disk => Image will be stored as a buffer, available at req.file.buffer
-  // Below will return a promise: Should await to prevent blocking the event loop: Don't want to call next without waiting for this operation to finish
+  // Processing the uploaded image
   await sharp(req.file.buffer)
     .resize(500, 500)
     .toFormat("jpeg")
     .jpeg({ quality: 90 })
-    .toFile(`public/img/users/${req.file.filename}`);
+    .toFile(`client/src/assets/images/users/${req.file.filename}`);
 
   next();
 });
 
-// Creates a filtered object that has filtered key value pairs from the passed in object: Only keys in the allowedFields array will be returned in the new object
+// Creates a filtered object that has filtered key value pairs from the passed in object
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
 
   // For each key in the passed in object, if array of allowedFields includes the element, create a key value pair
-  Object.keys(obj).forEach(el => {
+  Object.keys(obj).forEach((el) => {
     if (allowedFields.includes(el)) newObj[el] = obj[el];
   });
+
   return newObj;
 };
 
-// Middleware for getUser: Sets the id parameter so factory.getOne can find the document through Model.findById(req.params.id)
-exports.getMe = (req, res, next) => {
-  // req.user comes from the protect middleware in the authController
+// @route   GET api/v1/users/currentUser
+// @desc    Get current user
+// @access  Protected
+exports.getCurrentUser = (req, res, next) => {
   req.params.id = req.user.id;
   next();
 };
 
-// Allows user to update their personal information (name and email)
-exports.updateMe = catchAsync(async (req, res, next) => {
-  // console.log(req.file);
-  // console.log(req.body);
+////////////////
+// Public Routes
 
-  // 1. Create error if user POSTs password data in req.body
+// @route   GET api/v1/users/test
+// @desc    Tests users route
+// @access  Public
+exports.test = (req, res, next) => res.json({ msg: "Users Works" });
+
+///////////////////
+// Protected Routes
+
+// @route   PATCH api/v1/users/updateCurrentUser
+// @desc    Update current user's name, email, and pfp
+// @access  Protected
+exports.updateCurrentUser = catchAsync(async (req, res, next) => {
+  // 1. Respond with an error if the user tries to update their password
   if (req.body.password || req.body.passwordConfirm) {
     return next(
       new AppError(
@@ -93,46 +96,55 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     );
   }
 
-  // 2. Filter the user's request for only allowed fields
+  // 2. Filter the user's request for only name and email fields
   const filteredBody = filterObj(req.body, "name", "email");
 
-  // Adding uploaded photo to filteredBody ***** upload.single create req.file from multer
+  // 3. If photo, add uploaded photo to filteredBody
   if (req.file) filteredBody.photo = req.file.filename;
 
-  // 3. Update user document
+  // 4. Update user document
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
-    runValidators: true
+    runValidators: true,
   });
 
+  // 5. Respond
   res.status(200).json({
     status: "success",
-    data: { user: updatedUser }
+    user: updatedUser,
   });
 });
 
-// Sets a users active state to false
-exports.deleteMe = catchAsync(async (req, res, next) => {
+// @route   DELETE api/v1/users/deleteCurrentUser
+// @desc    Deactivate current user's account
+// @access  Protected
+exports.deleteCurrentUser = catchAsync(async (req, res, next) => {
+  // 1. Find the current user's document and set it's active field to false
   await User.findByIdAndUpdate(req.user.id, { active: false });
 
-  // 20: No content
-  res.status(204).json({
-    status: "success",
-    data: null
-  });
+  // 2. Respond
+  res.status(204).json({ status: "success" });
 });
 
-// Undefined route to create a user: Better for signup (redirect to signup)
+// @route   GET api/v1/users
+// @desc    Get all users
+// @access  Protected
+exports.getAllUsers = factory.getAll(User);
+
+// @route   POST api/v1/users
+// @desc    Dummy route => Users are created through /register
+// @access  Protected
 exports.createUser = (req, res) => {
   res.status(500).json({
     status: "error",
-    message: "This route is not defined! Please use /signup instead"
+    message: "This route is not defined! Please use /register instead",
   });
 };
 
+// @route   GET api/v1/users/:id
+// @desc    Get user by id
+// @access  Protected
 exports.getUser = factory.getOne(User);
-exports.getAllUsers = factory.getAll(User);
 
-// Do NOT update passwords with this!
-exports.updateUser = factory.updateOne(User);
+// TODO:
 exports.deleteUser = factory.deleteOne(User);

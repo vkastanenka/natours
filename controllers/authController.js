@@ -79,7 +79,7 @@ exports.restrictTo = (...roles) => {
   };
 };
 
-/////////////////
+////////////////
 // Public Routes
 
 // @route   POST api/v1/users/register TODO: Email
@@ -130,7 +130,6 @@ exports.login = catchAsync(async (req, res, next) => {
   // 6. Respond
   res.status(200).json({ status: 'success', token});
 });
-
 
 // @route   POST api/v1/users/sendPasswordResetToken
 // @desc    Send email with a password reset token
