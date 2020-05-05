@@ -44,7 +44,7 @@ if (process.env.NODE_ENV === "development") {
 // });
 
 // Will now have X-RateLimit-Limit and X-RateLimit-Remaining headers
-app.use("/api", limiter);
+// app.use("/api", limiter);
 
 // Body parser, reading data from body into req.body => Body larger than 10kb will not be accepted
 app.use(express.json({ limit: "10kb" }));
@@ -77,11 +77,11 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use('/', viewRouter);
-app.use("/api/v1/tours", tourRouter);
+// app.use('/', viewRouter);
+// app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
-app.use("/api/v1/reviews", reviewRouter);
-app.use("/api/v1/bookings", bookingRouter);
+// app.use("/api/v1/reviews", reviewRouter);
+// app.use("/api/v1/bookings", bookingRouter);
 
 // Handling Unhandled Routes
 app.all("*", (req, res, next) => {

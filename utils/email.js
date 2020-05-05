@@ -7,7 +7,7 @@ module.exports = class Email {
     this.to = user.email;
     this.firstName = user.name.split(" ")[0];
     this.url = url;
-    this.from = `Jonas Schmedtmann <${process.env.EMAIL_FROM}>`;
+    this.from = `Victoria Kastanenka <${process.env.EMAIL_FROM}>`;
   }
 
   newTransport() {
@@ -36,7 +36,7 @@ module.exports = class Email {
   // Send the actual email (pug template will be passed in from views folder)
   async send(template, subject) {
     // 1. Render HTML based on a pug template
-    const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
+    const html = pug.renderFile(`${__dirname}/../views/${template}.pug`, {
       firstName: this.firstName,
       url: this.url,
       subject
@@ -67,5 +67,3 @@ module.exports = class Email {
     );
   }
 };
-
-// Use mailtrap to get emails in a development inbox

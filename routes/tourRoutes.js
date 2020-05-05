@@ -1,105 +1,125 @@
-const express = require("express");
-const tourController = require("./../controllers/tourController");
-const authController = require("./../controllers/authController");
-const reviewRouter = require("./../routes/reviewRoutes");
-const bookingRouter = require("./../routes/bookingRoutes");
+// const express = require("express");
+// const tourController = require("./../controllers/tourController");
+// const authController = require("./../controllers/authController");
+// const reviewRouter = require("./../routes/reviewRoutes");
+// const bookingRouter = require("./../routes/bookingRoutes");
 
-const router = express.Router();
+// const router = express.Router();
 
-///////////////////////////////
-// Routes Based off API Features
+// /////////////////
+// // Public Routes
 
-// Top 5 rated tours starting with highest rated
-router
-  .route("/top-5-rated")
-  .get(tourController.aliasTopRatedTours, tourController.getAllTours);
+// // @route   GET api/v1/tours/test
+// // @desc    Tests tours route
+// // @access  Public
+// router.get("/test", tourController.test);
 
-// Top 5 cheapest tours starting with the cheapest
-router
-  .route("/top-5-cheapest")
-  .get(tourController.aliasTopCheapestTours, tourController.getAllTours);
+// // @route   GET api/v1/tours
+// // @desc    Get all tours
+// // @access  Public
+// router.get("/", tourController.getAllTours);
 
-//////////////////////////////
-// Aggregation Pipeline Tours
+// // @route   GET api/v1/tours/:id
+// // @desc    Get tour by id
+// // @access  Public
+// router.get("/:id", tourController.getTour);
 
-// Tour statistics grouped by tour difficulty
-router
-  .route("/tour-stats")
-  .get(
-    authController.protect,
-    authController.restrictTo("admin", "lead-guide"),
-    tourController.getTourStats
-  );
+// ///////////////////
+// // Protected Routes
 
-// Company schedule ordered by tour start date
-router
-  .route("/company-schedule")
-  .get(
-    authController.protect,
-    authController.restrictTo("admin", "lead-guide", "guide"),
-    tourController.getCompanySchedule
-  );
+// router.use(authController.protect);
 
-// Monthly plan for each year
-router
-  .route("/monthly-plan/:year")
-  .get(
-    authController.protect,
-    authController.restrictTo("admin", "lead-guide", "guide"),
-    tourController.getMonthlyPlan
-  );
+// ////////////////////
+// // Restricted Routes
 
-//////////////////////////////
-// Distance Calculation Routes
+// router.use(authController.restrictTo("admin", "lead-guide"));
 
-router
-  .route("/tours-within/:distance/center/:latlng/unit/:unit")
-  .get(tourController.getToursWithin);
-// /tours-distance?distance=233,center=40,45,unit=mi
-// /tours-distance/233/center/-40,45/unit/mi
+// // @route   POST api/v1/tours
+// // @desc    Create new tour
+// // @access  Restricted
+// router.post("/", tourController.createTour);
 
-router.route("/distance/:latlng/unit/:unit").get(tourController.getDistances);
+// // @route   PATCH api/v1/tours/:id
+// // @desc    Update tour by id
+// // @access  Restricted
+// router.patch(
+//   "/:id",
+//   tourController.uploadTourImages,
+//   tourController.resizeTourImages,
+//   tourController.updateTour
+// );
 
-////////////////
-// Nested Routes
+// // @route   DELETE api/v1/tours/:id
+// // @desc    Delete tour by id
+// // @access  Restricted
+// router.delete("/:id", tourController.deleteTour);
 
-// Get reviews based on tourId
-router.use("/:tourId/reviews", reviewRouter);
+// ///////////////////////////////
+// // Routes Based off API Features
 
-// Get bookings based on tourId
-router.use(
-  "/:tourId/bookings",
-  authController.protect,
-  authController.restrictTo("admin", "lead-guide"),
-  bookingRouter
-);
+// // Top 5 rated tours starting with highest rated
+// // router
+// //   .route("/top-5-rated")
+// //   .get(tourController.aliasTopRatedTours, tourController.getAllTours);
 
-//////////////
-// CRUD Routes
+// // Top 5 cheapest tours starting with the cheapest
+// // router
+// //   .route("/top-5-cheapest")
+// //   .get(tourController.aliasTopCheapestTours, tourController.getAllTours);
 
-router
-  .route("/")
-  .get(tourController.getAllTours)
-  .post(
-    authController.protect,
-    authController.restrictTo("admin", "lead-guide"),
-    tourController.createTour
-  );
+// //////////////////////////////
+// // Aggregation Pipeline Tours
 
-router
-  .route("/:id")
-  .get(tourController.getTour)
-  .patch(
-    authController.protect,
-    authController.restrictTo("admin", "lead-guide"),
-    tourController.uploadTourImages,
-    tourController.resizeTourImages,
-    tourController.updateTour
-  )
-  .delete(
-    authController.protect,
-    authController.restrictTo("admin", "lead-guide"),
-    tourController.deleteTour
-  );
+// // Tour statistics grouped by tour difficulty
+// // router
+// //   .route("/tour-stats")
+// //   .get(
+// //     authController.protect,
+// //     authController.restrictTo("admin", "lead-guide"),
+// //     tourController.getTourStats
+// //   );
 
-module.exports = router;
+// // Company schedule ordered by tour start date
+// // router
+// //   .route("/company-schedule")
+// //   .get(
+// //     authController.protect,
+// //     authController.restrictTo("admin", "lead-guide", "guide"),
+// //     tourController.getCompanySchedule
+// //   );
+
+// // Monthly plan for each year
+// // router
+// //   .route("/monthly-plan/:year")
+// //   .get(
+// //     authController.protect,
+// //     authController.restrictTo("admin", "lead-guide", "guide"),
+// //     tourController.getMonthlyPlan
+// //   );
+
+// //////////////////////////////
+// // Distance Calculation Routes
+
+// // router
+// //   .route("/tours-within/:distance/center/:latlng/unit/:unit")
+// //   .get(tourController.getToursWithin);
+// // /tours-distance?distance=233,center=40,45,unit=mi
+// // /tours-distance/233/center/-40,45/unit/mi
+
+// // router.route("/distance/:latlng/unit/:unit").get(tourController.getDistances);
+
+// ////////////////
+// // Nested Routes
+
+// // Get reviews based on tourId
+// // router.use("/:tourId/reviews", reviewRouter);
+
+// // Get bookings based on tourId
+// // router.use(
+// //   "/:tourId/bookings",
+// //   authController.protect,
+// //   authController.restrictTo("admin", "lead-guide"),
+// //   bookingRouter
+// // );
+
+// module.exports = router;

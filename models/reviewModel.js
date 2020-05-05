@@ -38,13 +38,6 @@ reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
 
 // Populating tour and user ids with the actual data
 reviewSchema.pre(/^find/, function(next) {
-  // this.populate({
-  //   path: "tour",
-  //   select: "name"
-  // }).populate({
-  //   path: "user",
-  //   select: "name photo"
-  // });
   this.populate({
     path: "user",
     select: "name photo"

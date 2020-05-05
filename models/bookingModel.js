@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-// Add a date to the booking schema
-
 const bookingSchema = new mongoose.Schema({
   tour: {
     type: mongoose.Schema.ObjectId,

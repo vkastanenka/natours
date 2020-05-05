@@ -29,7 +29,6 @@ const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
 
-// 9. Error Handling with Express: 13. Errors Outside Express
 process.on("unhandledRejection", err => {
   console.log(err.name, err.message);
   console.log("UNHANDLED REJECTION! 💥 Shutting down...");
