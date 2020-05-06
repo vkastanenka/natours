@@ -1,14 +1,31 @@
+// Utilities
+const factory = require("./handlerFactory");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+// Error Handling
+const catchAsync = require("./../utils/catchAsync");
+
+// Models
 const Tour = require("./../models/tourModel");
 const Booking = require("./../models/bookingModel");
-const catchAsync = require("./../utils/catchAsync");
-const factory = require("./handlerFactory");
 
+////////////////
+// Public Routes
+
+// @route   GET api/v1/users/test
+// @desc    Tests users route
+// @access  Public
+exports.test = (req, res, next) => res.json({ message: "Bookings route secured" });
+
+///////////////////
+// Protected Routes
+
+// @route   GET api/v1/bookings/checkout-session/:tourId
+// @desc    Creates checkout section to book a tour
+// @access  Protected
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   // 1) Get the currently booked tour
   const tour = await Tour.findById(req.params.tourId);
-
-  // Need to implement start date somehow
 
   // 2) Create checkout session
   const session = await stripe.checkout.sessions.create({
@@ -31,25 +48,37 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     ]
   });
 
-  // 3) Create session as response
+  // 3) Respond
   res.status(200).json({
     status: 'success',
     session
   });
 });
 
-exports.createBookingCheckout = catchAsync(async (req, res, next) => {
-  // This is only TEMPORARY because it's UNSECURE: Everyone can make bookings without paying
-  const { tour, user, price } = req.query;
+////////////////////
+// Restricted Routes
 
-  if (!tour && !user && !price) return next();
-  await Booking.create({ tour, user, price });
+// @route   GET api/v1/bookings
+// @desc    Get all bookings
+// @access  Restricted
+exports.getAllBookings = factory.getAll(Booking);
 
-  res.redirect(req.originalUrl.split('?')[0]);
-});
-
+// @route   POST api/v1/bookings
+// @desc    Create a booking
+// @access  Restricted
 exports.createBooking = factory.createOne(Booking);
+
+// @route   GET api/v1/bookings/:id
+// @desc    Get booking by id
+// @access  Restricted
 exports.getBooking = factory.getOne(Booking);
-exports.getallBookings = factory.getAll(Booking);
+
+// @route   PATCH api/v1/bookings/:id
+// @desc    Update booking by id
+// @access  Restricted
 exports.updateBooking = factory.updateOne(Booking);
+
+// @route   DELETE api/v1/bookings/:id
+// @desc    Delete booking by id
+// @access  Restricted
 exports.deleteBooking = factory.deleteOne(Booking);

@@ -74,7 +74,7 @@ exports.resizeTourImages = catchAsync(async (req, res, next) => {
 // @route   GET api/v1/users/test
 // @desc    Tests users route
 // @access  Public
-exports.test = (req, res, next) => res.json({ message: "Tour route secured" });
+exports.test = (req, res, next) => res.json({ message: "Tours route secured" });
 
 // @route   GET api/v1/tours
 // @desc    Get all tours

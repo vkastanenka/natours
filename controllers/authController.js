@@ -234,26 +234,3 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   // 4. Respond
   res.status(200).json({ status: 'success' });
 });
-
-// User can only write a review for a tour they have booked TODO:
-// exports.restrictReviewsToBookings = catchAsync(async (req, res, next) => {
-//   // Find all the bookings that a user has (user property is in bookings)
-//   const bookings = await Booking.find({ user: req.user.id });
-
-//   // If the user has no bookings, throw an error
-//   if (!bookings) {
-//     return next(new AppError("Please book the tour to write a review!", 401));
-//   }
-
-//   // The tour ID for which they are writing a review for
-//   const tourToReviewID = req.body.tour;
-  
-//   // Checking if the ID they are reviewing for is in their bookings => If ID not found in their bookings, throw an error
-//   let filteredBookings = bookings.filter(tour => tour.tour._id == tourToReviewID);
-
-//   if (filteredBookings.length < 1) {
-//     return next(new AppError("Please book the tour to write a review!", 401));
-//   }
-
-//   next();
-// });

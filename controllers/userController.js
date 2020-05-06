@@ -77,7 +77,7 @@ exports.getCurrentUser = (req, res, next) => {
 // @route   GET api/v1/users/test
 // @desc    Tests users route
 // @access  Public
-exports.test = (req, res, next) => res.json({ message: "User route secured" });
+exports.test = (req, res, next) => res.json({ message: "Users route secured" });
 
 ///////////////////
 // Protected Routes

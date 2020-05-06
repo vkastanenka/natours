@@ -10,7 +10,7 @@ const Review = require("./../models/reviewModel.js");
 // @route   GET api/v1/reviews/test
 // @desc    Tests reviews route
 // @access  Public
-exports.test = (req, res, next) => res.json({ message: "Review route secured" });
+exports.test = (req, res, next) => res.json({ message: "Reviews route secured" });
 
 ///////////////////
 // Protected Routes
