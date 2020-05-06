@@ -40,7 +40,7 @@ if (localStorage.jwtToken) {
     // Logout user
     store.dispatch(logout());
     // Clear current Profile
-    store.dispatch(clearCurrentProfile());
+    // store.dispatch(clearCurrentProfile());
     // Redirect to login
     window.location.href = "/";
   }

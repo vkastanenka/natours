@@ -3,8 +3,8 @@ import * as actionTypes from "./actionTypes";
 
 // Utilities
 import axios from "axios";
-import decodeToken from '../../utils/decodeToken';
-import setAuthToken from '../../utils/setAuthToken';
+import decodeToken from "../../utils/decodeToken";
+import setAuthToken from "../../utils/setAuthToken";
 import actionDispatch from "../../utils/actionDispatch";
 
 // Sets a logged in user
@@ -25,7 +25,7 @@ export const register = (userData) => async (dispatch) => {
   try {
     await axios.post("/api/v1/users/register", userData);
   } catch (err) {
-    actionDispatch(actionTypes.GET_ERRORS, err, dispatch);
+    actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }
 };
 
@@ -38,7 +38,7 @@ export const login = (userData) => async (dispatch) => {
     const decoded = decodeToken(res.data.token);
     dispatch(setCurrentUser(decoded));
   } catch (err) {
-    actionDispatch(actionTypes.GET_ERRORS, err, dispatch);
+    actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }
 };
 
@@ -59,20 +59,18 @@ export const sendPasswordResetToken = (email) => async (dispatch) => {
   try {
     await axios.post("/api/v1/users/sendPasswordResetToken", email);
   } catch (err) {
-    actionDispatch(actionTypes.GET_ERRORS, err, dispatch);
+    actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }
 };
 
 // @route   PATCH api/v1/users/resetPassword/:resetToken
 // @desc    Resets user password with token from email
 // @access  Public
-export const resetPassword = (passwordData, token) => async (
-  dispatch
-) => {
+export const resetPassword = (passwordData, token) => async (dispatch) => {
   try {
     await axios.patch(`/api/v1/users/resetPassword/${token}`, passwordData);
   } catch (err) {
-    actionDispatch(actionTypes.GET_ERRORS, err, dispatch);
+    actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }
 };
 
@@ -86,6 +84,6 @@ export const updatePassword = (passwordData) => async (dispatch) => {
   try {
     await axios.patch("/api/v1/users/updatePassword", passwordData);
   } catch (err) {
-    actionDispatch(actionTypes.GET_ERRORS, err, dispatch);
+    actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }
 };

@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 const validator = require("validator");
+const AppError = require('../utils/appError');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -72,6 +73,15 @@ userSchema.pre("save", function (next) {
   // 2. Record the time the password was changed at
   this.passwordChangedAt = Date.now() - 1000;
   next();
+});
+
+// Custom error handling for unique emails
+userSchema.post('save', function(error, doc, next) {
+  if (error.name === 'MongoError' && error.code === 11000) {
+    next(new AppError('Email already registered'));
+  } else {
+    next(error);
+  }
 });
 
 ///////////////////

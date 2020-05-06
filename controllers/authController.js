@@ -3,11 +3,16 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const Email = require("../utils/email");
-const createJWT = require('../utils/jwtGenerator');
+const createJWT = require("../utils/jwtGenerator");
 
 // Error Handling
-const AppError = require("./../utils/appError");
 const catchAsync = require("./../utils/catchAsync");
+
+// Validation
+const validateLogin = require("../validation/auth/login");
+const validateRegistration = require("../validation/auth/registration");
+const validatePasswordReset = require("../validation/auth/passwordReset");
+const validatePasswordUpdate = require("../validation/auth/passwordUpdate");
 
 // Models
 const User = require("./../models/userModel");
@@ -17,63 +22,62 @@ const User = require("./../models/userModel");
 
 // Protecting routes for logged in users => Assigns req.user
 exports.protect = catchAsync(async (req, res, next) => {
+  const errors = {};
+
   // 1. Getting token and checking if it's there
   let token;
   if (
-    // If there is Bearer Token authorization header, token will be the JWT after splitting Bearer JWT [1]
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
-    // If there is a cookie named JWT
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
+  } else if (localStorage.jwtToken) {
+    token = localStorage.jwtToken;
   }
 
-  // If no token was found when trying to access this route, send an error
+  // 2. Check if the token exists
   if (!token) {
-    return next(
-      new AppError("You are not logged in! Please log in to get access...", 401)
-    );
+    errors.noToken = "You are not logged in! Please log in to gain access.";
+    return res.status(401).json(errors);
   }
 
-  // 2. Verification step for token => We verify if someone manipulated the data, or if the token has already expired
-  // Returns the payload decoded if the signature is valid and optional expiration, audience, or issuer are valid. If not, it will throw the error.
+  // 3. Verify the token against its secret
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
-  // 3. Check if user still exists => Encoded JWT with user ID
+  // 4. Find the user with the ID encoded in the JWT
   const currentUser = await User.findById(decoded.id);
+
+  // 5. Check if user still exists
   if (!currentUser) {
-    return next(
-      new AppError("The user related to this token no longer exists!", 401)
-    );
+    errors.noUser = "The user related to this token no longer exists";
+    return res.status(401).json(errors);
   }
 
-  // 4. Check if user changed password after the token was issued (.iat => issued at)
+  // 6. Check if user changed password after the token was issued
   if (await currentUser.changedPasswordAfter(decoded.iat)) {
-    return next(
-      new AppError(
-        "User has recently changed their password! Please log in again!",
-        401
-      )
-    );
+    errors.changedPassword =
+      "User has recently changed their password! Please log in again!";
+    return res.status(401).json(errors);
   }
 
-  // All checks have been confirmed, can now grant access to a protected route
+  // 7. Assign currentUser to req.user to be used in protected route functions
   req.user = currentUser;
-  res.locals.user = currentUser;
-  // console.log(req.user);
   next();
 });
 
 // Restricts controller actions to specified roles
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
+    const errors = {};
+
+    // 1. If the user's role is not included in the argument, deny access
     if (!roles.includes(req.user.role)) {
-      return next(
-        new AppError("You do not have permission to perform this action", 403)
-      );
+      errors.unauthorized = "You do not have permission to perform this action";
+      return res.status(403).json(errors);
     }
+
     next();
   };
 };
@@ -85,92 +89,101 @@ exports.restrictTo = (...roles) => {
 // @desc    Registers new user
 // @access  Public
 exports.register = catchAsync(async (req, res, next) => {
-  // 1. Create new user document
+  // 1. Validate inputs
+  const { errors, isValid } = validateRegistration(req.body);
+
+  // 2. Check if email is already taken
+  const userCheck = await User.findOne({ email: req.body.email });
+  if (userCheck) errors.registerEmail = "Email already taken";
+  if (userCheck || !isValid) return res.status(400).json(errors);
+
+  // 3. Create new user
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm
+    passwordConfirm: req.body.passwordConfirm,
   });
 
-  // 2. Send welcome email TODO:
-  // const url = `${req.protocol}://${req.get("host")}/me`;
-  // await new Email(newUser, url).sendWelcome();
+  // 4. Respond
+  res
+    .status(201)
+    .json({ success: "Successfully registered a new account!", newUser });
 
-  // 3. Respond
-  res.status(201).json({ status: 'success', newUser });
+  // 5. Send out a welcome email
+  const url = `${req.protocol}://${req.get("host")}/me`;
+  await new Email(newUser, url).sendWelcome();
 });
 
 // @route   POST api/v1/users/login
 // @desc    Logs in existing user
 // @access  Public
 exports.login = catchAsync(async (req, res, next) => {
-  // 1. Obtain email and password from the request body
+  // 1. Validate inputs
+  const { errors, isValid } = validateLogin(req.body);
+  if (!isValid) return res.status(400).json(errors);
+
+  // 2. Find user
   const { email, password } = req.body;
-
-  // 2. Check if user provided both email and password
-  if (!email || !password) {
-    return next(
-      new AppError("Please provide both an email and password", 400)
-    );
-  }
-
-  // 3. Find the user document
   const user = await User.findOne({ email }).select("+password");
 
-  // 4. Check if the user exists and the password is correct
+  // 3. Check is either email or password are incorrect
   if (!user || !(await user.correctPassword(password, user.password))) {
-    return next(new AppError("Incorrect email or password", 401));
+    errors.loginEmail = "Email and/or password are incorrect";
+    errors.loginPassword = "Email and/or password are incorrect";
+    return res.status(400).json(errors);
   }
 
-  // 5. Create the JWT
+  // 4. Create the JWT
   const token = createJWT(user);
 
-  // 6. Respond
-  res.status(200).json({ status: 'success', token});
+  // 5. Respond
+  res.status(200).json({
+    success: "Successfully logged in!",
+    token,
+    user,
+  });
 });
 
 // @route   POST api/v1/users/sendPasswordResetToken
 // @desc    Send email with a password reset token
 // @access  Public
 exports.sendPasswordResetToken = catchAsync(async (req, res, next) => {
-  // 1. Find user document based on email
-  const user = await User.findOne({ email: req.body.email });
+  const errors = {};
 
-  // 2. Check if the user document exists
+  // 1. Check if user associated to req.body.email exists
+  const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return next(
-      new AppError("There is no user with that email address...", 404)
-    );
+    errors.passwordReset =
+      "There is no user associated with that email address";
+    return res.status(400).json(errors);
   }
 
-  // 3. Generate the random password reset token
+  // 2. Generate the random password reset token
   const resetToken = user.createPasswordResetToken();
 
-  // 4. Save the password reset token expiration time in the user's document (10 min)
+  // 3. Save the password reset token expiration time in the user's document (10 min)
   await user.save({ validateBeforeSave: false });
 
   try {
-    // 5. Send an email with a link to a form to reset the user's password
+    // 4. Send an email with a link to a form to reset the user's password
     const resetURL = `http://127.0.0.1:3000/resetPassword/${resetToken}`;
     await new Email(user, resetURL).sendPasswordReset();
 
-    // 6. Respond
+    // 5. Respond
     res.status(200).json({
-      status: "success",
-      message: "Token sent to email!"
+      success: "Token sent to email!",
     });
   } catch (err) {
-    // 7. In case of an error, reset the fields in the user document
-    user.createPasswordResetToken = undefined;
+    // 6. In case of an error, reset the fields in the user document
+    user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save({ validateBeforeSave: false });
 
-    // 8. Respond with an error
-    return next(
-      new AppError("There was an error sending the email. Try again later!"),
-      500
-    );
+    // 7. Respond
+    errors.server =
+      "There was a problem sending the email, please try again later.";
+    res.status(500).json(errors);
   }
 });
 
@@ -178,36 +191,36 @@ exports.sendPasswordResetToken = catchAsync(async (req, res, next) => {
 // @desc    Resets user password with token from email
 // @access  Public
 exports.resetPassword = catchAsync(async (req, res, next) => {
-  // 1. Decode the token
+  // 1. Validate inputs
+  const { errors, isValid } = validatePasswordReset(req.body);
+
+  // 2. Hash the reset token in the URL params in order to compare to passwordResetToken field assigned in the above forgotPassword function
   const hashedToken = crypto
     .createHash("sha256")
     .update(req.params.resetToken)
     .digest("hex");
 
-  // 2. Find a user based on the token and if it hasn't yet exited
+  // 3. Find the user based on the above hashed token and whether or not that token's expiration has expired yet or not
   const user = await User.findOne({
     passwordResetToken: hashedToken,
-    passwordResetExpires: { $gt: Date.now() }
+    passwordResetExpires: { $gt: Date.now() },
   });
 
-  // 2. If the token is not valid or has expired, notify with an error
-  if (!user) {
-    return next(new AppError("Token is invalid or has expired", 400));
-  }
+  // 4. Check if either the token is invalid or has expired
+  if (!user) errors.invalidToken = "Token is invalid or has expired";
+  if (!isValid || !user) return res.status(400).json(errors);
 
-  // 3. Set the password fields in the user document
+  // 5. If token is valid and has not expired, set the new password
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
-
-  // 4. Reset password token fields in the user document
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
 
-  // 5. Save the user document
+  // 6. Save the user document
   await user.save();
 
-  // 6. Respond
-  res.status(200).json({ status: 'success' })
+  // 7. Respond
+  res.status(200).json({ success: "Password successfully updated!" });
 });
 
 ///////////////////
@@ -217,19 +230,26 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 // @desc    Update current user's password
 // @access  Protected
 exports.updatePassword = catchAsync(async (req, res, next) => {
+  // 1. Validate inputs
+  const { errors, isValid } = validatePasswordUpdate(req.body);
+
   // 1. Find current user's document
   const user = await User.findById(req.user.id).select("+password");
 
   // 2. Check if POSTed current password is correct
-  if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
-    return next(new AppError("Your current password is wrong.", 401));
-  }
+  if (!(await user.correctPassword(req.body.currentPassword, user.password)))
+    errors.currentPassword = "Current password is incorrect";
+  if (
+    !(await user.correctPassword(req.body.currentPassword, user.password)) ||
+    !isValid
+  )
+    return res.status(400).json(errors);
 
-  // 3. If so, update password
-  user.password = req.body.password;
-  user.passwordConfirm = req.body.passwordConfirm;
+  // 3. If so, update user document's password
+  user.password = req.body.newPassword;
+  user.passwordConfirm = req.body.newPasswordConfirm;
   await user.save();
 
   // 4. Respond
-  res.status(200).json({ status: 'success' });
+  res.status(200).json({ success: "Password successfully updated!" });
 });

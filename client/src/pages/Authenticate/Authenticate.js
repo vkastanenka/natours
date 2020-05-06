@@ -8,12 +8,12 @@ import Register from "../../components/Forms/Register";
 
 class Authenticate extends Component {
   state = {
-    isRegistered: true,
+    isRegistered: false,
   };
 
   render() {
     let formContent = <Login />;
-    if (!this.state.isRegistered) formContent = <Register />;
+    if (!this.state.isRegistered) formContent = <Register onClick={() => this.setState({ isRegistered: true })} />;
 
     return (
       <PageLayout>
