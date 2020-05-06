@@ -2,6 +2,17 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
+// Redux
+import store from "./store/store";
+import { Provider } from "react-redux";
+
+// Actions
+import { setCurrentUser, logout } from "./store/actions/authActions";
+
+// Utilities
+import jwt_decode from "jwt-decode";
+import setAuthToken from "./utils/setAuthToken";
+
 // Components
 import ScrollToTop from "./components/HigherOrder/ScrollToTop";
 import Home from "./pages/Home/Home";
@@ -14,10 +25,31 @@ import ErrorPage from "./pages/ErrorPage/ErrorPage";
 // Styling
 import "./assets/css/style.css";
 
+// Check for token
+if (localStorage.jwtToken) {
+  // Set auth token header auth
+  setAuthToken(localStorage.jwtToken);
+  // Decode token and get user info and exp
+  const decoded = jwt_decode(localStorage.jwtToken);
+  // Set user and isAuthenticated
+  store.dispatch(setCurrentUser(decoded));
+
+  // Check for expired token
+  const currentTime = Date.now() / 1000;
+  if (decoded.exp < currentTime) {
+    // Logout user
+    store.dispatch(logout());
+    // Clear current Profile
+    store.dispatch(clearCurrentProfile());
+    // Redirect to login
+    window.location.href = "/";
+  }
+}
+
 class App extends Component {
   render() {
     return (
-      <div data-alert={`${alert ? alert : ""}`}>
+      <Provider store={store}>
         <BrowserRouter>
           <ScrollToTop>
             <Switch>
@@ -30,7 +62,7 @@ class App extends Component {
             </Switch>
           </ScrollToTop>
         </BrowserRouter>
-      </div>
+      </Provider>
     );
   }
 }

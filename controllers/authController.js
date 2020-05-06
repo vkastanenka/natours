@@ -11,7 +11,6 @@ const catchAsync = require("./../utils/catchAsync");
 
 // Models
 const User = require("./../models/userModel");
-const Booking = require("./../models/bookingModel");
 
 //////////////
 // Middleware
