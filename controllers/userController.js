@@ -10,7 +10,7 @@ const catchAsync = require("./../utils/catchAsync");
 // Models
 const User = require("./../models/userModel");
 
-///////////////
+/////////////
 // Middleware
 
 // Store the file in memory as a Buffer object

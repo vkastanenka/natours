@@ -19,12 +19,12 @@ const reviewSchema = new mongoose.Schema(
     tour: {
       type: mongoose.Schema.ObjectId,
       ref: "Tour",
-      required: [true, "This review must belong to a tour!"]
+      required: [true, "This review must belong to a tour"]
     },
     user: {
       type: mongoose.Schema.ObjectId,
       ref: "User",
-      required: [true, "This review must belong to a user!"]
+      required: [true, "This review must belong to a user"]
     }
   },
   {
@@ -33,22 +33,18 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
+/////////////////
+// Model Indexing
+
 // Preventing duplicate reviews
 reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
 
-// Populating tour and user ids with the actual data
-reviewSchema.pre(/^find/, function(next) {
-  this.populate({
-    path: "user",
-    select: "name photo"
-  });
-  next();
-});
+/////////////////
+// Static Methods
 
-// In static method, this keyword points to the current model
+// Calculate average rating of a tour
 reviewSchema.statics.calcAverageRatings = async function(tourId) {
   const stats = await this.aggregate([
-    // Select all the reviews that actually belong to the user that was passed in as the argument
     {
       $match: { tour: tourId }
     },
@@ -60,7 +56,6 @@ reviewSchema.statics.calcAverageRatings = async function(tourId) {
       }
     }
   ]);
-  console.log(stats);
 
   if (stats.length > 0) {
     await Tour.findByIdAndUpdate(tourId, {
@@ -75,29 +70,37 @@ reviewSchema.statics.calcAverageRatings = async function(tourId) {
   }
 };
 
-// CALCULATING AVERAGE RATINGS ON TOURS
+//////////////////////
+// Document Middleware
 
+// Post-save calculate average rating
 reviewSchema.post("save", function(next) {
-  // this points to the current review
   this.constructor.calcAverageRatings(this.tour);
-  // next();
 });
 
+///////////////////
+// Query Middleware
+
+// Pre-find populating user id with name and photo
+reviewSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: "user",
+    select: "name photo"
+  });
+  next();
+});
+
+// Assigning current query
 reviewSchema.pre(/^findOneAnd/, async function(next) {
-  // this points to current query
   this.r = await this.findOne();
   next();
 });
 
+// Calculating average ratings
 reviewSchema.post(/^findOneAnd/, async function() {
-  // await this.findOne(); does NOT work here, query has already executed
   await this.r.constructor.calcAverageRatings(this.r.tour);
 });
-
-//
 
 const Review = mongoose.model("Review", reviewSchema);
 
 module.exports = Review;
-
-// POST /tour/tour_id/reviews => user id will come from the currently logged in user

@@ -101,4 +101,3 @@ exports.updateTour = factory.updateOne(Tour);
 // @desc    Delete tour by id
 // @access  Restricted
 exports.deleteTour = factory.deleteOne(Tour);
-

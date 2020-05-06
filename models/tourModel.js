@@ -108,7 +108,7 @@ const tourSchema = new mongoose.Schema(
 
 /////////////////
 // Model Indexing
-tourSchema.index({ startLocation: "2dsphere" });
+
 // Sort by cheapest to most expensive / highest rated to lowest rated
 tourSchema.index({ price: 1, ratingsAverage: -1 });
 
