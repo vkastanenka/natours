@@ -13,10 +13,16 @@ class Authenticate extends Component {
 
   render() {
     let formContent = <Login />;
-    if (!this.state.isRegistered) formContent = <Register onClick={() => this.setState({ isRegistered: true })} />;
+    if (!this.state.isRegistered)
+      formContent = (
+        <Register onClick={() => this.setState({ isRegistered: true })} />
+      );
 
     return (
-      <PageLayout>
+      <PageLayout
+        isRegistered={() => this.setState({ isRegistered: true })}
+        isNotRegistered={() => this.setState({ isRegistered: false })}
+      >
         <main className="main">
           <div className="authenticate-form">{formContent}</div>
         </main>

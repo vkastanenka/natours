@@ -31,6 +31,7 @@ class Register extends Component {
   // Clear any timers when form unmounts
   componentWillUnmount() {
     clearTimeout(this.timer);
+    this.setState({ justRegistered: false });
   }
 
   // State handler for input fields
