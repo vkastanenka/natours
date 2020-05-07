@@ -1,6 +1,13 @@
 // React
 import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+
+// Redux
+import { connect } from "react-redux";
+
+// Actions
+import { logout } from "../../store/actions/authActions";
 
 // Components
 import Auxiliary from "../../components/HigherOrder/Auxiliary";
@@ -16,6 +23,24 @@ const Navbar = (props) => {
       </Link>
     </Auxiliary>
   );
+
+  if (props.auth.authenticated) {
+    navUser = (
+      <Auxiliary>
+        <p className="navbar__el navbar__el--logout" onClick={props.logout}>
+          Logout
+        </p>
+        <Link to="/account" className="navbar__el">
+          <img
+            src={require(`../../assets/images/users/${props.auth.user.photo}`)}
+            alt={`Photo of ${props.auth.user.name}`}
+            className="navbar__user-img"
+          />
+          <span>{props.auth.user.name.split(" ")[0]}</span>
+        </Link>
+      </Auxiliary>
+    );
+  }
 
   return (
     <header className="header-tour">
@@ -35,4 +60,14 @@ const Navbar = (props) => {
   );
 };
 
-export default Navbar;
+Navbar.propTypes = {
+  auth: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+  };
+};
+
+export default connect(mapStateToProps, { logout })(Navbar);
