@@ -27,9 +27,8 @@ class Tour extends Component {
     const { tour, loading } = this.props.tours;
     let pageContent = <Spinner />;
 
+    
     if (tour && !loading) {
-      console.log(tour.description);
-
       pageContent = (
         <main>
           <Header
@@ -48,7 +47,7 @@ class Tour extends Component {
             description={tour.description.split(/\r?\n/)}
           />
           <Pictures images={tour.images} />
-          <Map />
+          <Map locations={tour.locations} />
           <Reviews reviews={tour.reviews} />
           <CTA images={tour.images} duration={tour.duration} />
         </main>
