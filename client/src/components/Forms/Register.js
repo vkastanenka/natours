@@ -1,5 +1,6 @@
 // React
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // Redux
@@ -9,7 +10,6 @@ import { connect } from "react-redux";
 import { register } from "../../store/actions/authActions";
 
 // Components
-import Alert from "../Alert/Alert";
 import InputGroup from "../Inputs/InputGroup";
 import Auxiliary from "../HigherOrder/Auxiliary";
 
@@ -21,18 +21,8 @@ class Register extends Component {
     passwordConfirm: "",
     registering: false,
     disableRegisterButton: false,
-    showAlert: false,
     justRegistered: false,
   };
-
-  // Binding timer to component instance
-  timer = null;
-
-  // Clear any timers when form unmounts
-  componentWillUnmount() {
-    clearTimeout(this.timer);
-    this.setState({ justRegistered: false });
-  }
 
   // State handler for input fields
   onChange = (e) => {
@@ -71,25 +61,15 @@ class Register extends Component {
         passwordConfirm: "",
         registering: false,
         disableRegisterButton: false,
-        showAlert: true,
         justRegistered: true,
       });
-
-      // 5. Timer to remove alert
-      this.timer = setTimeout(() => {
-        this.setState({ showAlert: false });
-        clearTimeout(this.timer);
-      }, 6000);
     }
   };
 
   render() {
     return (
       <Auxiliary>
-        {this.state.showAlert ? (
-          <Alert type="success" message="Registration successful!" />
-        ) : null}
-        <form className="form" onSubmit={this.onRegisterSubmit} noValidate>
+        <form className="form" onSubmit={this.onRegisterSubmit}>
           <h2 className="heading-secondary heading-secondary--small ma-bt-lg">
             {!this.state.justRegistered
               ? "Register your account"
@@ -152,8 +132,10 @@ class Register extends Component {
           </div>
         </form>
         {this.state.justRegistered ? (
-          <button onClick={this.props.onClick} className="btn btn--green">
-            Redirect to login
+          <button className="btn btn--green">
+            <Link to="/authenticate/login" className='link-style'>
+              Redirect to login
+            </Link>
           </button>
         ) : null}
       </Auxiliary>
@@ -162,15 +144,12 @@ class Register extends Component {
 }
 
 Register.propTypes = {
-  auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
-  onClick: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.auth,
     errors: state.errors,
   };
 };

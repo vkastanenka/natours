@@ -129,8 +129,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // 3. Check is either email or password are incorrect
   if (!user || !(await user.correctPassword(password, user.password))) {
-    errors.loginEmail = "Email and/or password are incorrect";
-    errors.loginPassword = "Email and/or password are incorrect";
+    errors.login = "Email and/or password are incorrect";
     return res.status(400).json(errors);
   }
 

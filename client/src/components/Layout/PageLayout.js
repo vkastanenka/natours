@@ -52,10 +52,7 @@ class PageLayout extends Component {
         {Object.keys(this.state.errors).length > 0 ? (
           <Alert type="error" message={errors} />
         ) : null}
-        <Navbar
-          isRegistered={() => this.props.isRegistered()}
-          isNotRegistered={() => this.props.isNotRegistered()}
-        />
+        <Navbar />
         {this.props.children}
         <Footer />
       </Auxiliary>
@@ -65,8 +62,6 @@ class PageLayout extends Component {
 
 PageLayout.propTypes = {
   errors: PropTypes.object.isRequired,
-  isRegistered: PropTypes.func.isRequired,
-  isNotRegistered: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {

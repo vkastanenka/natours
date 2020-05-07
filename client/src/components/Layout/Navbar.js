@@ -1,7 +1,6 @@
 // React
 import React from "react";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 
 // Components
 import Auxiliary from "../../components/HigherOrder/Auxiliary";
@@ -9,15 +8,12 @@ import Auxiliary from "../../components/HigherOrder/Auxiliary";
 const Navbar = (props) => {
   let navUser = (
     <Auxiliary>
-      <p className="navbar__el" onClick={() => props.isRegistered()}>
-        Log in
-      </p>
-      <p
-        className="navbar__el navbar__el--cta"
-        onClick={() => props.isNotRegistered()}
-      >
+      <Link to="/authenticate/login" className="navbar__el">
+        Login
+      </Link>
+      <Link to="/authenticate/register" className="navbar__el navbar__el--cta">
         Register
-      </p>
+      </Link>
     </Auxiliary>
   );
 
@@ -37,11 +33,6 @@ const Navbar = (props) => {
       <nav className="navbar--user">{navUser}</nav>
     </header>
   );
-};
-
-Navbar.propTypes = {
-  isRegistered: PropTypes.func.isRequired,
-  isNotRegistered: PropTypes.func.isRequired,
 };
 
 export default Navbar;

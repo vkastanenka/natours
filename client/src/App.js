@@ -33,15 +33,12 @@ if (localStorage.jwtToken) {
   const decoded = jwt_decode(localStorage.jwtToken);
   // Set user and isAuthenticated
   store.dispatch(setCurrentUser(decoded));
-
   // Check for expired token
   const currentTime = Date.now() / 1000;
   if (decoded.exp < currentTime) {
     // Logout user
     store.dispatch(logout());
-    // Clear current Profile
-    // store.dispatch(clearCurrentProfile());
-    // Redirect to login
+    // Redirect to landing
     window.location.href = "/";
   }
 }
@@ -54,7 +51,8 @@ class App extends Component {
           <ScrollToTop>
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path="/authenticate" component={Authenticate} />
+              <Route exact path="/authenticate/login" component={Authenticate} />
+              <Route exact path="/authenticate/register" component={Authenticate} />
               <Route exact path="/account" component={Account} />
               <Route exact path="/tours" component={ToursOverview} />
               <Route exact path="/tour" component={Tour} />
