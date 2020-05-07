@@ -61,7 +61,7 @@ const Navbar = (props) => {
 };
 
 Navbar.propTypes = {
-  auth: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {

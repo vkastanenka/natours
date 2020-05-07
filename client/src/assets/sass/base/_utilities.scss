@@ -45,3 +45,7 @@
   color: $color-white;
   text-decoration: none;
 }
+
+.abs-center {
+  @extend %abs-center;
+}
