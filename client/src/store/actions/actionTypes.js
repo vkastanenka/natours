@@ -8,3 +8,4 @@ export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 // Tours
 export const TOUR_LOADING = 'TOUR_LOADING';
 export const GET_TOURS = 'GET_TOURS';
+export const GET_TOUR = 'GET_TOUR';

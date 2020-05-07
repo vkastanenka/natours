@@ -28,18 +28,19 @@ const multerFilter = (req, file, cb) => {
 // Configuring multer upload
 const upload = multer({
   storage: multerStorage,
-  fileFilter: multerFilter
+  fileFilter: multerFilter,
 });
 
 // Upload the tour images
 exports.uploadTourImages = upload.fields([
   { name: "imageCover", maxCount: 1 },
-  { name: "images", maxCount: 3 }
+  { name: "images", maxCount: 3 },
 ]);
 
 // Image processing (resizing, formatting, quality, and file location)
 exports.resizeTourImages = catchAsync(async (req, res, next) => {
-  if (!req.files || !req.files.name.imageCover || !req.files.name.images) return next();
+  if (!req.files || !req.files.name.imageCover || !req.files.name.images)
+    return next();
 
   // 1. Cover image processing
   req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
@@ -85,7 +86,26 @@ exports.getAllTours = factory.getAll(Tour);
 // @desc    Get tour by id
 // @access  Public
 // exports.getTour = factory.getOne(Tour, "reviews");
-exports.getTour = factory.getOne(Tour);
+exports.getTour = factory.getOne(Tour, "reviews");
+
+// @route   GET api/v1/tours/tour/:slug
+// @desc    Get tour by slug
+// @access  Public
+exports.getTourBySlug = catchAsync(async (req, res, next) => {
+  const errors = {};
+
+  // 1. Find the tour
+  const tour = await Tour.findOne({ slug: req.params.slug }).populate('reviews');
+
+  // 2. Check if the tour exists
+  if (!tour) {
+    errors.noTour = "There is no tour by that name";
+    return res.status(404).json(errors);
+  }
+
+  // 3. Respond
+  res.status(200).json({ status: "success", data: tour });
+});
 
 // @route   POST api/v1/tours
 // @desc    Create new tour

@@ -55,7 +55,7 @@ class App extends Component {
               <Route exact path="/authenticate/register" component={Authenticate} />
               <Route exact path="/account" component={Account} />
               <Route exact path="/tours" component={ToursOverview} />
-              <Route exact path="/tour" component={Tour} />
+              <Route exact path="/tour/:slug" component={Tour} />
               <Route path="/*" component={ErrorPage} />
             </Switch>
           </ScrollToTop>

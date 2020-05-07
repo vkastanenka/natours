@@ -48,7 +48,7 @@ ReviewCard.propTypes = {
   imageURL: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   review: PropTypes.string.isRequired,
-  rating: PropTypes.string.isRequired,
+  rating: PropTypes.number.isRequired,
 };
 
 export default ReviewCard;

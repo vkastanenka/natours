@@ -22,6 +22,11 @@ router.get("/", tourController.getAllTours);
 // @access  Public
 router.get("/:id", tourController.getTour);
 
+// @route   GET api/v1/tours/tour/:slug
+// @desc    Get tour by slug
+// @access  Public
+router.get("/tour/:slug", tourController.getTourBySlug);
+
 ///////////////////
 // Protected Routes
 
@@ -50,6 +55,6 @@ router.patch(
 // @route   DELETE api/v1/tours/:id
 // @desc    Delete tour by id
 // @access  Restricted
-router.delete("/:id", tourController.deleteTour)
+router.delete("/:id", tourController.deleteTour);
 
 module.exports = router;

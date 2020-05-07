@@ -1,8 +1,22 @@
 // React
 import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const CTA = () => {
+// Redux
+import { connect } from "react-redux";
+
+const CTA = (props) => {
+  let buttonContent = (
+    <Link to="/authenticate/login" className="link-style">
+      Login to Book Tour
+    </Link>
+  );
+
+  if (props.auth.authenticated) {
+    buttonContent = "Book the Tour Now!";
+  }
+
   return (
     <section className="section-cta">
       <div className="cta">
@@ -14,23 +28,23 @@ const CTA = () => {
             />
           </div>
           <img
-            src={require("../../../assets/images/tours/tour-5-2.jpg")}
-            alt=""
+            src={require(`../../../assets/images/tours/${props.images[1]}`)}
+            alt="Tour Image 1"
             className="cta__img cta__img--1"
           />
           <img
-            src={require("../../../assets/images/tours/tour-5-1.jpg")}
-            alt=""
+            src={require(`../../../assets/images/tours/${props.images[0]}`)}
+            alt="Tour Image 2"
             className="cta__img cta__img--2"
           />
         </div>
         <div className="cta__content">
           <h2 className="heading-secondary"> What are you waiting for?</h2>
           <p className="cta__text">
-            10 days. 1 adventure. Infinite memories. Make it yours today!
+            {`${props.duration} days. 1 adventure. Infinite memories. Make it yours today!`}
           </p>
           <button className="btn btn--green span-all-rows">
-            Login to Book Tour
+            {buttonContent}
           </button>
         </div>
       </div>
@@ -38,4 +52,13 @@ const CTA = () => {
   );
 };
 
-export default CTA;
+CTA.propTypes = {
+  images: PropTypes.array.isRequired,
+  duration: PropTypes.number.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps)(CTA);

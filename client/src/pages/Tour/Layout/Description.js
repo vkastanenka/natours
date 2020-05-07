@@ -1,89 +1,90 @@
 // React
 import React from "react";
+import PropTypes from "prop-types";
 
 // Components
 import Icon from "../../../components/Icon/Icon";
 
-const Description = () => {
+const Description = (props) => {
+  const guides = props.guides.map((guide) => {
+    let role;
+    if (guide.role === "lead-guide") role = "Lead guide";
+    else if (guide.role === "guide") role = "Tour guide";
+
+    return (
+      <div className="overview-box__detail" key={guide._id}>
+        <img
+          src={require(`../../../assets/images/users/${guide.photo}`)}
+          alt={`Photo of ${guide.name}`}
+          className="overview-box__img"
+        />
+        <span className="overview-box__label">{role}</span>
+        <span className="overview-box__text">{`${guide.name}`}</span>
+      </div>
+    );
+  });
+
   return (
     <section className="section-description">
       <div className="overview-box">
         <div className="overview-box__group">
-          <h2 className="heading-secondary heading-secondary--small ma-bt-lg">Quick Facts</h2>
+          <h2 className="heading-secondary heading-secondary--small ma-bt-lg">
+            Quick Facts
+          </h2>
           <div className="overview-box__detail">
             <Icon className="overview-box__icon" type="calendar" />
             <span className="overview-box__label">Next date</span>
-            <span className="overview-box__text">August 2021</span>
+            <span className="overview-box__text">{`${props.nextDate.toLocaleString(
+              "default",
+              {
+                month: "long",
+              }
+            )} ${props.nextDate.getFullYear()}`}</span>
           </div>
           <div className="overview-box__detail">
             <Icon className="overview-box__icon" type="trending-up" />
             <span className="overview-box__label">Difficulty</span>
-            <span className="overview-box__text">Medium</span>
+            <span className="overview-box__text">{props.difficulty}</span>
           </div>
           <div className="overview-box__detail">
             <Icon className="overview-box__icon" type="user" />
             <span className="overview-box__label">Participants</span>
-            <span className="overview-box__text">10 people</span>
+            <span className="overview-box__text">{`${props.maxGroupSize} people`}</span>
           </div>
           <div className="overview-box__detail">
             <Icon className="overview-box__icon" type="star" />
             <span className="overview-box__label">Rating</span>
-            <span className="overview-box__text">4.9 / 5</span>
+            <span className="overview-box__text">{`${props.ratingsAverage} / 5`}</span>
           </div>
         </div>
 
         <div className="overview-box__group">
-          <h2 className="heading-secondary heading-secondary--small ma-bt-lg">Your Tour Guides</h2>
-          <div className="overview-box__detail">
-            <img
-              src={require("../../../assets/images/users/user-19.jpg")}
-              alt="Lead Guide"
-              className="overview-box__img"
-            />
-            <span className="overview-box__label">Lead guide</span>
-            <span className="overview-box__text"> Steven Miller</span>
-          </div>
-          <div className="overview-box__detail">
-            <img
-              src={require("../../../assets/images/users/user-18.jpg")}
-              alt="Tour Guide"
-              className="overview-box__img"
-            />
-            <span className="overview-box__label">Tour guide</span>
-            <span className="overview-box__text"> Lisa Brown</span>
-          </div>
-          <div className="overview-box__detail">
-            <img
-              src={require("../../../assets/images/users/user-17.jpg")}
-              alt="Intern"
-              className="overview-box__img"
-            />
-            <span className="overview-box__label">Intern</span>
-            <span className="overview-box__text"> Max Smith</span>
-          </div>
+          <h2 className="heading-secondary heading-secondary--small ma-bt-lg">
+            Your Tour Guides
+          </h2>
+          {guides}
         </div>
       </div>
       <div className="description-box">
         <h2 className="heading-secondary heading-secondary--small ma-bt-lg">
-          About the Park Camper Tour
+          {`About ${props.name} Tour`}
         </h2>
-        <p className="description__text">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur.
-        </p>
-        <p className="description__text">
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-          dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-          proident, sunt in culpa qui officia deserunt mollit anim id est
-          laborum!
-        </p>
+        <p className="description__text">{props.description[0]}</p>
+        <br />
+        <p className="description__text">{props.description[1]}</p>
       </div>
     </section>
   );
+};
+
+Description.propTypes = {
+  nextDate: PropTypes.instanceOf(Date).isRequired,
+  difficulty: PropTypes.string.isRequired,
+  maxGroupSize: PropTypes.number.isRequired,
+  ratingsAverage: PropTypes.number.isRequired,
+  guides: PropTypes.array.isRequired,
+  name: PropTypes.string.isRequired,
+  description: PropTypes.array.isRequired,
 };
 
 export default Description;

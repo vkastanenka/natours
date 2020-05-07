@@ -23,12 +23,22 @@ const getTours = (state, action) => {
   });
 };
 
+// Get request to add singular tour object to global state
+const getTour = (state, action) => {
+  return updateObject(state, {
+    tour: action.payload,
+    loading: false,
+  });
+};
+
 export default function (state = initialState, action) {
   switch (action.type) {
     case actionTypes.TOUR_LOADING:
       return tourLoading(state, action);
     case actionTypes.GET_TOURS:
       return getTours(state, action);
+    case actionTypes.GET_TOUR:
+      return getTour(state, action);
     default:
       return state;
   }

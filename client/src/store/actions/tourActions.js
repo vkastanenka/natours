@@ -27,3 +27,16 @@ export const getTours = () => async (dispatch) => {
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }
 };
+
+// @route   GET api/v1/tours/tour/:slug
+// @desc    Get tour by slug
+// @access  Public
+export const getTour = (slug) => async (dispatch) => {
+  dispatch(setTourLoading());
+  try {
+    const res = await axios.get(`/api/v1/tours/tour/${slug}`);
+    actionDispatch(actionTypes.GET_TOUR, res.data.data, dispatch);
+  } catch (err) {
+    actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
+  }
+};
