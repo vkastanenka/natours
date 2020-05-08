@@ -18,7 +18,11 @@ class Authenticate extends Component {
   // If the user is authenticated, just push them to tours page
   componentDidMount() {
     if (this.props.auth.authenticated) this.props.history.push("/tours");
-    if (this.props.location.pathname === "/authenticate/register") {
+
+    // Change page to login/register depending on URL params
+    if (this.props.match.params.type === "login") {
+      this.setState({ isRegistered: true });
+    } else if (this.props.match.params.type === 'register') {
       this.setState({ isRegistered: false });
     }
   }
@@ -26,10 +30,12 @@ class Authenticate extends Component {
   // If the user logs in, push them to the tours page
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.authenticated) this.props.history.push("/tours");
-    if (nextProps.location.pathname === "/authenticate/register") {
-      this.setState({ isRegistered: false });
-    } else if (nextProps.location.pathname === "/authenticate/login") {
+
+    // Change page to login/register depending on URL params
+    if (nextProps.match.params.type === "login") {
       this.setState({ isRegistered: true });
+    } else if (nextProps.match.params.type === "register") {
+      this.setState({ isRegistered: false });
     }
   }
 
@@ -37,7 +43,7 @@ class Authenticate extends Component {
     let formContent = <Login />;
     if (!this.state.isRegistered)
       formContent = (
-        <Register onClick={() => this.setState({ isRegistered: true })} />
+        <Register />
       );
 
     return (

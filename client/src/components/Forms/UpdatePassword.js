@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 
 // Actions
 import { updatePassword } from "../../store/actions/authActions";
+import { clearErrors } from "../../store/actions/errorActions";
 
 // Components
 import Alert from "../Alert/Alert";
@@ -21,9 +22,21 @@ class UpdatePassword extends Component {
     updatedPassword: false,
     updatingPassword: false,
     disableUpdateButton: false,
+    errors: {},
   };
 
   timer = null;
+
+  // If errors found from inputs, set them in state
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+      this.timer = setTimeout(() => {
+        this.props.clearErrors();
+        clearTimeout(this.timer);
+      }, 6000);
+    }
+  }
 
   componentWillUnmount() {
     clearTimeout(this.timer);
@@ -35,6 +48,11 @@ class UpdatePassword extends Component {
 
   onUpdatePassword = async (e) => {
     e.preventDefault();
+
+    if (this.props.errors) {
+      this.setState({ errors: {} });
+      this.props.clearErrors();
+    }
 
     this.setState({ updatingPassword: true, disableUpdateButton: true });
 
@@ -58,10 +76,21 @@ class UpdatePassword extends Component {
   };
 
   render() {
+    let errors = [];
+
+    if (this.state.errors) {
+      for (let err in this.state.errors) {
+        errors.push(<p key={err}>{this.state.errors[err]}</p>);
+      }
+    }
+
     return (
       <Auxiliary>
         {this.state.updatedPassword ? (
           <Alert type="success" message="Update successful!" />
+        ) : null}
+        {Object.keys(this.state.errors).length > 0 ? (
+          <Alert type="error" message={errors} />
         ) : null}
         <form
           className="form form-user-settings"
@@ -131,4 +160,6 @@ const mapStateToProps = (state) => ({
   errors: state.errors,
 });
 
-export default connect(mapStateToProps, { updatePassword })(UpdatePassword);
+export default connect(mapStateToProps, { updatePassword, clearErrors })(
+  UpdatePassword
+);

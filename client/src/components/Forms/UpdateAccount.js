@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 
 // Actions
 import { updateCurrentUser } from "../../store/actions/authActions";
+import { clearErrors } from "../../store/actions/errorActions";
 
 // Components
 import Alert from "../Alert/Alert";
@@ -21,9 +22,8 @@ class UpdateAccount extends Component {
     updatedAccount: false,
     updatingAccount: false,
     disableUpdateButton: false,
+    errors: {},
   };
-
-  timer = null;
 
   componentDidMount() {
     this.setState({
@@ -32,20 +32,46 @@ class UpdateAccount extends Component {
     });
   }
 
+  // Binding timer to component instance
+  timer = null;
+
+  // If errors found from inputs, set them in state
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors,
+        updatingAccount: false,
+        disableUpdateButton: false,
+      });
+      this.timer = setTimeout(() => {
+        this.props.clearErrors();
+        clearTimeout(this.timer);
+      }, 6000);
+    }
+  }
+
+  // Clear any timers when form unmounts
   componentWillUnmount() {
     clearTimeout(this.timer);
   }
 
+  // State handler for input fields
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  // State handler for photo upload
   handlePhoto = (e) => {
     this.setState({ [e.target.name]: e.target.files[0] });
   };
 
   onUpdateAccount = async (e) => {
     e.preventDefault();
+
+    if (this.props.errors) {
+      this.setState({ errors: {} });
+      this.props.clearErrors();
+    }
 
     this.setState({ updatingAccount: true, disableUpdateButton: true });
 
@@ -61,7 +87,7 @@ class UpdateAccount extends Component {
 
     this.setState({ updatingAccount: false, disableUpdateButton: false });
 
-    if (Object.keys(this.props.errors).length === 0) {
+    if (Object.keys(this.state.errors).length === 0) {
       this.setState({ updatedAccount: true });
       this.timer = setTimeout(() => {
         this.setState({ updatedAccount: false });
@@ -71,10 +97,21 @@ class UpdateAccount extends Component {
   };
 
   render() {
+    let errors = [];
+
+    if (this.state.errors) {
+      for (let err in this.state.errors) {
+        errors.push(<p key={err}>{this.state.errors[err]}</p>);
+      }
+    }
+
     return (
       <Auxiliary>
         {this.state.updatedAccount ? (
           <Alert type="success" message="Update successful!" />
+        ) : null}
+        {Object.keys(this.state.errors).length > 0 ? (
+          <Alert type="error" message={errors} />
         ) : null}
         <form className="form form-user-data" onSubmit={this.onUpdateAccount}>
           <h2 className="heading-secondary heading-secondary--small ma-bt-md">
@@ -120,7 +157,11 @@ class UpdateAccount extends Component {
             />
           </div>
           <div className="form__group right">
-            <button type="submit" className="btn-small btn--green" disabled={this.state.disableUpdateButton}>
+            <button
+              type="submit"
+              className="btn-small btn--green"
+              disabled={this.state.disableUpdateButton}
+            >
               {!this.state.updatingAccount
                 ? "Save settings"
                 : "Saving settings..."}
@@ -142,4 +183,6 @@ const mapStateToProps = (state) => ({
   errors: state.errors,
 });
 
-export default connect(mapStateToProps, { updateCurrentUser })(UpdateAccount);
+export default connect(mapStateToProps, { updateCurrentUser, clearErrors })(
+  UpdateAccount
+);
