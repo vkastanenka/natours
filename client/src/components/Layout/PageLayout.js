@@ -39,6 +39,8 @@ class PageLayout extends Component {
   }
 
   render() {
+    console.log(this.state.errors);
+
     let errors = [];
 
     if (this.state.errors) {

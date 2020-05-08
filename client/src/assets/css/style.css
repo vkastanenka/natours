@@ -226,6 +226,9 @@ body {
   color: #fff;
   text-decoration: none; }
 
+.invisible {
+  display: none; }
+
 .alert {
   position: fixed;
   top: 0;

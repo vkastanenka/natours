@@ -27,13 +27,16 @@ const Navbar = (props) => {
   if (props.auth.authenticated) {
     navUser = (
       <Auxiliary>
-        <p className="navbar__el navbar__el--logout" onClick={props.logout}>
+        <button
+          className="navbar__el navbar__el--logout"
+          onClick={props.logout}
+        >
           Logout
-        </p>
-        <Link to="/account" className="navbar__el">
+        </button>
+        <Link className="navbar__el" to="/account">
           <img
             src={require(`../../assets/images/users/${props.auth.user.photo}`)}
-            alt={`Photo of ${props.auth.user.name}`}
+            alt="User Photo"
             className="navbar__user-img"
           />
           <span>{props.auth.user.name.split(" ")[0]}</span>

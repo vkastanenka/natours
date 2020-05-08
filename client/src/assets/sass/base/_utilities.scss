@@ -49,3 +49,7 @@
 .abs-center {
   @extend %abs-center;
 }
+
+.invisible {
+  display: none;
+}

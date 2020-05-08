@@ -1,22 +1,38 @@
 // React
 import React from "react";
+import PropTypes from "prop-types";
+
+// Redux
+import { connect } from "react-redux";
 
 // Components
-import PageAux from "../../components/HigherOrder/PageAux";
+import PageLayout from "../../components/Layout/PageLayout";
 import SideNav from "./Layout/SideNav";
 import Content from "./Layout/Content";
 
-const Account = () => {
+const Account = (props) => {
+  if (!props.auth.authenticated) {
+    props.history.push("/authenticate/login");
+  }
+
   return (
-    <PageAux>
+    <PageLayout>
       <main className="main">
         <div className="user-view">
           <SideNav />
           <Content />
         </div>
       </main>
-    </PageAux>
+    </PageLayout>
   );
 };
 
-export default Account;
+Account.propTypes = {
+  auth: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps)(Account);

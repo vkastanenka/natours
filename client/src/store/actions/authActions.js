@@ -77,6 +77,19 @@ export const resetPassword = (passwordData, token) => async (dispatch) => {
 ////////////////////
 // Protected Routes
 
+// @route   PATCH api/v1/users/updateCurrentUser
+// @desc    Update current user's name, email, and pfp
+// @access  Protected
+export const updateCurrentUser = (userData) => async (dispatch) => {
+  try {
+    const res = await axios.patch(`/api/v1/users/updateCurrentUser`, userData);
+    const decoded = decodeToken(res.data.token);
+    dispatch(setCurrentUser(decoded));
+  } catch (err) {
+    actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
+  }
+};
+
 // @route   PATCH api/v1/users/updatePassword
 // @desc    Update current user's password
 // @access  Private
