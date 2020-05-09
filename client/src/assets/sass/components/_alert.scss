@@ -20,4 +20,17 @@
   &--error {
     background-color: $color-secondary-darker;
   }
+
+  &__prompt > :nth-child(2) {
+    margin: 0 2rem;
+  }
+
+  &__prompt-function {
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+      color: salmon;
+    }
+  }
 }

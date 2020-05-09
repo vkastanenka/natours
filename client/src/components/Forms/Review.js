@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 
 // Actions
 import { postReview } from "../../store/actions/reviewActions";
+import { updateUserReview } from "../../store/actions/reviewActions";
 import { clearErrors } from "../../store/actions/errorActions";
 
 // Components
@@ -21,9 +22,17 @@ class Review extends Component {
     rating: 5,
     submittingReview: false,
     submittedReview: false,
+    updatingReview: false,
+    updatedReview: false,
     disableSubmitButton: false,
     errors: {},
   };
+
+  componentDidMount() {
+    if (this.props.editingReview) {
+      this.setState({ review: this.props.review, rating: this.props.rating });
+    }
+  }
 
   // Binding timer to component instance
   timer = null;
@@ -33,9 +42,23 @@ class Review extends Component {
     if (nextProps.errors) {
       this.setState({
         errors: nextProps.errors,
-        loggingIn: false,
-        disableLoginButton: false,
+        submittingReview: false,
+        disableSubmitButton: false,
       });
+
+      this.timer = setTimeout(() => {
+        this.props.clearErrors();
+        clearTimeout(this.timer);
+      }, 6000);
+    }
+
+    if (nextProps.errors && this.props.editingReview) {
+      this.setState({
+        errors: nextProps.errors,
+        updatingReview: false,
+        disableSubmitButton: false,
+      });
+
       this.timer = setTimeout(() => {
         this.props.clearErrors();
         clearTimeout(this.timer);
@@ -58,13 +81,21 @@ class Review extends Component {
   onReviewSubmit = async (e) => {
     e.preventDefault();
 
+    // Clear errors if any
     if (this.props.errors) {
       this.setState({ errors: {} });
       this.props.clearErrors();
     }
 
     // 1. State to change button text
-    this.setState({ submittingReview: true, disableSubmitButton: true });
+    this.setState({
+      submittingReview: true,
+      disableSubmitButton: true,
+    });
+
+    if (this.state.submittedReview) {
+      this.setState({ submittedReview: false });
+    }
 
     // 2. Review data to post
     const reviewData = {
@@ -78,24 +109,56 @@ class Review extends Component {
     await this.props.postReview(reviewData);
 
     // 4. Show alert it worked
-    if (Object.keys(this.state.errors) === 0) {
-      this.setState({ submittedReview: true });
-      this.timer = setTimeout(() => {
-        this.setState({ submittedReview: false });
-        clearTimeout(this.timer);
-      }, 6000);
+    if (Object.keys(this.state.errors).length === 0) {
+      this.setState({
+        review: "",
+        submittedReview: true,
+        submittingReview: false,
+        disableSubmitButton: false,
+      });
     }
   };
 
-  render() {
-    console.log(this.props.auth.user);
+  // Make a patch request to update a review
+  onReviewUpdate = async (e) => {
+    e.preventDefault();
 
+    // 1. State to change button text
+    this.setState({
+      updatingReview: true,
+      disableSubmitButton: true,
+    });
+
+    if (this.state.updatedReview) {
+      this.setState({ updatedReview: false });
+    }
+
+    // 2. Review data to update
+    const reviewData = {
+      review: this.state.review,
+      rating: this.state.rating,
+    };
+
+    // 3. Patch review
+    await this.props.updateUserReview(this.props.reviewId, reviewData);
+  };
+
+  render() {
     const errors = [];
+    let buttonText = "Submit review";
 
     if (this.state.errors) {
       for (let err in this.state.errors) {
         errors.push(<p key={err}>{this.state.errors[err]}</p>);
       }
+    }
+
+    if (this.props.editingReview) {
+      buttonText = "Update review";
+    } else if (this.props.editingReview && this.state.updatingReview) {
+      buttonText = "Updating review...";
+    } else if (this.state.submittingReview) {
+      buttonText = "Submitting review...";
     }
 
     return (
@@ -106,23 +169,32 @@ class Review extends Component {
         {this.state.submittedReview ? (
           <Alert type="success" message="Submitted review!" />
         ) : null}
-        <form className="form authenticate-form" onSubmit={this.onReviewSubmit}>
+        <form
+          className="form authenticate-form"
+          onSubmit={
+            this.props.editingReview ? this.onReviewUpdate : this.onReviewSubmit
+          }
+        >
           <Icon
             type="x"
             className="icon icon--large icon--black-primary icon--translate icon--active form__close-icon"
             onClick={this.props.popupClose}
           />
           <h2 className="heading-secondary heading-secondary--small">
-            Submit a review for
+            {this.props.editingReview
+              ? "Edit your review for"
+              : "Submit a review for"}
           </h2>
           <br />
           <h2 className="heading-secondary heading-secondary--small ma-bt-lg">
-            {`${this.props.tours.tour.name} Tour`}
+            {this.props.editingReview
+              ? `${this.props.tourName} Tour`
+              : `${this.props.tours.tour.name} Tour`}
           </h2>
           <TextAreaGroup
             name="review"
             id="review"
-            inputClass='form__textarea'
+            inputClass="form__textarea"
             placeholder="Write your review here"
             value={this.state.review}
             required={true}
@@ -177,11 +249,9 @@ class Review extends Component {
             <button
               type="submit"
               className="btn btn--green"
-              disabled={this.state.disableLoginButton}
+              disabled={this.state.disableSubmitButton}
             >
-              {!this.state.submittingReview
-                ? "Submit Review"
-                : "Submitting Review..."}
+              {buttonText}
             </button>
           </div>
         </form>
@@ -193,12 +263,22 @@ class Review extends Component {
 Review.propTypes = {
   auth: PropTypes.object.isRequired,
   tours: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
   popupClose: PropTypes.func.isRequired,
+  tourName: PropTypes.string,
+  review: PropTypes.string,
+  rating: PropTypes.number,
+  editingReview: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
   tours: state.tours,
+  errors: state.errors,
 });
 
-export default connect(mapStateToProps, { postReview, clearErrors })(Review);
+export default connect(mapStateToProps, {
+  postReview,
+  updateUserReview,
+  clearErrors,
+})(Review);

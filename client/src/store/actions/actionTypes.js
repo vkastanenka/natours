@@ -1,3 +1,6 @@
+// Utils
+export const REQUEST_LOADING = 'REQUEST_LOADING';
+
 // Auth
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 
@@ -9,3 +12,8 @@ export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const TOUR_LOADING = 'TOUR_LOADING';
 export const GET_TOURS = 'GET_TOURS';
 export const GET_TOUR = 'GET_TOUR';
+
+// Reviews
+export const GET_CURRENT_USER_REVIEWS = 'GET_CURRENT_USER_REVIEWS';
+export const UPDATE_CURRENT_USER_REVIEW = 'UPDATE_CURRENT_USER_REVIEW';
+export const DELETE_CURRENT_USER_REVIEW = 'DELETE_CURRENT_USER_REVIEW';

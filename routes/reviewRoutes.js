@@ -22,10 +22,15 @@ router.use(authController.protect);
 // @access  Protected
 router.get("/", reviewController.getAllReviews);
 
-// @route   GET api/v1/reviews/:id
+// @route   GET api/v1/reviews/review/:id
 // @desc    Get review by id
 // @access  Protected
-router.get("/:id", reviewController.getReview);
+router.get("/review/:id", reviewController.getReview);
+
+// @route   GET api/v1/reviews/userReviews
+// @desc    Get reviews of current user
+// @access  Protected
+router.get('/:userId', reviewController.getUserReviews);
 
 ////////////////////
 // Restricted Routes
@@ -41,14 +46,14 @@ router.post(
 
 router.use(authController.restrictTo("user", "admin"));
 
-// @route   PATCH api/v1/reviews/:id
+// @route   PATCH api/v1/reviews/review/:id
 // @desc    Update review by id
 // @access  Restricted
-router.patch("/:id", reviewController.updateReview);
+router.patch("/review/:id", reviewController.updateReview);
 
-// @route   DELETE api/v1/reviews/:id
+// @route   DELETE api/v1/reviews/review/:id
 // @desc    Delete review by id
 // @access  Restricted
-router.delete("/:id", reviewController.deleteReview);
+router.delete("/review/:id", reviewController.deleteReview);
 
 module.exports = router;

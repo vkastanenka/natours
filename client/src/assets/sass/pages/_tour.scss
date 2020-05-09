@@ -83,11 +83,11 @@
   );
   clip-path: $clip-path--poly-2;
 
-  & > :first-child {
-    position: absolute;
-    bottom: 13rem;
-    left: 50%;
-    transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+
+  &__btn {
+    align-self: center;
   }
 }
 

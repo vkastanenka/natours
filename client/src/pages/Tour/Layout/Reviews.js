@@ -42,14 +42,14 @@ class Reviews extends Component {
       <Auxiliary>
         {popup}
         <section className="section-reviews">
+          <div className="reviews ma-bt-lg">{reviews}</div>
           <button
             type="submit"
-            className="btn btn--white"
+            className="btn btn--white section-reviews__btn"
             onClick={() => this.setState({ writingReview: true })}
           >
             Write a Review
           </button>
-          <div className="reviews">{reviews}</div>
         </section>
       </Auxiliary>
     );

@@ -28,8 +28,6 @@ class Tour extends Component {
     let pageContent = <Spinner />;
     
     if (tour && !loading) {
-      console.log(tour);
-
       pageContent = (
         <main>
           <Header

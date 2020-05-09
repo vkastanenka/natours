@@ -102,6 +102,10 @@ body {
     }
   }
 
+  &--smaller {
+    font-size: 1.75rem;
+  }
+
   &--error {
     background-image: linear-gradient(
       to right,

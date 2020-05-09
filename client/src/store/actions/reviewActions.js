@@ -5,6 +5,51 @@ import * as actionTypes from "./actionTypes";
 import axios from "axios";
 import actionDispatch from "../../utils/actionDispatch";
 
+// Actions
+import { setRequestLoading } from './utilActions';
+
+///////////////////
+// Protected Routes
+
+// @route   GET api/v1/reviews/:userId
+// @desc    Get reviews of user by id
+// @access  Protected
+export const getUserReviews = (userId) => async (dispatch) => {
+  dispatch(setRequestLoading());
+  try {
+    const res = await axios.get(`/api/v1/reviews/${userId}`);
+    actionDispatch(actionTypes.GET_CURRENT_USER_REVIEWS, res.data.data, dispatch);
+  } catch (err) {
+    actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
+  }
+};
+
+// @route   PATCH api/v1/reviews/review/:id
+// @desc    Update review by id
+// @access  Restricted
+export const updateUserReview = (reviewId, reviewData) => async dispatch => {
+  dispatch(setRequestLoading());
+  try {
+    const res = await axios.patch(`/api/v1/reviews/review/${reviewId}`, reviewData);
+    actionDispatch(actionTypes.UPDATE_CURRENT_USER_REVIEW, res.data.data, dispatch)
+  } catch (err) {
+    actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
+  }
+}
+
+// @route   DELETE api/v1/reviews/review/:id
+// @desc    Delete review by id
+// @access  Restricted
+export const deleteReview = (reviewId) => async dispatch => {
+  dispatch(setRequestLoading());
+  try {
+    await axios.delete(`/api/v1/reviews/review/${reviewId}`);
+    actionDispatch(actionTypes.DELETE_CURRENT_USER_REVIEW, reviewId, dispatch)
+  } catch (err) {
+    actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
+  }
+}
+
 ////////////////////
 // Restricted Routes
 

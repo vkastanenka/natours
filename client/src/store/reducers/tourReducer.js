@@ -33,7 +33,7 @@ const getTour = (state, action) => {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.TOUR_LOADING:
+    case actionTypes.REQUEST_LOADING:
       return tourLoading(state, action);
     case actionTypes.GET_TOURS:
       return getTours(state, action);

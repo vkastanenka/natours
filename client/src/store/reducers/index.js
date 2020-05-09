@@ -5,9 +5,11 @@ import { combineReducers } from "redux";
 import authReducer from "./authReducer";
 import errorReducer from './errorReducer';
 import tourReducer from './tourReducer';
+import reviewReducer from './reviewReducer';
 
 export default combineReducers({
   auth: authReducer,
   errors: errorReducer, 
-  tours: tourReducer
+  tours: tourReducer,
+  reviews: reviewReducer
 });

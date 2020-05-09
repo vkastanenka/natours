@@ -178,6 +178,8 @@ body {
     @media only screen and (max-width: 25em) {
       .heading-secondary--small {
         font-size: 2.1rem; } }
+  .heading-secondary--smaller {
+    font-size: 1.75rem; }
   .heading-secondary--error {
     background-image: linear-gradient(to right, #ff7730, #ff7730); }
 
@@ -247,6 +249,13 @@ body {
     background-color: #28b487; }
   .alert--error {
     background-color: #eb4d4b; }
+  .alert__prompt > :nth-child(2) {
+    margin: 0 2rem; }
+  .alert__prompt-function {
+    cursor: pointer;
+    transition: all 0.3s; }
+    .alert__prompt-function:hover {
+      color: salmon; }
 
 .bg-video {
   position: absolute;
@@ -1002,6 +1011,8 @@ body {
   grid-auto-flow: column;
   overflow-x: scroll;
   scroll-snap-type: x mandatory; }
+  .reviews__settings {
+    grid-template-columns: repeat(3, 1fr); }
   .reviews__card {
     width: 30rem;
     padding: 4rem;
@@ -1011,10 +1022,21 @@ body {
     scroll-snap-align: center;
     display: flex;
     flex-direction: column;
-    align-items: center; }
+    align-items: center;
+    position: relative; }
+    .reviews__card--border {
+      border: 2px solid #55c57a; }
+    .reviews__card--wider {
+      width: 35rem !important; }
   .reviews:before, .reviews:after {
     content: "";
     width: 2rem; }
+  .reviews__icons {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem; }
+    .reviews__icons > :nth-child(2) {
+      margin-left: 1rem; }
   .reviews__avatar {
     display: flex;
     align-items: center;
@@ -1202,6 +1224,13 @@ body {
       .footer__copyright {
         width: 100%;
         float: none; } }
+
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 2rem;
+  justify-items: center;
+  padding: 0 5rem; }
 
 .card-grid {
   max-width: 82%;
@@ -1822,12 +1851,11 @@ body {
   position: relative;
   z-index: 1000;
   background: linear-gradient(to right bottom, #7dd56f, #28b487);
-  clip-path: polygon(0 var(--section-rotate), 100% 0, 100% calc(100% - var(--section-rotate)), 0 100%); }
-  .section-reviews > :first-child {
-    position: absolute;
-    bottom: 13rem;
-    left: 50%;
-    transform: translateX(-50%); }
+  clip-path: polygon(0 var(--section-rotate), 100% 0, 100% calc(100% - var(--section-rotate)), 0 100%);
+  display: flex;
+  flex-direction: column; }
+  .section-reviews__btn {
+    align-self: center; }
 
 .section-cta {
   margin-top: calc(0px - var(--section-rotate));

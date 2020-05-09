@@ -5,12 +5,8 @@ import * as actionTypes from "./actionTypes";
 import axios from "axios";
 import actionDispatch from "../../utils/actionDispatch";
 
-// Set load for asynchronous requests
-export const setTourLoading = () => {
-  return {
-    type: actionTypes.TOUR_LOADING,
-  };
-};
+// Actions
+import { setRequestLoading } from './utilActions';
 
 //////////////////////
 // Unprotected Routes
@@ -19,7 +15,7 @@ export const setTourLoading = () => {
 // @desc    Get all tours
 // @access  Public
 export const getTours = () => async (dispatch) => {
-  dispatch(setTourLoading());
+  dispatch(setRequestLoading());
   try {
     const res = await axios.get("/api/v1/tours");
     actionDispatch(actionTypes.GET_TOURS, res.data.data, dispatch);
@@ -32,7 +28,7 @@ export const getTours = () => async (dispatch) => {
 // @desc    Get tour by slug
 // @access  Public
 export const getTour = (slug) => async (dispatch) => {
-  dispatch(setTourLoading());
+  dispatch(setRequestLoading());
   try {
     const res = await axios.get(`/api/v1/tours/tour/${slug}`);
     actionDispatch(actionTypes.GET_TOUR, res.data.data, dispatch);

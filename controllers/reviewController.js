@@ -5,10 +5,8 @@ const factory = require("./handlerFactory");
 const catchAsync = require("../utils/catchAsync");
 
 // Models
-const Review = require("./../models/reviewModel.js");
-
-// Validation
-const validateReview = require('../validation/review/review');
+const Tour = require("../models/tourModel");
+const Review = require("../models/reviewModel");
 
 ////////////////
 // Public Routes
@@ -32,6 +30,16 @@ exports.getAllReviews = factory.getAll(Review);
 // @access  Protected
 exports.getReview = factory.getOne(Review);
 
+// @route   GET api/v1/reviews/userReviews
+// @desc    Get reviews of user by id
+// @access  Protected
+exports.getUserReviews = catchAsync(async (req, res, next) => {
+  const reviews = await Review.find({ user: req.params.userId }).populate({
+    path: "tour",
+  });
+  res.status(200).json({ status: "success", data: reviews });
+});
+
 ////////////////////
 // Restricted Routes
 
@@ -39,19 +47,28 @@ exports.getReview = factory.getOne(Review);
 // @desc    Allows user to create a review
 // @access  Restricted
 exports.createReview = catchAsync(async (req, res, next) => {
-  // 1. Validate inputs
-  const { errors, isValid } = validateReview(req.body);
-  if (!isValid) return res.status(400).json(errors);
+  const errors = {};
 
-  // 1. Create a new document
-  const review = await Review.create(req.body);
+  // 1. Check if user has already written a review for the tour
+  const reviewCheck = await Review.findOne({
+    tour: req.body.tour,
+    user: req.body.user,
+  });
 
-  console.log(review);
+  if (reviewCheck) {
+    errors.alreadyReviewed = "User has already reviewed this tour";
+    return res.status(400).json(errors);
+  }
 
-  // 2. Find the tour with the updated review
-  const updatedTour = await updatedTour.findOne({ _id: req.body.tour }).populate('reviews');
+  // 2. Create a new review document
+  await Review.create(req.body);
 
-  // 2. Respond
+  // 3. Find the tour with the updated review
+  const updatedTour = await Tour.findOne({ _id: req.body.tour }).populate(
+    "reviews"
+  );
+
+  // 4. Respond
   res.status(201).json({
     status: "success",
     data: updatedTour,
@@ -61,9 +78,26 @@ exports.createReview = catchAsync(async (req, res, next) => {
 // @route   PATCH api/v1/reviews/:id
 // @desc    Update review by id
 // @access  Restricted
-exports.updateReview = factory.updateOne(Review);
+exports.updateReview = catchAsync(async (req, res, next) => {
+  const errors = {};
 
-// @route   DELETE api/v1/reviews/:id
+  // 1. Find document by id and update
+  const review = await Review.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  }).populate({ path: "tour", select: "name" });
+
+  // 2. Error handling for no document found
+  if (!review) {
+    errors.notFound = "No review found with that id";
+    res.status(404).json(errors);
+  }
+
+  // 3. Respond
+  res.status(200).json({ status: "success", data: review });
+});
+
+// @route   DELETE api/v1/reviews/review/:id
 // @desc    Delete review by id
 // @access  Restricted
 exports.deleteReview = factory.deleteOne(Review);
