@@ -5,12 +5,13 @@ const reviewSchema = new mongoose.Schema(
   {
     review: {
       type: String,
-      required: [true, "Review cannot be empty!"]
+      required: [true, "Review cannot be empty"]
     },
     rating: {
       type: Number,
       min: 1,
-      max: 5
+      max: 5,
+      required: [true, "Review required a rating"]
     },
     createdAt: {
       type: Date,

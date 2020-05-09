@@ -1,0 +1,39 @@
+.icon {
+  transition: all 0.3s;
+
+  &--largest {
+    height: 3rem;
+    width: 3rem;
+  }
+
+  &--large {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  &--medium {
+    height: 1.75rem;
+    width: 1.75rem;
+  }
+
+  &--small {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+
+  &--black-primary {
+    fill: $color-grey-dark-3;
+
+    &:hover {
+      fill: $color-primary;
+    }
+  }
+
+  &--translate:hover {
+    transform: translateY(-2px);
+  }
+
+  &--active {
+    cursor: pointer;
+  }
+}

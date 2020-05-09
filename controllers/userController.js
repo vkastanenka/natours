@@ -2,10 +2,15 @@
 const sharp = require("sharp");
 const multer = require("multer");
 const factory = require("./handlerFactory");
+const createJWT = require('../utils/jwtGenerator');
 
 // Error Handling
 const AppError = require("./../utils/appError");
 const catchAsync = require("./../utils/catchAsync");
+
+// Validation
+const validateUserUpdate = require("../validation/auth/userUpdate");
+const validatePasswordUpdate = require("../validation/auth/passwordUpdate");
 
 // Models
 const User = require("./../models/userModel");
@@ -86,32 +91,37 @@ exports.test = (req, res, next) => res.json({ message: "Users route secured" });
 // @desc    Update current user's name, email, and pfp
 // @access  Protected
 exports.updateCurrentUser = catchAsync(async (req, res, next) => {
-  // 1. Respond with an error if the user tries to update their password
+  // 1. Validate inputs
+  const { errors, isValid } = validateUserUpdate(req.body);
+  if (!isValid) return res.status(400).json(errors);
+
+  // 2. Respond with an error if the user tries to update their password
   if (req.body.password || req.body.passwordConfirm) {
-    return next(
-      new AppError(
-        "This route is not for password updates. Please use /updatePassword",
-        400
-      )
-    );
+    errors.noPassword =
+      'This route is not for password updates. Please use /updatePassword"';
+    return res.status(400).json(errors);
   }
 
-  // 2. Filter the user's request for only name and email fields
+  // 3. Filter the user's request for only name and email fields
   const filteredBody = filterObj(req.body, "name", "email");
 
-  // 3. If photo, add uploaded photo to filteredBody
+  // 4. If photo, add uploaded photo to filteredBody
   if (req.file) filteredBody.photo = req.file.filename;
 
-  // 4. Update user document
+  // 5. Update user document
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true,
   });
 
-  // 5. Respond
+  // 6. Create the JWT
+  const token = createJWT(updatedUser);
+
+  // 7. Respond
   res.status(200).json({
     status: "success",
     user: updatedUser,
+    token
   });
 });
 

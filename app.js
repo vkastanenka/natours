@@ -20,11 +20,11 @@ const app = express();
 // Set PUG as template engine
 app.set('view engine', 'pug');
 // Don't always know whether a path that we receive from somewhere already has a slash or not => Prevents bug
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, './views'));
 
 // Middleware
 
-// Serving static files
+// Serving static files // TODO: CHANGE
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Sets security headers

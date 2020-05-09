@@ -29,6 +29,7 @@ class UpdateAccount extends Component {
     this.setState({
       name: this.props.auth.user.name,
       email: this.props.auth.user.email,
+      photo: this.props.auth.user.photo,
     });
   }
 
@@ -96,6 +97,14 @@ class UpdateAccount extends Component {
     }
   };
 
+  tryRequirePhoto = () => {
+    try {
+      return require(`../../assets/images/users/${this.props.auth.user.photo}`);
+    } catch (err) {
+      return require('../../assets/images/users/default.jpg');
+    }
+  };
+
   render() {
     let errors = [];
 
@@ -141,7 +150,7 @@ class UpdateAccount extends Component {
           />
           <div className="form__group form__photo-upload">
             <img
-              src={require(`../../assets/images/users/${this.props.auth.user.photo}`)}
+              src={this.tryRequirePhoto()}
               alt="User Photo"
               className="form__user-photo"
             />

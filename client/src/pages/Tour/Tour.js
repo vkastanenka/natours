@@ -26,9 +26,10 @@ class Tour extends Component {
   render() {
     const { tour, loading } = this.props.tours;
     let pageContent = <Spinner />;
-
     
     if (tour && !loading) {
+      console.log(tour);
+
       pageContent = (
         <main>
           <Header

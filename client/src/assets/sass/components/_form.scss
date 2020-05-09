@@ -18,6 +18,19 @@
 
 .form {
   text-align: center;
+  position: relative;
+  z-index: 1000000000000000;
+
+  &__close-icon {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    z-index: 10000000000000000;
+  }
+
+  &__textarea {
+    height: 15rem;
+  }
 
   &__input {
     display: block;

@@ -82,6 +82,13 @@
     $color-primary-dark
   );
   clip-path: $clip-path--poly-2;
+
+  & > :first-child {
+    position: absolute;
+    bottom: 13rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 .section-cta {

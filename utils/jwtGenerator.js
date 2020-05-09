@@ -8,6 +8,7 @@ module.exports = createJWT = (user) => {
       name: user.name,
       email: user.email,
       photo: user.photo,
+      role: user.role
     },
     process.env.JWT_SECRET,
     {
