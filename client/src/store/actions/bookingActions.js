@@ -40,3 +40,17 @@ export const createBookingCheckout = (bookingData) => async (dispatch) => {
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }
 };
+
+export const getCurrentUserBookings = (userId) => async (dispatch) => {
+  try {
+    dispatch(setBookingLoad());
+    const res = await axios.get(`/api/v1/bookings/bookings/${userId}`);
+    actionDispatch(
+      actionTypes.SET_CURRENT_USER_BOOKINGS,
+      res.data.data,
+      dispatch
+    );
+  } catch (err) {
+    actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
+  }
+};

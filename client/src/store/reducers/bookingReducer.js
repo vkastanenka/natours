@@ -6,6 +6,7 @@ import updateObject from "../../utils/updateObject";
 
 const initialState = {
   checkoutSession: '',
+  userBookings: null,
   loading: false
 };
 
@@ -23,6 +24,13 @@ const setCheckoutSessionId = (state, action) => {
   });
 };
 
+const setUserBookings = (state, action) => {
+  return updateObject(state, {
+    userBookings: action.payload,
+    loading: false
+  })
+}
+
 export default function (state = initialState, action) {
   switch (action.type) {
     case actionTypes.SET_BOOKING_LOAD:
@@ -31,6 +39,8 @@ export default function (state = initialState, action) {
       return unsetBookingLoad(state, action);
     case actionTypes.SET_CHECKOUT_SESSION_ID:
       return setCheckoutSessionId(state, action);
+    case actionTypes.SET_CURRENT_USER_BOOKINGS:
+      return setUserBookings(state, action);
     default:
       return state;
   }

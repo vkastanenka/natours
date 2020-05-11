@@ -7,13 +7,17 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 // Actions
-import { createBookingCheckout } from "../../../../store/actions/bookingActions";
+import {
+  createBookingCheckout,
+  getCurrentUserBookings,
+} from "../../../../store/actions/bookingActions";
 
 // Utilities
 import queryString from "query-string";
 
 // Components
 import Spinner from "../../../../components/Spinner/Spinner";
+import TourCard from "../../../../components/Cards/TourCard";
 
 class Bookings extends Component {
   async componentDidMount() {
@@ -25,27 +29,67 @@ class Bookings extends Component {
           tour: search.tour,
           user: search.user,
           price: search.price,
-          date: search.date
+          date: search.date,
         };
 
         await this.props.createBookingCheckout(bookingData);
 
-        this.props.history.push('/account/bookings');
+        this.props.history.push("/account/bookings");
       }
+    } else if (!this.props.location.search) {
+      // Get bookings
+      this.props.getCurrentUserBookings(this.props.auth.user.id);
     }
-    // else if (!this.props.location.search) {
-    // }
-    // // Get bookings
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.location.search &&
+      !this.props.location.search
+    ) {
+      // Get bookings after redirect from creating the booking
+      this.props.getCurrentUserBookings(this.props.auth.user.id);
+    }
   }
 
   render() {
-    let content;
+    console.log(this.props.bookings.userBookings);
+    const { userBookings, loading } = this.props.bookings;
 
-    if (this.props.bookings.loading) {
-      content = <Spinner />;
+    let cards;
+    let content = <div></div>;
+
+    if (loading) {
+      content = (
+        <div>
+          <Spinner />
+        </div>
+      );
+    } else if (!loading && userBookings) {
+      cards = userBookings.map((booking) => {
+        const startDate = new Date(booking.tour.startDates[0]);
+        return (
+          <TourCard
+            key={booking.tour.slug}
+            imageURL={require(`../../../../assets/images/tours/${booking.tour.imageCover}`)}
+            name={booking.tour.name}
+            duration={`${booking.tour.difficulty} ${booking.tour.duration} day tour`}
+            summary={booking.tour.summary}
+            startLocation={booking.tour.startLocation.description}
+            date={`${startDate.getMonth()}, ${startDate.getFullYear()}`}
+            stops={`${booking.tour.locations.length} stops`}
+            participants={`${booking.tour.maxGroupSize} people`}
+            price={booking.tour.price}
+            ratingsAverage={booking.tour.ratingsAverage}
+            ratingsQuantity={booking.tour.ratingsQuantity}
+            slug={booking.tour.slug}
+          />
+        );
+      });
+      content = <div className="card-grid">{cards}</div>;
     }
 
-    return <div>{content}</div>;
+    return content;
   }
 }
 
@@ -54,9 +98,11 @@ Bookings.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+  auth: state.auth,
   bookings: state.bookings,
 });
 
-export default connect(mapStateToProps, { createBookingCheckout })(
-  withRouter(Bookings)
-);
+export default connect(mapStateToProps, {
+  createBookingCheckout,
+  getCurrentUserBookings,
+})(withRouter(Bookings));

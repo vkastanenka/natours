@@ -21,13 +21,12 @@ router.use(authController.protect);
 // @route   GET api/v1/bookings/checkout-session/:tourId
 // @desc    Creates checkout section to book a tour
 // @access  Protected
-router.get(
-  "/checkout-session/:tourId",
-  bookingController.getCheckoutSession
-);
+router.get("/checkout-session/:tourId", bookingController.getCheckoutSession);
 
 // TODO: TEMPORARY
-router.post('/', bookingController.createBookingCheckout);
+router.post("/", bookingController.createBookingCheckout);
+
+router.get("/bookings/:userId", bookingController.getCurrentUserBookings);
 
 ////////////////////
 // Restricted Routes
@@ -37,7 +36,7 @@ router.use(authController.restrictTo("admin", "lead-guide"));
 // @route   GET api/v1/bookings
 // @desc    Get all bookings
 // @access  Restricted
-router.get('/', bookingController.getAllBookings);
+router.get("/", bookingController.getAllBookings);
 
 // @route   POST api/v1/bookings
 // @desc    Create a booking
@@ -47,16 +46,16 @@ router.get('/', bookingController.getAllBookings);
 // @route   GET api/v1/bookings/:id
 // @desc    Get booking by id
 // @access  Restricted
-router.get('/booking/:id', bookingController.getBooking);
+router.get("/booking/:id", bookingController.getBooking);
 
 // @route   PATCH api/v1/bookings/:id
 // @desc    Update booking by id
 // @access  Restricted
-router.patch('/booking/:id', bookingController.updateBooking);
+router.patch("/booking/:id", bookingController.updateBooking);
 
 // @route   DELETE api/v1/bookings/:id
 // @desc    Delete booking by id
 // @access  Restricted
-router.delete('/booking/:id', bookingController.deleteBooking);
+router.delete("/booking/:id", bookingController.deleteBooking);
 
 module.exports = router;

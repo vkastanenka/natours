@@ -64,8 +64,9 @@ exports.createBookingCheckout = catchAsync(async (req, res, next) => {
 });
 
 exports.getCurrentUserBookings = catchAsync(async (req, res, next) => {
-  
-})
+  const bookings = await Booking.find({ user: req.params.userId });
+  return res.status(200).json({ status: "success", data: bookings });
+});
 
 ////////////////////
 // Restricted Routes
