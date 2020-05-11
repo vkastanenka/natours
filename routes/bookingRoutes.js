@@ -26,6 +26,9 @@ router.get(
   bookingController.getCheckoutSession
 );
 
+// TODO: TEMPORARY
+router.post('/', bookingController.createBookingCheckout);
+
 ////////////////////
 // Restricted Routes
 
@@ -39,21 +42,21 @@ router.get('/', bookingController.getAllBookings);
 // @route   POST api/v1/bookings
 // @desc    Create a booking
 // @access  Restricted
-router.post('/', bookingController.createBooking);
+// router.post('/', bookingController.createBooking);
 
 // @route   GET api/v1/bookings/:id
 // @desc    Get booking by id
 // @access  Restricted
-router.get('/:id', bookingController.getBooking);
+router.get('/booking/:id', bookingController.getBooking);
 
 // @route   PATCH api/v1/bookings/:id
 // @desc    Update booking by id
 // @access  Restricted
-router.patch('/:id', bookingController.updateBooking);
+router.patch('/booking/:id', bookingController.updateBooking);
 
 // @route   DELETE api/v1/bookings/:id
 // @desc    Delete booking by id
 // @access  Restricted
-router.delete('/:id', bookingController.deleteBooking);
+router.delete('/booking/:id', bookingController.deleteBooking);
 
 module.exports = router;

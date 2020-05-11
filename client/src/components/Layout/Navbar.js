@@ -45,7 +45,7 @@ class Navbar extends Component {
           >
             Logout
           </button>
-          <Link className="navbar__el" to="/account">
+          <Link className="navbar__el" to="/account/settings">
             <img
               src={this.tryRequirePhoto()}
               alt="User Photo"

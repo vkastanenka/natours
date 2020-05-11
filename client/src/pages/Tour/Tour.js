@@ -28,6 +28,9 @@ class Tour extends Component {
     let pageContent = <Spinner />;
     
     if (tour && !loading) {
+      // TODO: Remove
+      // console.log(tour);
+
       pageContent = (
         <main>
           <Header

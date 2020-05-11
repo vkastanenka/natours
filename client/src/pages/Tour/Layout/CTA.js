@@ -6,15 +6,46 @@ import PropTypes from "prop-types";
 // Redux
 import { connect } from "react-redux";
 
+// Utilities
+import axios from "axios";
+
+// Stripe
+import { loadStripe } from "@stripe/stripe-js";
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+
 const CTA = (props) => {
-  let buttonContent = (
-    <Link to="/authenticate/login" className="link-style">
-      Login to Book Tour
-    </Link>
+  const handleBooking = async (e) => {
+    e.preventDefault();
+
+    // 1. Obtain session id
+    const res = await axios.get(
+      `/api/v1/bookings/checkout-session/${props.tours.tour.id}`
+    );
+    const sessionId = res.data.session.id;
+
+    // 2. When customer clicks on the button, redirect them to checkout
+    const stripe = await stripePromise;
+    const { error } = await stripe.redirectToCheckout({
+      sessionId,
+    });
+
+    // 3. If redirectToCheckout fails due to a browser or network error, display the localized error message to customer using error.message
+  };
+
+  let button = (
+    <button className="btn btn--green span-all-rows">
+      <Link to="/authenticate/login" className="link-style">
+        Login to Book Tour
+      </Link>
+    </button>
   );
 
   if (props.auth.authenticated) {
-    buttonContent = "Book the Tour Now!";
+    button = (
+      <button className="btn btn--green span-all-rows" onClick={handleBooking}>
+        Book the Tour Now!
+      </button>
+    );
   }
 
   return (
@@ -43,9 +74,7 @@ const CTA = (props) => {
           <p className="cta__text">
             {`${props.duration} days. 1 adventure. Infinite memories. Make it yours today!`}
           </p>
-          <button className="btn btn--green span-all-rows">
-            {buttonContent}
-          </button>
+          {button}
         </div>
       </div>
     </section>
@@ -59,6 +88,8 @@ CTA.propTypes = {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  tours: state.tours,
+  bookings: state.bookings,
 });
 
 export default connect(mapStateToProps)(CTA);
