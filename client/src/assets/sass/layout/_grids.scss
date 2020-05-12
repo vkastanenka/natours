@@ -36,6 +36,14 @@
   }
 }
 
+.bookings-grid {
+  max-width: 82%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 7rem;
+}
+
 .row {
   max-width: $grid-width;
   padding: 0 3rem;

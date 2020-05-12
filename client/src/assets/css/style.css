@@ -447,6 +447,10 @@ body {
     object-fit: cover;
     height: 100%;
     width: 100%; }
+  .card__close-icon {
+    position: absolute;
+    top: 2rem;
+    right: 2rem; }
   .card__details {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -909,6 +913,10 @@ body {
     fill: #333; }
     .icon--black-primary:hover {
       fill: #55c57a; }
+  .icon--white-primary {
+    fill: #fff; }
+    .icon--white-primary:hover {
+      fill: #55c57a; }
   .icon--translate:hover {
     transform: translateY(-2px); }
   .icon--active {
@@ -1254,6 +1262,13 @@ body {
   @media only screen and (max-width: 31.25em) {
     .card-grid {
       max-width: 100%; } }
+
+.bookings-grid {
+  max-width: 82%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 7rem; }
 
 .row {
   max-width: 114rem;

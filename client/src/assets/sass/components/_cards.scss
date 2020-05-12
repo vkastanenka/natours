@@ -70,6 +70,12 @@
     width: 100%;
   }
 
+  &__close-icon {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+  }
+
   &__details {
     display: grid;
     grid-template-columns: 1fr 1fr;

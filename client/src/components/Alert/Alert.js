@@ -9,7 +9,7 @@ const Alert = (props) => {
         <div className="alert__prompt">
           <span
             className="alert__prompt-function"
-            onClick={() => props.function(props.reviewId)}
+            onClick={() => props.function(props.deleteId)}
           >
             Yes
           </span>
@@ -27,7 +27,7 @@ Alert.propTypes = {
   type: PropTypes.string.isRequired,
   message: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
   prompt: PropTypes.bool,
-  reviewId: PropTypes.string,
+  deleteId: PropTypes.string,
   function: PropTypes.func,
   alertClose: PropTypes.func,
 };

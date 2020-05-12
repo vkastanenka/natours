@@ -3,20 +3,21 @@ import * as actionTypes from "../actions/actionTypes";
 
 // Utilities
 import updateObject from "../../utils/updateObject";
+import reviewReducer from "./reviewReducer";
 
 const initialState = {
-  checkoutSession: '',
+  checkoutSession: "",
   userBookings: null,
-  loading: false
+  loading: false,
 };
 
 const setBookingLoad = (state, action) => {
   return updateObject(state, { loading: true });
-} 
+};
 
 const unsetBookingLoad = (state, action) => {
   return updateObject(state, { loading: false });
-} 
+};
 
 const setCheckoutSessionId = (state, action) => {
   return updateObject(state, {
@@ -27,9 +28,20 @@ const setCheckoutSessionId = (state, action) => {
 const setUserBookings = (state, action) => {
   return updateObject(state, {
     userBookings: action.payload,
-    loading: false
-  })
-}
+    loading: false,
+  });
+};
+
+const deleteUserBooking = (state, action) => {
+  const userBookings = [...state.userBookings];
+  const filteredBookings = userBookings.filter((booking) => {
+    if (booking._id !== action.payload) return reviewReducer;
+  });
+  return updateObject(state, {
+    loading: false,
+    userBookings: filteredBookings,
+  });
+};
 
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -41,6 +53,8 @@ export default function (state = initialState, action) {
       return setCheckoutSessionId(state, action);
     case actionTypes.SET_CURRENT_USER_BOOKINGS:
       return setUserBookings(state, action);
+    case actionTypes.DELETE_CURRENT_USER_BOOKING:
+      return deleteUserBooking(state, action);
     default:
       return state;
   }

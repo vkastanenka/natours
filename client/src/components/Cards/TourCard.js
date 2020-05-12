@@ -21,6 +21,13 @@ const TourCard = (props) => {
         <h3 className="card__heading">
           <span>{props.name}</span>
         </h3>
+        {props.iconClose ? (
+          <Icon
+            type="x-circle"
+            className="card__close-icon icon icon--large icon--white-primary icon--active icon--translate"
+            onClick={props.iconClose}
+          />
+        ) : null}
       </div>
 
       <div className="card__details">

@@ -54,3 +54,13 @@ export const getCurrentUserBookings = (userId) => async (dispatch) => {
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }
 };
+
+export const deleteBooking = bookingId => async dispatch => {
+  try {
+    dispatch(setBookingLoad());
+    await axios.delete(`/api/v1/bookings/booking/${bookingId}`);
+    actionDispatch(actionTypes.DELETE_CURRENT_USER_BOOKING, bookingId, dispatch);
+  } catch (err) {
+    actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
+  }
+}

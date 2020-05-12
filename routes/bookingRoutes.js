@@ -28,6 +28,11 @@ router.post("/", bookingController.createBookingCheckout);
 
 router.get("/bookings/:userId", bookingController.getCurrentUserBookings);
 
+// @route   DELETE api/v1/bookings/:id
+// @desc    Delete booking by id
+// @access  Restricted
+router.delete("/booking/:id", bookingController.deleteBooking);
+
 ////////////////////
 // Restricted Routes
 
@@ -52,10 +57,5 @@ router.get("/booking/:id", bookingController.getBooking);
 // @desc    Update booking by id
 // @access  Restricted
 router.patch("/booking/:id", bookingController.updateBooking);
-
-// @route   DELETE api/v1/bookings/:id
-// @desc    Delete booking by id
-// @access  Restricted
-router.delete("/booking/:id", bookingController.deleteBooking);
 
 module.exports = router;

@@ -10,16 +10,24 @@ import { connect } from "react-redux";
 import {
   createBookingCheckout,
   getCurrentUserBookings,
+  deleteBooking,
 } from "../../../../store/actions/bookingActions";
 
 // Utilities
 import queryString from "query-string";
 
 // Components
+import Alert from "../../../../components/Alert/Alert";
 import Spinner from "../../../../components/Spinner/Spinner";
 import TourCard from "../../../../components/Cards/TourCard";
+import Auxiliary from "../../../../components/HigherOrder/Auxiliary";
 
 class Bookings extends Component {
+  state = {
+    deletingBooking: false,
+    bookingToDelete: "",
+  };
+
   async componentDidMount() {
     if (this.props.location.search) {
       const search = queryString.parse(this.props.location.search);
@@ -43,21 +51,33 @@ class Bookings extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      prevProps.location.search &&
-      !this.props.location.search
-    ) {
+    if (prevProps.location.search && !this.props.location.search) {
       // Get bookings after redirect from creating the booking
       this.props.getCurrentUserBookings(this.props.auth.user.id);
     }
   }
 
   render() {
-    console.log(this.props.bookings.userBookings);
     const { userBookings, loading } = this.props.bookings;
 
     let cards;
+    let alert;
     let content = <div></div>;
+
+    if (this.state.deletingBooking) {
+      alert = (
+        <Alert
+          type="error"
+          message="Are you sure you want to cancel your tour?"
+          prompt={true}
+          deleteId={this.state.bookingToDelete}
+          function={this.props.deleteBooking}
+          alertClose={() =>
+            this.setState({ deletingBooking: false, bookingToDelete: "" })
+          }
+        />
+      );
+    }
 
     if (loading) {
       content = (
@@ -83,10 +103,21 @@ class Bookings extends Component {
             ratingsAverage={booking.tour.ratingsAverage}
             ratingsQuantity={booking.tour.ratingsQuantity}
             slug={booking.tour.slug}
+            iconClose={() =>
+              this.setState({
+                deletingBooking: true,
+                bookingToDelete: booking._id,
+              })
+            }
           />
         );
       });
-      content = <div className="card-grid">{cards}</div>;
+      content = (
+        <Auxiliary>
+          {alert}
+          <div className="bookings-grid">{cards}</div>
+        </Auxiliary>
+      );
     }
 
     return content;
@@ -105,4 +136,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   createBookingCheckout,
   getCurrentUserBookings,
+  deleteBooking,
 })(withRouter(Bookings));

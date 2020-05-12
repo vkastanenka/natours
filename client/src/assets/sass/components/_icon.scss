@@ -29,6 +29,14 @@
     }
   }
 
+  &--white-primary {
+    fill: $color-white;
+
+    &:hover {
+      fill: $color-primary
+    }
+  }
+
   &--translate:hover {
     transform: translateY(-2px);
   }
