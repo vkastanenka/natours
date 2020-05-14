@@ -37,6 +37,10 @@
     }
   }
 
+  &--black {
+    fill: $color-grey-dark-3;
+  }
+
   &--translate:hover {
     transform: translateY(-2px);
   }

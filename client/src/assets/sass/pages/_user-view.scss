@@ -30,6 +30,19 @@
   &__content {
     flex: 1;
     padding: 7rem 0;
+    position: relative;
+  }
+
+  &__link {
+    position: absolute;
+    &--top-left {
+      top: 2rem;
+      left: 3rem;
+    }
+    &--top-right {
+      top: 2rem;
+      right: 3rem;
+    }
   }
 
   &__form-container {

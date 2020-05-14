@@ -1,22 +1,40 @@
-// React
 import React from "react";
 import PropTypes from "prop-types";
 
-const InputGroup = (props) => {
+const SelectGroup = (props) => {
+  const options = props.options.map((option) => {
+    if (option.value === "") {
+      return (
+        <option
+          key={option.value}
+          value={option.value}
+          disabled={option.disabled}
+          hidden={option.hidden}
+        >
+          {option.label}
+        </option>
+      );
+    }
+    return (
+      <option key={option.value} value={option.value}>
+        {option.label}
+      </option>
+    );
+  });
+
   return (
     <div className={`form__group ${props.groupClass}`}>
-      <input
-        type={props.type}
+      <select
         name={props.name}
         id={props.id}
         className={`form__input ${props.inputClass}`}
         placeholder={props.placeholder}
-        minLength={props.minLength}
         value={props.value}
         required={props.required}
         onChange={props.onChange}
-        onFocus={props.onFocus}
-      />
+      >
+        {options}
+      </select>
       <label htmlFor={props.htmlFor} className="form__label">
         {props.label}
       </label>
@@ -24,14 +42,12 @@ const InputGroup = (props) => {
   );
 };
 
-InputGroup.propTypes = {
+SelectGroup.propTypes = {
+  options: PropTypes.array.isRequired,
   groupClass: PropTypes.string,
-  type: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   id: PropTypes.string,
   inputClass: PropTypes.string,
-  placeholder: PropTypes.string.isRequired,
-  minLength: PropTypes.string,
   value: PropTypes.string,
   required: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
@@ -39,4 +55,4 @@ InputGroup.propTypes = {
   label: PropTypes.string,
 };
 
-export default InputGroup;
+export default SelectGroup;

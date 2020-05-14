@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 
 // Components
 import Icon from "../../../components/Icon/Icon";
+import Auxiliary from "../../../components/HigherOrder/Auxiliary";
 
 class SideNav extends Component {
   state = {
@@ -25,8 +26,14 @@ class SideNav extends Component {
       case "reviews":
         this.setState({ currentPage: "reviews" });
         break;
-      case "billing":
-        this.setState({ currentPage: "billing" });
+      case "manageTours":
+        this.setState({ currentPage: "manageTours" });
+        break;
+      case "manageUsers":
+        this.setState({ currentPage: "manageUsers" });
+        break;
+      case "manageReviews":
+        this.setState({ currentPage: "manageReviews" });
         break;
     }
   }
@@ -42,8 +49,14 @@ class SideNav extends Component {
       case "reviews":
         this.setState({ currentPage: "reviews" });
         break;
-      case "billing":
-        this.setState({ currentPage: "billing" });
+      case "manageTours":
+        this.setState({ currentPage: "manageTours" });
+        break;
+      case "manageUsers":
+        this.setState({ currentPage: "manageUsers" });
+        break;
+      case "manageReviews":
+        this.setState({ currentPage: "manageReviews" });
         break;
     }
   }
@@ -62,54 +75,58 @@ class SideNav extends Component {
               Settings
             </li>
           </Link>
-          <Link to="/account/bookings" className="link-style">
-            <li
-              className={
-                this.state.currentPage === "bookings" ? `side-nav--active` : ""
-              }
-            >
-              <Icon type="briefcase" className="side-nav__icon" />
-              My bookings
-            </li>
-          </Link>
-          <Link to="/account/reviews" className="link-style">
-            <li
-              className={
-                this.state.currentPage === "reviews" ? `side-nav--active` : ""
-              }
-            >
-              <Icon type="star" className="side-nav__icon" />
-              My reviews
-            </li>
-          </Link>
-          <Link to="/account/billing" className="link-style">
-            <li
-              className={
-                this.state.currentPage === "billing" ? `side-nav--active` : ""
-              }
-            >
-              <Icon type="credit-card" className="side-nav__icon" />
-              Billing
-            </li>
-          </Link>
+          {this.props.auth.user.role === "user" ? (
+            <Auxiliary>
+              <Link to="/account/bookings" className="link-style">
+                <li
+                  className={
+                    this.state.currentPage === "bookings"
+                      ? `side-nav--active`
+                      : ""
+                  }
+                >
+                  <Icon type="briefcase" className="side-nav__icon" />
+                  My bookings
+                </li>
+              </Link>
+              <Link to="/account/reviews" className="link-style">
+                <li
+                  className={
+                    this.state.currentPage === "reviews"
+                      ? `side-nav--active`
+                      : ""
+                  }
+                >
+                  <Icon type="star" className="side-nav__icon" />
+                  My reviews
+                </li>
+              </Link>
+            </Auxiliary>
+          ) : null}
         </ul>
         {this.props.auth.user.role === "admin" ||
         this.props.auth.user.role === "lead-guide" ? (
           <div className="admin-nav">
             <h5 className="admin-nav__heading">Admin</h5>
             <ul className="side-nav">
-              <li>
-                <Icon type="map" className="side-nav__icon" />
-                Manage tours
-              </li>
-              <li>
-                <Icon type="users" className="side-nav__icon" />
-                Manage users
-              </li>
-              <li>
-                <Icon type="star" className="side-nav__icon" />
-                Manage reviews
-              </li>
+              <Link to="/account/manageTours" className="link-style">
+                <li>
+                  <Icon type="map" className="side-nav__icon" />
+                  Manage tours
+                </li>
+              </Link>
+              <Link to="/account/manageUsers" className="link-style">
+                <li>
+                  <Icon type="users" className="side-nav__icon" />
+                  Manage users
+                </li>
+              </Link>
+              <Link to="/account/manageReviews" className="link-style">
+                <li>
+                  <Icon type="star" className="side-nav__icon" />
+                  Manage reviews
+                </li>
+              </Link>
             </ul>
           </div>
         ) : null}
@@ -124,6 +141,7 @@ SideNav.propTypes = {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  tours: state.tours
 });
 
 export default connect(mapStateToProps)(withRouter(SideNav));

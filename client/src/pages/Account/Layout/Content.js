@@ -6,7 +6,9 @@ import { withRouter } from "react-router-dom";
 import Settings from "./ContentLayout/Settings";
 import Bookings from "./ContentLayout/Bookings";
 import Reviews from "./ContentLayout/Reviews";
-import Billing from "./ContentLayout/Billing";
+import ManageTours from "./ContentLayout/ManageTours";
+import ManageUsers from "./ContentLayout/ManageUsers";
+import ManageReviews from "./ContentLayout/ManageReviews";
 
 class Content extends Component {
   state = {
@@ -24,8 +26,14 @@ class Content extends Component {
       case "reviews":
         this.setState({ content: <Reviews /> });
         break;
-      case "billing":
-        this.setState({ content: <Billing /> });
+      case "manageTours":
+        this.setState({ content: <ManageTours /> });
+        break;
+      case "manageUsers":
+        this.setState({ content: <ManageUsers /> });
+        break;
+      case "manageReviews":
+        this.setState({ content: <ManageReviews /> });
         break;
     }
   }
@@ -41,8 +49,14 @@ class Content extends Component {
       case "reviews":
         this.setState({ content: <Reviews /> });
         break;
-      case "billing":
-        this.setState({ content: <Billing /> });
+      case "manageTours":
+        this.setState({ content: <ManageTours /> });
+        break;
+      case "manageUsers":
+        this.setState({ content: <ManageUsers /> });
+        break;
+      case "manageReviews":
+        this.setState({ content: <ManageReviews /> });
         break;
     }
   }

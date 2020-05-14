@@ -101,6 +101,13 @@ body {
   height: 1px;
   background-color: #e0e0e0; }
 
+select {
+  text-align: center;
+  text-align-last: center; }
+
+option {
+  text-align: left; }
+
 body {
   line-height: 1.6;
   font-weight: 300;
@@ -191,7 +198,10 @@ body {
 .paragraph {
   font-size: 1.6rem; }
 
-.u-center-text {
+.fw-light {
+  font-weight: 300 !important; }
+
+.ta-center {
   text-align: center; }
 
 .flex {
@@ -385,7 +395,8 @@ body {
   transition: all 0.2s;
   font-weight: 300;
   font-size: 1.6rem;
-  cursor: pointer; }
+  cursor: pointer;
+  display: flex; }
 
 .btn-text:hover {
   background-color: #55c57a;
@@ -776,10 +787,47 @@ body {
     .authenticate-form {
       padding: 5rem 2rem; } }
 
+.tour-form {
+  margin: 0 auto;
+  width: 55rem;
+  background-color: #fff;
+  box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.06);
+  padding: 5rem 7rem;
+  border-radius: 5px;
+  text-align: center;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column; }
+  @media only screen and (max-width: 31.25em) {
+    .tour-form {
+      padding: 5rem 3rem; } }
+  @media only screen and (max-width: 25em) {
+    .tour-form {
+      padding: 5rem 2rem; } }
+  .tour-form:hover {
+    overflow: auto; }
+  .tour-form .form__photo-upload,
+  .tour-form .form__links {
+    align-self: center; }
+  .tour-form .form__photo-upload {
+    display: flex;
+    flex-direction: column; }
+
 .form {
   text-align: center;
   position: relative;
   z-index: 1000000000000000; }
+  .form__links {
+    display: flex;
+    justify-content: space-between; }
+    .form__links > * {
+      margin: 0 1rem; }
+  .form__icon-group {
+    display: flex;
+    align-items: center; }
+    .form__icon-group > :first-child {
+      margin-right: 1rem; }
   .form__close-icon {
     position: absolute;
     top: 2rem;
@@ -917,6 +965,8 @@ body {
     fill: #fff; }
     .icon--white-primary:hover {
       fill: #55c57a; }
+  .icon--black {
+    fill: #333; }
   .icon--translate:hover {
     transform: translateY(-2px); }
   .icon--active {
@@ -1900,7 +1950,16 @@ body {
         flex: 26rem 0 0; } }
   .user-view__content {
     flex: 1;
-    padding: 7rem 0; }
+    padding: 7rem 0;
+    position: relative; }
+  .user-view__link {
+    position: absolute; }
+    .user-view__link--top-left {
+      top: 2rem;
+      left: 3rem; }
+    .user-view__link--top-right {
+      top: 2rem;
+      right: 3rem; }
   .user-view__form-container {
     max-width: 68rem;
     margin: 0 auto;

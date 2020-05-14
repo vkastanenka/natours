@@ -16,10 +16,66 @@
   }
 }
 
+.tour-form {
+  margin: 0 auto;
+  width: 55rem;
+  background-color: $color-white;
+  box-shadow: $box-shadow--1;
+  padding: 5rem 7rem;
+  border-radius: 5px;
+  text-align: center;
+
+  @include respond(bp-smaller) {
+    padding: 5rem 3rem;
+  }
+
+  @include respond(bp-smallest) {
+    padding: 5rem 2rem;
+  }
+
+  max-height: 90vh;
+  overflow: hidden;
+
+  &:hover {
+    overflow: auto;
+  }
+
+  display: flex;
+  flex-direction: column;
+
+  & .form__photo-upload,
+  & .form__links {
+    align-self: center;
+  }
+
+  & .form__photo-upload {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 .form {
   text-align: center;
   position: relative;
   z-index: 1000000000000000;
+
+  &__links {
+    display: flex;
+    justify-content: space-between;
+
+    & > * {
+      margin: 0 1rem;
+    }
+  }
+
+  &__icon-group {
+    display: flex;
+    align-items: center;
+
+    & > :first-child {
+      margin-right: 1rem;
+    }
+  }
 
   &__close-icon {
     position: absolute;

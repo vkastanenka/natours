@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Billing extends Component {
+class ManageUsers extends Component {
   render() {
     return (
       <div>
@@ -10,4 +10,4 @@ class Billing extends Component {
   }
 }
 
-export default Billing;
+export default ManageUsers;
