@@ -22,6 +22,7 @@ import TextAreaGroup from "../Inputs/TextAreaGroup";
 
 class Tour extends Component {
   state = {
+    // General
     name: "",
     duration: "",
     maxGroupSize: "",
@@ -29,19 +30,32 @@ class Tour extends Component {
     price: "",
     summary: "",
     description: "",
+    startDestinationAddress: "",
+    startDestinationDescription: "",
+
+    // Photos
     coverPhoto: "",
     galleryPhotos: "",
+
+    // Dates
     bookingDates: [{ bookingDate1: "" }],
+
+    // Destinations
     tourDestinations: [
       {
         destination1Lat: "",
         destination1Long: "",
-        destination1Address: "",
+        destination1Day: "",
         destination1Description: "",
       },
     ],
+
+    // Guides
     leadGuide: "",
     guides: [{ guide1: "" }],
+
+    // Errors
+    errors: {},
   };
 
   componentDidMount() {
@@ -67,10 +81,60 @@ class Tour extends Component {
     this.setState({ [stateEntry[0][0]]: stateCopy });
   };
 
+  onTourSubmit = async (e) => {
+    e.preventDefault();
+
+    // Clear errors if any
+    if (this.props.errors) {
+      this.setState({ errors: {} });
+      this.props.clearErrors();
+    }
+
+    const bookingDates = this.state.bookingDates.map((date) => {
+      return new Date(Object.values(date)[0]);
+    });
+
+    const startLocation = {};
+    startLocation.description = this.state.startDestinationDescription;
+    startLocation.coordinates = [
+      this.state.tourDestinations[0].destination1Lat,
+      this.state.tourDestinations[0].destination1Long,
+    ];
+    startLocation.address = this.state.startDestinationAddress;
+
+    const baseGuides = this.state.guides.map((guide) => {
+      return Object.values(guide)[0];
+    })
+    const guides = [this.state.leadGuide, ...baseGuides];
+    const locations = this.state.tourDestinations.map(stop => {
+      return { coordinates: [] }
+    })
+
+    const form = new FormData();
+    form.append('startLocation', startLocation);
+    form.append("images", this.state.galleryPhotos);
+    form.append("startDates", bookingDates);
+    form.append('guides', guides);
+    form.append("name", this.state.name);
+    form.append("duration", this.state.duration);
+    form.append("maxGroupSize", this.state.maxGroupSize);
+    form.append("difficulty", this.state.difficulty);
+    form.append("price", this.state.price);
+    form.append("summary", this.state.summary);
+    form.append("description", this.state.description);
+    form.append("imageCover", this.state.coverPhoto);
+    
+  };
+
   render() {
+    const errors = [];
     const { loading, guides } = this.props.users;
 
-    console.log(this.state.leadGuide, this.state.guides);
+    if (this.state.errors) {
+      for (let err in this.state.errors) {
+        errors.push(<p key={err}>{this.state.errors[err]}</p>);
+      }
+    }
 
     let formContent;
     let coverPhotoName;
@@ -79,6 +143,7 @@ class Tour extends Component {
     let tourDestinationInputs = [];
     let leadGuideInput;
     let guideInputs = [];
+    let buttonText = "Submit tour";
 
     // Name of cover photo to appear below input
     if (this.state.coverPhoto) {
@@ -156,25 +221,25 @@ class Tour extends Component {
             label="Longitude"
           />
           <InputGroup
-            type="text"
-            name={`destination${i}Address`}
-            id={`destination${i}Address`}
-            placeholder="Address"
+            type="number"
+            name={`destination${i}Day`}
+            id={`destination${i}Day`}
+            placeholder="Day"
             required={true}
-            value={this.state.tourDestinations[i - 1][`destination${i}Address`]}
+            value={this.state.tourDestinations[i - 1][`destination${i}Day`]}
             onChange={(e) =>
               this.onNestedChange(e, i, {
                 tourDestination: this.state.tourDestinations,
               })
             }
-            htmlFor={`destination${i}Address`}
-            label="Address"
+            htmlFor={`destination${i}Day`}
+            label="Day"
           />
           <InputGroup
             type="text"
             name={`destination${i}Description`}
             id={`destination${i}Description`}
-            placeholder="State/province and country"
+            placeholder="Location"
             value={this.state.startLocationDescription}
             required={true}
             value={
@@ -186,7 +251,7 @@ class Tour extends Component {
               })
             }
             htmlFor={`destination${i}Description`}
-            label="State/province and country"
+            label="Location"
           />
         </div>
       );
@@ -266,7 +331,7 @@ class Tour extends Component {
     } else {
       formContent = (
         <Auxiliary>
-          <form className="form tour-form">
+          <form className="form tour-form" onSubmit={this.onTourSubmit}>
             <Icon
               type="x"
               className="icon icon--large icon--black-primary icon--translate icon--active form__close-icon"
@@ -276,8 +341,11 @@ class Tour extends Component {
               {this.props.editingTour ? "Editing" : "Create a new tour"}
             </h2>
             <br />
-            <h2 className="heading-secondary heading-secondary--small ma-bt-lg">
+            {/* <h2 className="heading-secondary heading-secondary--small ma-bt-lg">
               {this.props.editingTour ? `${this.props.tourName} Tour` : null}
+            </h2>
+            <h2 className="heading-secondary heading-secondary--smaller ma-bt-md">
+              General
             </h2>
             <InputGroup
               type="text"
@@ -365,6 +433,31 @@ class Tour extends Component {
               htmlFor="description"
               label="Description"
             />
+            <InputGroup
+              type="text"
+              name="startDestinationAddress"
+              id="startDestinationAddress"
+              placeholder="Start address"
+              value={this.state.startDestinationAddress}
+              required={true}
+              onChange={(e) => this.onChange(e)}
+              htmlFor="startDestinationAddress"
+              label="Start address"
+            />
+            <InputGroup
+              type="text"
+              name="startDestinationDescription"
+              id="startDestinationDescription"
+              placeholder="State/province and country"
+              value={this.state.startDestinationDescription}
+              required={true}
+              onChange={(e) => this.onChange(e)}
+              htmlFor="startDestinationDescription"
+              label="State/province and country"
+            />
+            <h2 className="heading-secondary heading-secondary--smaller ma-bt-md">
+              Photos
+            </h2>
             <div className="form__group form__photo-upload ma-bt-lg">
               <label htmlFor="coverPhoto" className="btn-text">
                 Upload cover photo
@@ -393,6 +486,10 @@ class Tour extends Component {
               />
               {galleryPhotoNames}
             </div>
+             */}
+            <h2 className="heading-secondary heading-secondary--smaller ma-bt-md">
+              Booking Dates
+            </h2>
             <div className="form__group form__links ma-bt-lg">
               <label
                 className="btn-text"
@@ -419,6 +516,9 @@ class Tour extends Component {
               </label>
             </div>
             {bookingDateInputs}
+            {/* <h2 className="heading-secondary heading-secondary--smaller ma-bt-md">
+              Tour Destinations
+            </h2>
             <div className="form__group form__links ma-bt-lg">
               <label
                 className="btn-text"
@@ -450,6 +550,9 @@ class Tour extends Component {
               </label>
             </div>
             {tourDestinationInputs}
+            <h2 className="heading-secondary heading-secondary--smaller ma-bt-md">
+              Guides
+            </h2>
             <div className="form__group form__links ma-bt-lg">
               <label
                 className="btn-text"
@@ -476,7 +579,16 @@ class Tour extends Component {
               </label>
             </div>
             {leadGuideInput}
-            {guideInputs}
+            {guideInputs} */}
+            <div className="form__group">
+              <button
+                type="submit"
+                className="btn btn--green"
+                disabled={this.state.disableSubmitButton}
+              >
+                {buttonText}
+              </button>
+            </div>
           </form>
         </Auxiliary>
       );
@@ -488,6 +600,7 @@ class Tour extends Component {
 
 const mapStateToProps = (state) => ({
   users: state.users,
+  errors: state.errors,
 });
 
-export default connect(mapStateToProps, { getGuides })(Tour);
+export default connect(mapStateToProps, { getGuides, clearErrors })(Tour);
