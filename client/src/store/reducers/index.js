@@ -7,6 +7,7 @@ import errorReducer from "./errorReducer";
 import tourReducer from "./tourReducer";
 import reviewReducer from "./reviewReducer";
 import bookingReducer from "./bookingReducer";
+import userReducer from './userReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -14,4 +15,5 @@ export default combineReducers({
   tours: tourReducer,
   reviews: reviewReducer,
   bookings: bookingReducer,
+  users: userReducer
 });

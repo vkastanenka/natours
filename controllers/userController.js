@@ -2,7 +2,7 @@
 const sharp = require("sharp");
 const multer = require("multer");
 const factory = require("./handlerFactory");
-const createJWT = require('../utils/jwtGenerator');
+const createJWT = require("../utils/jwtGenerator");
 
 // Error Handling
 const AppError = require("./../utils/appError");
@@ -121,7 +121,7 @@ exports.updateCurrentUser = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     user: updatedUser,
-    token
+    token,
   });
 });
 
@@ -158,3 +158,8 @@ exports.getUser = factory.getOne(User);
 
 // TODO:
 exports.deleteUser = factory.deleteOne(User);
+
+exports.getGuides = catchAsync(async (req, res, next) => {
+  const guides = await User.find({ role: { $in: ["guide", "lead-guide"] } });
+  res.status(200).json({ status: "succes", data: guides });
+});

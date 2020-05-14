@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 // Actions
+import { getGuides } from "../../store/actions/userActions";
 import { postTour } from "../../store/actions/tourActions";
 import { updateTour } from "../../store/actions/tourActions";
 import { clearErrors } from "../../store/actions/errorActions";
@@ -13,6 +14,7 @@ import { clearErrors } from "../../store/actions/errorActions";
 // Components
 import Alert from "../Alert/Alert";
 import Icon from "../Icon/Icon";
+import Spinner from "../Spinner/Spinner";
 import Auxiliary from "../HigherOrder/Auxiliary";
 import InputGroup from "../Inputs/InputGroup";
 import SelectGroup from "../Inputs/SelectGroup";
@@ -38,8 +40,15 @@ class Tour extends Component {
         destination1Description: "",
       },
     ],
-    guides: [{ guide1: '' }]
+    leadGuide: "",
+    guides: [{ guide1: "" }],
   };
+
+  componentDidMount() {
+    if (!this.props.users.guides) {
+      this.props.getGuides();
+    }
+  }
 
   // State handler for input fields
   onChange = (e) => {
@@ -58,17 +67,18 @@ class Tour extends Component {
     this.setState({ [stateEntry[0][0]]: stateCopy });
   };
 
-  onDestinationChange = (e, i) => {
-    const destinationCopy = [...this.state.tourDestinations];
-    destinationCopy[i - 1][e.target.name] = e.target.value;
-    this.setState({ tourDestinations: destinationCopy });
-  };
-
   render() {
+    const { loading, guides } = this.props.users;
+
+    console.log(this.state.leadGuide, this.state.guides);
+
+    let formContent;
     let coverPhotoName;
     let galleryPhotoNames;
     let bookingDateInputs = [];
     let tourDestinationInputs = [];
+    let leadGuideInput;
+    let guideInputs = [];
 
     // Name of cover photo to appear below input
     if (this.state.coverPhoto) {
@@ -182,221 +192,302 @@ class Tour extends Component {
       );
     }
 
-    return (
-      <Auxiliary>
-        <form className="form tour-form">
-          <Icon
-            type="x"
-            className="icon icon--large icon--black-primary icon--translate icon--active form__close-icon"
-            onClick={this.props.popupClose}
-          />
-          <h2 className="heading-secondary heading-secondary--small">
-            {this.props.editingTour ? "Editing" : "Create a new tour"}
-          </h2>
-          <br />
-          <h2 className="heading-secondary heading-secondary--small ma-bt-lg">
-            {this.props.editingTour ? `${this.props.tourName} Tour` : null}
-          </h2>
-          <InputGroup
-            type="text"
-            name="name"
-            id="name"
-            placeholder="Name"
-            value={this.state.name}
-            required={true}
-            onChange={(e) => this.onChange(e)}
-            htmlFor="name"
-            label="Name"
-          />
-          <InputGroup
-            type="number"
-            name="duration"
-            id="duration"
-            placeholder="Duration (days)"
-            value={this.state.duration}
-            required={true}
-            onChange={(e) => this.onChange(e)}
-            htmlFor="duration"
-            label="Duration (days)"
-          />
-          <InputGroup
-            type="number"
-            name="maxGroupSize"
-            id="maxGroupSize"
-            placeholder="Max group size"
-            value={this.state.maxGroupSize}
-            required={true}
-            onChange={(e) => this.onChange(e)}
-            htmlFor="maxGroupSize"
-            label="Max group size"
-          />
+    // Obtaining options for guides and lead guides
+    if (!loading && guides) {
+      const leadGuideOptions = guides
+        .filter((guide) => {
+          if (guide.role === "lead-guide") {
+            return guide;
+          }
+        })
+        .map((leadGuide) => {
+          return { value: leadGuide._id, label: leadGuide.name };
+        });
+
+      leadGuideOptions.unshift({
+        value: "",
+        label: "Lead guide",
+        disabled: true,
+        hidden: true,
+      });
+
+      const guideOptions = guides
+        .filter((guide) => {
+          if (guide.role === "guide") {
+            return guide;
+          }
+        })
+        .map((guide) => {
+          return { value: guide._id, label: guide.name };
+        });
+
+      guideOptions.unshift({
+        value: "",
+        label: "Guide",
+        disabled: true,
+        hidden: true,
+      });
+
+      // Adding inputs for guides based on state length
+      for (let i = 1; i <= this.state.guides.length; i++) {
+        guideInputs.push(
           <SelectGroup
-            name="difficulty"
-            options={[
-              {
-                value: "",
-                label: "Difficulty",
-                disabled: true,
-                hidden: true,
-              },
-              { value: "easy", label: "Easy" },
-              { value: "medium", label: "Medium" },
-              { value: "hard", label: "Hard" },
-            ]}
-            id="difficulty"
-            value={this.state.difficulty}
+            key={i}
+            name={`guide${i}`}
+            options={guideOptions}
+            id={`guide${i}`}
+            value={this.state.guides[i - 1][`guide${i}`]}
             required={true}
-            onChange={(e) => this.onChange(e)}
-            htmlFor="difficulty"
-            label="Difficulty"
+            onChange={(e) =>
+              this.onNestedChange(e, i, { guides: this.state.guides })
+            }
+            htmlFor={`guide${i}`}
+            label={`Guide ${i}`}
           />
-          <InputGroup
-            type="number"
-            name="price"
-            id="price"
-            placeholder="Price"
-            value={this.state.price}
-            required={true}
-            onChange={(e) => this.onChange(e)}
-            htmlFor="price"
-            label="Price"
-          />
-          <TextAreaGroup
-            name="summary"
-            id="summary"
-            inputClass="form__textarea"
-            placeholder="Provide a summary"
-            value={this.state.summary}
-            required={true}
-            onChange={(e) => this.onChange(e)}
-            htmlFor="summary"
-            label="Summary"
-          />
-          <TextAreaGroup
-            name="description"
-            id="description"
-            inputClass="form__textarea"
-            placeholder="Provide a description"
-            value={this.state.description}
-            required={true}
-            onChange={(e) => this.onChange(e)}
-            htmlFor="description"
-            label="Description"
-          />
-          <div className="form__group form__photo-upload ma-bt-lg">
-            <label htmlFor="coverPhoto" className="btn-text">
-              Upload cover photo
-            </label>
-            <input
-              id="coverPhoto"
-              type="file"
-              name="coverPhoto"
-              className="invisible"
-              onChange={(e) => this.handlePhoto(e)}
+        );
+      }
+
+      leadGuideInput = (
+        <SelectGroup
+          name="leadGuide"
+          options={leadGuideOptions}
+          id="leadGuide"
+          value={this.state.difficulty}
+          required={true}
+          onChange={(e) => this.onChange(e)}
+          htmlFor="leadGuide"
+          label="Lead guide"
+        />
+      );
+    }
+
+    if (loading && !guides) {
+      formContent = <Spinner />;
+    } else {
+      formContent = (
+        <Auxiliary>
+          <form className="form tour-form">
+            <Icon
+              type="x"
+              className="icon icon--large icon--black-primary icon--translate icon--active form__close-icon"
+              onClick={this.props.popupClose}
             />
-            {coverPhotoName}
-          </div>
-          <div className="form__group form__photo-upload ma-bt-lg">
-            <label htmlFor="galleryPhotos" className="btn-text">
-              Upload gallery photos{" "}
-              {`(${3 - this.state.galleryPhotos.length} remaining)`}
-            </label>
-            <input
-              id="galleryPhotos"
-              type="file"
-              name="galleryPhotos"
-              className="invisible"
-              multiple="multiple"
-              onChange={(e) => this.handlePhoto(e)}
+            <h2 className="heading-secondary heading-secondary--small">
+              {this.props.editingTour ? "Editing" : "Create a new tour"}
+            </h2>
+            <br />
+            <h2 className="heading-secondary heading-secondary--small ma-bt-lg">
+              {this.props.editingTour ? `${this.props.tourName} Tour` : null}
+            </h2>
+            <InputGroup
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Name"
+              value={this.state.name}
+              required={true}
+              onChange={(e) => this.onChange(e)}
+              htmlFor="name"
+              label="Name"
             />
-            {galleryPhotoNames}
-          </div>
-          <div className="form__group form__links ma-bt-lg">
-            <label
-              className="btn-text"
-              onClick={() => {
-                const plusNum = this.state.bookingDates.length + 1;
-                const bookingsCopy = [...this.state.bookingDates];
-                bookingsCopy.push({ [`bookingDate${plusNum}`]: "" });
-                this.setState({ bookingDates: bookingsCopy });
-              }}
-            >
-              Add booking date
-            </label>
-            <label
-              className="btn-text"
-              onClick={() => {
-                if (this.state.bookingDates.length > 1) {
+            <InputGroup
+              type="number"
+              name="duration"
+              id="duration"
+              placeholder="Duration (days)"
+              value={this.state.duration}
+              required={true}
+              onChange={(e) => this.onChange(e)}
+              htmlFor="duration"
+              label="Duration (days)"
+            />
+            <InputGroup
+              type="number"
+              name="maxGroupSize"
+              id="maxGroupSize"
+              placeholder="Max group size"
+              value={this.state.maxGroupSize}
+              required={true}
+              onChange={(e) => this.onChange(e)}
+              htmlFor="maxGroupSize"
+              label="Max group size"
+            />
+            <SelectGroup
+              name="difficulty"
+              options={[
+                {
+                  value: "",
+                  label: "Difficulty",
+                  disabled: true,
+                  hidden: true,
+                },
+                { value: "easy", label: "Easy" },
+                { value: "medium", label: "Medium" },
+                { value: "hard", label: "Hard" },
+              ]}
+              id="difficulty"
+              value={this.state.difficulty}
+              required={true}
+              onChange={(e) => this.onChange(e)}
+              htmlFor="difficulty"
+              label="Difficulty"
+            />
+            <InputGroup
+              type="number"
+              name="price"
+              id="price"
+              placeholder="Price"
+              value={this.state.price}
+              required={true}
+              onChange={(e) => this.onChange(e)}
+              htmlFor="price"
+              label="Price"
+            />
+            <TextAreaGroup
+              name="summary"
+              id="summary"
+              inputClass="form__textarea"
+              placeholder="Provide a summary"
+              value={this.state.summary}
+              required={true}
+              onChange={(e) => this.onChange(e)}
+              htmlFor="summary"
+              label="Summary"
+            />
+            <TextAreaGroup
+              name="description"
+              id="description"
+              inputClass="form__textarea"
+              placeholder="Provide a description"
+              value={this.state.description}
+              required={true}
+              onChange={(e) => this.onChange(e)}
+              htmlFor="description"
+              label="Description"
+            />
+            <div className="form__group form__photo-upload ma-bt-lg">
+              <label htmlFor="coverPhoto" className="btn-text">
+                Upload cover photo
+              </label>
+              <input
+                id="coverPhoto"
+                type="file"
+                name="coverPhoto"
+                className="invisible"
+                onChange={(e) => this.handlePhoto(e)}
+              />
+              {coverPhotoName}
+            </div>
+            <div className="form__group form__photo-upload ma-bt-lg">
+              <label htmlFor="galleryPhotos" className="btn-text">
+                Upload gallery photos{" "}
+                {`(${3 - this.state.galleryPhotos.length} remaining)`}
+              </label>
+              <input
+                id="galleryPhotos"
+                type="file"
+                name="galleryPhotos"
+                className="invisible"
+                multiple="multiple"
+                onChange={(e) => this.handlePhoto(e)}
+              />
+              {galleryPhotoNames}
+            </div>
+            <div className="form__group form__links ma-bt-lg">
+              <label
+                className="btn-text"
+                onClick={() => {
+                  const plusNum = this.state.bookingDates.length + 1;
                   const bookingsCopy = [...this.state.bookingDates];
-                  bookingsCopy.pop();
+                  bookingsCopy.push({ [`bookingDate${plusNum}`]: "" });
                   this.setState({ bookingDates: bookingsCopy });
-                }
-              }}
-            >
-              Remove booking date
-            </label>
-          </div>
-          {bookingDateInputs}
-          <div className="form__group form__links ma-bt-lg">
-            <label
-              className="btn-text"
-              onClick={() => {
-                const plusNum = this.state.tourDestinations.length + 1;
-                const destinationCopy = [...this.state.tourDestinations];
-                destinationCopy.push({
-                  [`destination${plusNum}Lat`]: "",
-                  [`destination${plusNum}Long`]: "",
-                  [`destination${plusNum}Address`]: "",
-                  [`destination${plusNum}Description`]: "",
-                });
-                this.setState({ tourDestinations: destinationCopy });
-              }}
-            >
-              Add tour destination
-            </label>
-            <label
-              className="btn-text"
-              onClick={() => {
-                if (this.state.tourDestinations.length > 1) {
+                }}
+              >
+                Add booking date
+              </label>
+              <label
+                className="btn-text"
+                onClick={() => {
+                  if (this.state.bookingDates.length > 1) {
+                    const bookingsCopy = [...this.state.bookingDates];
+                    bookingsCopy.pop();
+                    this.setState({ bookingDates: bookingsCopy });
+                  }
+                }}
+              >
+                Remove booking date
+              </label>
+            </div>
+            {bookingDateInputs}
+            <div className="form__group form__links ma-bt-lg">
+              <label
+                className="btn-text"
+                onClick={() => {
+                  const plusNum = this.state.tourDestinations.length + 1;
                   const destinationCopy = [...this.state.tourDestinations];
-                  destinationCopy.pop();
+                  destinationCopy.push({
+                    [`destination${plusNum}Lat`]: "",
+                    [`destination${plusNum}Long`]: "",
+                    [`destination${plusNum}Address`]: "",
+                    [`destination${plusNum}Description`]: "",
+                  });
                   this.setState({ tourDestinations: destinationCopy });
-                }
-              }}
-            >
-              Remove tour destination
-            </label>
-          </div>
-          {tourDestinationInputs}
-          <div className="form__group form__links ma-bt-lg">
-            <label
-              className="btn-text"
-              onClick={() => {
-                this.setState((prevState) => ({
-                  numTourDestinations: prevState.numTourDestinations + 1,
-                }));
-              }}
-            >
-              Assign a guide
-            </label>
-            <label
-              className="btn-text"
-              onClick={() => {
-                if (this.state.numTourDestinations > 1) {
-                  tourDestinationInputs.pop();
-                  this.setState((prevState) => ({
-                    numTourDestinations: prevState.numTourDestinations - 1,
-                  }));
-                }
-              }}
-            >
-              Remove a guide
-            </label>
-          </div>
-        </form>
-      </Auxiliary>
-    );
+                }}
+              >
+                Add tour destination
+              </label>
+              <label
+                className="btn-text"
+                onClick={() => {
+                  if (this.state.tourDestinations.length > 1) {
+                    const destinationCopy = [...this.state.tourDestinations];
+                    destinationCopy.pop();
+                    this.setState({ tourDestinations: destinationCopy });
+                  }
+                }}
+              >
+                Remove tour destination
+              </label>
+            </div>
+            {tourDestinationInputs}
+            <div className="form__group form__links ma-bt-lg">
+              <label
+                className="btn-text"
+                onClick={() => {
+                  const plusNum = this.state.guides.length + 1;
+                  const guidesCopy = [...this.state.guides];
+                  guidesCopy.push({
+                    [`guide${plusNum}`]: "",
+                  });
+                  this.setState({ guides: guidesCopy });
+                }}
+              >
+                Assign a guide
+              </label>
+              <label
+                className="btn-text"
+                onClick={() => {
+                  const guidesCopy = [...this.state.guides];
+                  guidesCopy.pop();
+                  this.setState({ guides: guidesCopy });
+                }}
+              >
+                Remove a guide
+              </label>
+            </div>
+            {leadGuideInput}
+            {guideInputs}
+          </form>
+        </Auxiliary>
+      );
+    }
+
+    return formContent;
   }
 }
 
-export default Tour;
+const mapStateToProps = (state) => ({
+  users: state.users,
+});
+
+export default connect(mapStateToProps, { getGuides })(Tour);

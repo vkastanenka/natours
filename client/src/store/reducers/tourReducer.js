@@ -5,9 +5,9 @@ import * as actionTypes from "../actions/actionTypes";
 import updateObject from "../../utils/updateObject";
 
 const initialState = {
+  loading: false,
   tour: null,
   tours: null,
-  loading: false,
 };
 
 // To display spinner during request

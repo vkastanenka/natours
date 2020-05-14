@@ -86,4 +86,6 @@ router.get('/:id', userController.getUser);
 // @access  Protected
 router.delete('/:id', userController.deleteUser);
 
+router.get('/users/guides', userController.getGuides);
+
 module.exports = router;
