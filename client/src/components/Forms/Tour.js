@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 
 // Actions
 import { getGuides } from "../../store/actions/userActions";
-import { postTour } from "../../store/actions/tourActions";
+import { createTour } from "../../store/actions/tourActions";
 import { updateTour } from "../../store/actions/tourActions";
 import { clearErrors } from "../../store/actions/errorActions";
 
@@ -90,10 +90,14 @@ class Tour extends Component {
       this.props.clearErrors();
     }
 
-    const bookingDates = this.state.bookingDates.map((date) => {
-      return new Date(Object.values(date)[0]);
+    const form = new FormData();
+
+    // Format booking dates
+    this.state.bookingDates.forEach((date) => {
+      form.append("startDates", new Date(Object.values(date)[0]).toISOString());
     });
 
+    // Format start location
     const startLocation = {};
     startLocation.description = this.state.startDestinationDescription;
     startLocation.coordinates = [
@@ -101,20 +105,32 @@ class Tour extends Component {
       this.state.tourDestinations[0].destination1Long,
     ];
     startLocation.address = this.state.startDestinationAddress;
+    form.append("startLocation", JSON.stringify(startLocation));
 
+    // Format guides
     const baseGuides = this.state.guides.map((guide) => {
       return Object.values(guide)[0];
-    })
+    });
     const guides = [this.state.leadGuide, ...baseGuides];
-    const locations = this.state.tourDestinations.map(stop => {
-      return { coordinates: [] }
+    guides.forEach(guide => {
+      form.append('guides', guide);
     })
 
-    const form = new FormData();
-    form.append('startLocation', startLocation);
-    form.append("images", this.state.galleryPhotos);
-    form.append("startDates", bookingDates);
-    form.append('guides', guides);
+    // Format locations
+    const locations = this.state.tourDestinations
+      .map((stop) => {
+        return Object.values(stop);
+      })
+      .map((location) => {
+        return {
+          coordinates: [location[0], location[1]],
+          day: location[2],
+          description: location[3],
+        };
+      });
+
+    form.append('locations', JSON.stringify(locations));
+
     form.append("name", this.state.name);
     form.append("duration", this.state.duration);
     form.append("maxGroupSize", this.state.maxGroupSize);
@@ -122,8 +138,12 @@ class Tour extends Component {
     form.append("price", this.state.price);
     form.append("summary", this.state.summary);
     form.append("description", this.state.description);
-    form.append("imageCover", this.state.coverPhoto);
-    
+    form.append("imageCover", this.state.coverPhoto[0]);
+    form.append("images", this.state.galleryPhotos[0]);
+    form.append("images", this.state.galleryPhotos[1]);
+    form.append("images", this.state.galleryPhotos[2]);
+
+    await this.props.createTour(form);
   };
 
   render() {
@@ -317,7 +337,7 @@ class Tour extends Component {
           name="leadGuide"
           options={leadGuideOptions}
           id="leadGuide"
-          value={this.state.difficulty}
+          value={this.state.leadGuide}
           required={true}
           onChange={(e) => this.onChange(e)}
           htmlFor="leadGuide"
@@ -341,7 +361,7 @@ class Tour extends Component {
               {this.props.editingTour ? "Editing" : "Create a new tour"}
             </h2>
             <br />
-            {/* <h2 className="heading-secondary heading-secondary--small ma-bt-lg">
+            <h2 className="heading-secondary heading-secondary--small ma-bt-lg">
               {this.props.editingTour ? `${this.props.tourName} Tour` : null}
             </h2>
             <h2 className="heading-secondary heading-secondary--smaller ma-bt-md">
@@ -391,7 +411,7 @@ class Tour extends Component {
                 },
                 { value: "easy", label: "Easy" },
                 { value: "medium", label: "Medium" },
-                { value: "hard", label: "Hard" },
+                { value: "difficult", label: "Difficult" },
               ]}
               id="difficulty"
               value={this.state.difficulty}
@@ -486,7 +506,6 @@ class Tour extends Component {
               />
               {galleryPhotoNames}
             </div>
-             */}
             <h2 className="heading-secondary heading-secondary--smaller ma-bt-md">
               Booking Dates
             </h2>
@@ -516,7 +535,7 @@ class Tour extends Component {
               </label>
             </div>
             {bookingDateInputs}
-            {/* <h2 className="heading-secondary heading-secondary--smaller ma-bt-md">
+            <h2 className="heading-secondary heading-secondary--smaller ma-bt-md">
               Tour Destinations
             </h2>
             <div className="form__group form__links ma-bt-lg">
@@ -528,7 +547,7 @@ class Tour extends Component {
                   destinationCopy.push({
                     [`destination${plusNum}Lat`]: "",
                     [`destination${plusNum}Long`]: "",
-                    [`destination${plusNum}Address`]: "",
+                    [`destination${plusNum}Day`]: "",
                     [`destination${plusNum}Description`]: "",
                   });
                   this.setState({ tourDestinations: destinationCopy });
@@ -579,7 +598,7 @@ class Tour extends Component {
               </label>
             </div>
             {leadGuideInput}
-            {guideInputs} */}
+            {guideInputs}
             <div className="form__group">
               <button
                 type="submit"
@@ -601,6 +620,12 @@ class Tour extends Component {
 const mapStateToProps = (state) => ({
   users: state.users,
   errors: state.errors,
+  tours: state.tours,
 });
 
-export default connect(mapStateToProps, { getGuides, clearErrors })(Tour);
+export default connect(mapStateToProps, {
+  getGuides,
+  clearErrors,
+  createTour,
+  updateTour,
+})(Tour);

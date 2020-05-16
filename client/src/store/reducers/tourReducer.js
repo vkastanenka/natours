@@ -8,6 +8,7 @@ const initialState = {
   loading: false,
   tour: null,
   tours: null,
+  tourToUpdate: null,
 };
 
 // To display spinner during request
@@ -31,6 +32,24 @@ const getTour = (state, action) => {
   });
 };
 
+// Set newly create tour to be updated
+// const setTourToUpdate = (state, action) => {
+//   return updateObject(state, {
+//     tourToUpdate: action.payload,
+//     loading: false,
+//   });
+// };
+
+// Add tour to tours array
+// const addTour = (state, action) => {
+//   const tours = [...state.tours];
+//   tours.push(action.payload);
+//   return updateObject(state, {
+//     tours: tours,
+//     loading: false
+//   })
+// }
+
 export default function (state = initialState, action) {
   switch (action.type) {
     case actionTypes.REQUEST_LOADING:
@@ -39,6 +58,10 @@ export default function (state = initialState, action) {
       return getTours(state, action);
     case actionTypes.GET_TOUR:
       return getTour(state, action);
+    // case actionTypes.SET_TOUR_TO_UPDATE:
+    //   return setTourToUpdate(state, action);
+    // case actionTypes.ADD_TOUR:
+    //   return addTour(state, action);
     default:
       return state;
   }
