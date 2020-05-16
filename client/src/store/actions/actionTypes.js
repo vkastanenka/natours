@@ -10,9 +10,9 @@ export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 
 // Tours
 export const TOUR_LOADING = 'TOUR_LOADING';
+export const TOUR_DONE_LOADING = 'TOUR_DONE_LOADING';
 export const GET_TOURS = 'GET_TOURS';
 export const GET_TOUR = 'GET_TOUR';
-export const SET_TOUR_TO_UPDATE = 'SET_TOUR_TO_UPDATE';
 export const ADD_TOUR = 'ADD_TOUR';
 
 // Reviews

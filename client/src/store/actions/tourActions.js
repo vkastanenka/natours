@@ -8,6 +8,13 @@ import actionDispatch from "../../utils/actionDispatch";
 // Actions
 import { setRequestLoading } from "./utilActions";
 
+// Set load for asynchronous requests
+export const tourDoneLoading = () => {
+  return {
+    type: actionTypes.TOUR_DONE_LOADING,
+  };
+};
+
 //////////////////////
 // Unprotected Routes
 
@@ -52,7 +59,6 @@ export const updateTour = (data, tourId) => async (dispatch) => {
       `http://localhost:5000/api/v1/tours/${tourId}`,
       data
     );
-    actionDispatch(actionTypes.ADD_TOUR, res.data.data, dispatch);
   } catch (err) {
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }

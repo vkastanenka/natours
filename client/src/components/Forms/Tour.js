@@ -54,33 +54,53 @@ class Tour extends Component {
     leadGuide: "",
     guides: [{ guide1: "" }],
 
+    // Form States
+    submittingTour: false,
+    editingTour: false,
+    disableSubmitButton: false,
+
     // Errors
     errors: {},
   };
-
-  timer = null;
-
   componentDidMount() {
     if (!this.props.users.guides) {
       this.props.getGuides();
     }
+
+    // TODO: Fill out state with information when editing tour
+    // if (this.props.editingTour) {
+    //   this.setState({ todo... })
+    // }
   }
 
+  // Binding timer to component instance
+  timer = null;
+
+  // If errors found from inputs, set them in state
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
+      this.setState({
+        errors: nextProps.errors,
+        disableSubmitButton: false,
+      });
 
       this.timer = setTimeout(() => {
         this.props.clearErrors();
         clearTimeout(this.timer);
       }, 6000);
     }
+
+    if (nextProps.errors && this.props.editingTour) {
+      this.setState({ editingTour: false });
+    } else {
+      this.setState({ submittingTour: false });
+    }
   }
 
   // Clear any timers when form unmounts
   componentWillUnmount() {
-    this.timer = null;
     clearTimeout(this.timer);
+    this.timer = null;
   }
 
   // State handler for input fields
@@ -93,6 +113,7 @@ class Tour extends Component {
     this.setState({ [e.target.name]: e.target.files });
   };
 
+  // State handler for nested fields
   onNestedChange = (e, i, state) => {
     const stateEntry = Object.entries(state);
     const stateCopy = [...stateEntry[0][1]];
@@ -109,14 +130,18 @@ class Tour extends Component {
       this.props.clearErrors();
     }
 
+    // State change to let user know process is happening
+    this.setState({ submittingTour: true, disableSubmitButton: true });
+
+    // Set up new form
     const form = new FormData();
 
-    // Format booking dates
+    // Apppend booking dates to form
     this.state.bookingDates.forEach((date) => {
       form.append("startDates", new Date(Object.values(date)[0]).toISOString());
     });
 
-    // Format start location
+    // Append start location to form
     const startLocation = {};
     startLocation.description = this.state.startDestinationDescription;
     startLocation.coordinates = [
@@ -126,7 +151,7 @@ class Tour extends Component {
     startLocation.address = this.state.startDestinationAddress;
     form.append("startLocation", JSON.stringify(startLocation));
 
-    // Format guides
+    // Append guides to form
     const baseGuides = this.state.guides.map((guide) => {
       return Object.values(guide)[0];
     });
@@ -135,7 +160,7 @@ class Tour extends Component {
       form.append("guides", guide);
     });
 
-    // Format locations
+    // Append locations to form
     const locations = this.state.tourDestinations
       .map((stop) => {
         return Object.values(stop);
@@ -150,6 +175,7 @@ class Tour extends Component {
 
     form.append("locations", JSON.stringify(locations));
 
+    // Append the rest of the form data
     form.append("name", this.state.name);
     form.append("duration", this.state.duration);
     form.append("maxGroupSize", this.state.maxGroupSize);
@@ -162,17 +188,70 @@ class Tour extends Component {
     form.append("images", this.state.galleryPhotos[1]);
     form.append("images", this.state.galleryPhotos[2]);
 
+    // Post the form
     await this.props.createTour(form);
+
+    // Reset form and state change for success alert
+    if (Object.keys(this.state.errors).length === 0) {
+      this.setState({
+        // General
+        name: "",
+        duration: "",
+        maxGroupSize: "",
+        difficulty: "",
+        price: "",
+        summary: "",
+        description: "",
+        startDestinationAddress: "",
+        startDestinationDescription: "",
+
+        // Photos
+        coverPhoto: "",
+        galleryPhotos: "",
+
+        // Dates
+        bookingDates: [{ bookingDate1: "" }],
+
+        // Destinations
+        tourDestinations: [
+          {
+            destination1Long: "",
+            destination1Lat: "",
+            destination1Day: "",
+            destination1Description: "",
+          },
+        ],
+
+        // Guides
+        leadGuide: "",
+        guides: [{ guide1: "" }],
+
+        // Form States
+        submittingTour: false,
+        disableSubmitButton: false,
+      });
+    }
   };
 
   render() {
     const errors = [];
     const { loading, guides } = this.props.users;
+    let buttonText = "Submit tour";
+
+    if (this.state.submittingTour) {
+      buttonText = "Submitting tour...";
+    }
 
     if (Object.keys(this.state.errors).length > 0) {
       for (let err in this.state.errors) {
         errors.push(<p key={err}>{this.state.errors[err]}</p>);
       }
+    }
+
+    if (this.props.editingTour) {
+      buttonText = "Update tour";
+    } else if (this.props.editingTour && this.state.editingTour) {
+      buttonText = "Updating tour...";
     }
 
     let formContent;
@@ -182,7 +261,6 @@ class Tour extends Component {
     let tourDestinationInputs = [];
     let leadGuideInput;
     let guideInputs = [];
-    let buttonText = "Submit tour";
 
     // Name of cover photo to appear below input
     if (this.state.coverPhoto) {

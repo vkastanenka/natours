@@ -42,7 +42,6 @@ class Review extends Component {
     if (nextProps.errors) {
       this.setState({
         errors: nextProps.errors,
-        submittingReview: false,
         disableSubmitButton: false,
       });
 
@@ -53,23 +52,16 @@ class Review extends Component {
     }
 
     if (nextProps.errors && this.props.editingReview) {
-      this.setState({
-        errors: nextProps.errors,
-        updatingReview: false,
-        disableSubmitButton: false,
-      });
-
-      this.timer = setTimeout(() => {
-        this.props.clearErrors();
-        clearTimeout(this.timer);
-      }, 6000);
+      this.setState({ updatingReview: false });
+    } else {
+      this.setState({ submittingReview: false });
     }
   }
 
   // Clear any timers when form unmounts
   componentWillUnmount() {
-    this.timer = null;
     clearTimeout(this.timer);
+    this.timer = null;
   }
 
   // State handler for input fields
