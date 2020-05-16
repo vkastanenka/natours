@@ -43,8 +43,8 @@ class Tour extends Component {
     // Destinations
     tourDestinations: [
       {
-        destination1Lat: "",
         destination1Long: "",
+        destination1Lat: "",
         destination1Day: "",
         destination1Description: "",
       },
@@ -58,10 +58,29 @@ class Tour extends Component {
     errors: {},
   };
 
+  timer = null;
+
   componentDidMount() {
     if (!this.props.users.guides) {
       this.props.getGuides();
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+
+      this.timer = setTimeout(() => {
+        this.props.clearErrors();
+        clearTimeout(this.timer);
+      }, 6000);
+    }
+  }
+
+  // Clear any timers when form unmounts
+  componentWillUnmount() {
+    this.timer = null;
+    clearTimeout(this.timer);
   }
 
   // State handler for input fields
@@ -101,8 +120,8 @@ class Tour extends Component {
     const startLocation = {};
     startLocation.description = this.state.startDestinationDescription;
     startLocation.coordinates = [
-      this.state.tourDestinations[0].destination1Lat,
       this.state.tourDestinations[0].destination1Long,
+      this.state.tourDestinations[0].destination1Lat,
     ];
     startLocation.address = this.state.startDestinationAddress;
     form.append("startLocation", JSON.stringify(startLocation));
@@ -112,9 +131,9 @@ class Tour extends Component {
       return Object.values(guide)[0];
     });
     const guides = [this.state.leadGuide, ...baseGuides];
-    guides.forEach(guide => {
-      form.append('guides', guide);
-    })
+    guides.forEach((guide) => {
+      form.append("guides", guide);
+    });
 
     // Format locations
     const locations = this.state.tourDestinations
@@ -129,7 +148,7 @@ class Tour extends Component {
         };
       });
 
-    form.append('locations', JSON.stringify(locations));
+    form.append("locations", JSON.stringify(locations));
 
     form.append("name", this.state.name);
     form.append("duration", this.state.duration);
@@ -150,7 +169,7 @@ class Tour extends Component {
     const errors = [];
     const { loading, guides } = this.props.users;
 
-    if (this.state.errors) {
+    if (Object.keys(this.state.errors).length > 0) {
       for (let err in this.state.errors) {
         errors.push(<p key={err}>{this.state.errors[err]}</p>);
       }
@@ -351,6 +370,9 @@ class Tour extends Component {
     } else {
       formContent = (
         <Auxiliary>
+          {Object.keys(this.state.errors).length > 0 ? (
+            <Alert type="error" message={errors} />
+          ) : null}
           <form className="form tour-form" onSubmit={this.onTourSubmit}>
             <Icon
               type="x"
