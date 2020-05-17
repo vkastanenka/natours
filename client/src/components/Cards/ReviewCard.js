@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 
 // Actions
 import { deleteReview } from "../../store/actions/reviewActions";
+import { deleteCurrentUserReview } from "../../store/actions/reviewActions";
 
 // Components
 import Alert from "../Alert/Alert";
@@ -62,6 +63,16 @@ class ReviewCard extends Component {
           />
         </div>
       );
+    } else if (this.props.page === "manageReviews") {
+      icons = (
+        <div className="reviews__icons">
+          <Icon
+            type="x"
+            onClick={() => this.setState({ deletingReview: true })}
+            className="icon icon--large icon--active icon--black-primary icon--translate"
+          />
+        </div>
+      );
     }
 
     if (this.state.editingReview) {
@@ -85,8 +96,12 @@ class ReviewCard extends Component {
           type="error"
           message="Are you sure you want to delete this review?"
           prompt={true}
-          reviewId={this.props.reviewId}
-          function={this.props.deleteReview}
+          deleteId={this.props.reviewId}
+          function={
+            this.props.page === "manageReviews"
+              ? this.props.deleteReview
+              : this.props.deleteCurrentUserReview
+          }
           alertClose={() => this.setState({ deletingReview: false })}
         />
       );
@@ -129,4 +144,4 @@ ReviewCard.propTypes = {
   reviewId: PropTypes.string,
 };
 
-export default connect(null, { deleteReview })(ReviewCard);
+export default connect(null, { deleteReview, deleteCurrentUserReview })(ReviewCard);

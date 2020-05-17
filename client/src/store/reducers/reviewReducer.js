@@ -48,13 +48,25 @@ const deleteCurrentUserReview = (state, action) => {
   });
 };
 
-// Get request to add singular tour object to global state
-// const getAllReviews = (state, action) => {
-//   return updateObject(state, {
-//     allReviews: action.payload,
-//     loading: false,
-//   });
-// };
+// Get request to add all reviews to global state
+const getAllReviews = (state, action) => {
+  return updateObject(state, {
+    allReviews: action.payload,
+    loading: false,
+  });
+};
+
+// Delete a review from the State
+const deleteReview = (state, action) => {
+  const allReviews = [...state.allReviews];
+  const filteredReviews = allReviews.filter((review) => {
+    if (review._id !== action.payload) return review;
+  });
+  return updateObject(state, {
+    loading: false,
+    allReviews: filteredReviews,
+  });
+};
 
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -66,8 +78,10 @@ export default function (state = initialState, action) {
       return updateCurrentUserReview(state, action);
     case actionTypes.DELETE_CURRENT_USER_REVIEW:
       return deleteCurrentUserReview(state, action);
-    // case actionTypes.GET_TOUR:
-    //   return getTour(state, action);
+    case actionTypes.GET_REVIEWS:
+      return getAllReviews(state, action);
+    case actionTypes.DELETE_REVIEW:
+      return deleteReview(state, action);
     default:
       return state;
   }

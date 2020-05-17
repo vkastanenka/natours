@@ -23,7 +23,10 @@ exports.test = (req, res, next) =>
 // @route   GET api/v1/reviews
 // @desc    Get all reviews
 // @access  Protected
-exports.getAllReviews = factory.getAll(Review);
+exports.getAllReviews = factory.getAll(Review, {
+  path: "tour",
+  select: "name",
+});
 
 // @route   GET api/v1/reviews/:id
 // @desc    Get review by id

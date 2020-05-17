@@ -63,7 +63,7 @@ exports.getOne = (Model, popOptions) =>
     });
   });
 
-exports.getAll = (Model) =>
+exports.getAll = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
     // 1. Find the document based on query parameters in API Features
     const features = new APIFeatures(Model, req.query)
@@ -71,6 +71,7 @@ exports.getAll = (Model) =>
       .sort()
       .limitFields()
       .paginate();
+    if (popOptions) features.query = features.query.populate(popOptions);
     const doc = await features.query;
 
     // 2. Respond
