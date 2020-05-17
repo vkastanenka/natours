@@ -7,60 +7,58 @@ const factory = require("./handlerFactory");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
+// Validation
+const validateTour = require("../validation/tour/tour");
+
 // Models
 const Tour = require("../models/tourModel");
 
 ///////////////
 // Middleware
 
-// Store the file in memory as a Buffer object
 const multerStorage = multer.memoryStorage();
 
-// Test if the file is an image
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
   } else {
-    cb(new AppError("Not an image! Please upload only images...", 400), false);
+    cb(new AppError("Not an image! Please upload only images.", 400), false);
   }
 };
 
-// Configuring multer upload
 const upload = multer({
   storage: multerStorage,
   fileFilter: multerFilter,
 });
 
-// Upload the tour images
 exports.uploadTourImages = upload.fields([
   { name: "imageCover", maxCount: 1 },
   { name: "images", maxCount: 3 },
 ]);
 
-// Image processing (resizing, formatting, quality, and file location)
 exports.resizeTourImages = catchAsync(async (req, res, next) => {
-  if (!req.files || !req.files.name.imageCover || !req.files.name.images)
-    return next();
+  if (!req.files.imageCover || !req.files.images) return next();
 
-  // 1. Cover image processing
-  req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
+  // 1) Cover image
+  req.body.imageCover = `tour-${req.body.name}-${Date.now()}-cover.jpeg`;
   await sharp(req.files.imageCover[0].buffer)
     .resize(2000, 1333)
     .toFormat("jpeg")
     .jpeg({ quality: 90 })
-    .toFile(`public/img/tours/${req.body.imageCover}`);
+    .toFile(`client/src/assets/images/tours/${req.body.imageCover}`);
 
-  // 2. Image gallery processing
+  // 2) Images
   req.body.images = [];
+
   await Promise.all(
     req.files.images.map(async (file, i) => {
-      const filename = `tour-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
+      const filename = `tour-${req.body.name}-${Date.now()}-${i + 1}.jpeg`;
 
       await sharp(file.buffer)
         .resize(2000, 1333)
         .toFormat("jpeg")
         .jpeg({ quality: 90 })
-        .toFile(`public/img/tours/${filename}`);
+        .toFile(`client/src/assets/images/tours/${filename}`);
 
       req.body.images.push(filename);
     })
@@ -95,7 +93,9 @@ exports.getTourBySlug = catchAsync(async (req, res, next) => {
   const errors = {};
 
   // 1. Find the tour
-  const tour = await Tour.findOne({ slug: req.params.slug }).populate('reviews');
+  const tour = await Tour.findOne({ slug: req.params.slug }).populate(
+    "reviews"
+  );
 
   // 2. Check if the tour exists
   if (!tour) {
@@ -110,12 +110,53 @@ exports.getTourBySlug = catchAsync(async (req, res, next) => {
 // @route   POST api/v1/tours
 // @desc    Create new tour
 // @access  Restricted
-exports.createTour = factory.createOne(Tour);
+exports.createTour = catchAsync(async (req, res, next) => {
+  req.body.startLocation = JSON.parse(req.body.startLocation);
+  req.body.locations = JSON.parse(req.body.locations);
+  req.body.startLocation.type = 'Point';
+  req.body.locations.forEach((location) => (location.type = "Point"));
+
+  // 1. Validate inputs
+  const { errors, isValid } = validateTour(req.body);
+  if (!isValid) return res.status(400).json(errors);
+
+  // 1. Create a new document
+  const doc = await Tour.create(req.body);
+
+  // 2. Respond
+  res.status(201).json({
+    status: "success",
+    data: doc,
+  });
+});
 
 // @route   PATCH api/v1/tours/:id
 // @desc    Update tour by id
 // @access  Restricted
-exports.updateTour = factory.updateOne(Tour);
+exports.updateTour = catchAsync(async (req, res, next) => {
+  req.body.startLocation = JSON.parse(req.body.startLocation);
+  req.body.locations = JSON.parse(req.body.locations);
+  req.body.startLocation.type = 'Point';
+  req.body.locations.forEach((location) => (location.type = "Point"));
+
+  // 1. Validate inputs
+  const { errors, isValid } = validateTour(req.body);
+  if (!isValid) return res.status(400).json(errors);
+
+  // 2. Find document by id and update
+  const doc = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  // 3. If no document, respond with an error// TODO: (query404);
+
+  // 4. Respond
+  res.status(200).json({
+    status: "success",
+    data: doc,
+  });
+});
 
 // @route   DELETE api/v1/tours/:id
 // @desc    Delete tour by id

@@ -30,7 +30,7 @@ router.get("/tour/:slug", tourController.getTourBySlug);
 ///////////////////
 // Protected Routes
 
-router.use(authController.protect);
+// router.use(authController.protect);
 
 ////////////////////
 // Restricted Routes
@@ -40,7 +40,19 @@ router.use(authController.protect);
 // @route   POST api/v1/tours
 // @desc    Create new tour
 // @access  Restricted
-router.post("/", tourController.createTour);
+// router.post(
+//   "/",
+//   tourController.uploadTourImages,
+//   tourController.resizeTourImages,
+//   tourController.createTour
+// );
+
+router.post(
+  "/",
+  tourController.uploadTourImages,
+  tourController.resizeTourImages,
+  tourController.createTour
+);
 
 // @route   PATCH api/v1/tours/:id
 // @desc    Update tour by id
