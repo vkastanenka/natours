@@ -52,13 +52,19 @@ export const createTour = (data) => async (dispatch) => {
   }
 };
 
-export const updateTour = (data, tourId) => async (dispatch) => {
-  dispatch(setRequestLoading());
+export const updateTour = (tourId, data) => async (dispatch) => {
   try {
-    const res = await axios.patch(
-      `http://localhost:5000/api/v1/tours/${tourId}`,
-      data
-    );
+    const res = await axios.patch(`/api/v1/tours/${tourId}`, data);
+    actionDispatch(actionTypes.UPDATE_TOUR, res.data.data, dispatch);
+  } catch (err) {
+    actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
+  }
+};
+
+export const deleteTour = (tourId) => async (dispatch) => {
+  try {
+    await axios.delete(`/api/v1/tours/${tourId}`);
+    actionDispatch(actionTypes.DELETE_TOUR, tourId, dispatch);
   } catch (err) {
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }

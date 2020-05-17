@@ -7,6 +7,18 @@
   backface-visibility: hidden;
   display: flex;
   flex-direction: column;
+  position: relative;
+
+  &__icons {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 20;
+
+    & > :nth-child(2) {
+      margin-left: 1rem;
+    }
+  }
 
   &__header {
     position: relative;

@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 
 // Actions
 import { getTours } from "../../../../store/actions/tourActions";
+import { deleteTour } from "../../../../store/actions/tourActions";
 
 // Components
 import Icon from "../../../../components/Icon/Icon";
@@ -69,6 +70,10 @@ class ManageTours extends Component {
             ratingsAverage={tour.ratingsAverage}
             ratingsQuantity={tour.ratingsQuantity}
             slug={tour.slug}
+            page="manageTours"
+            tourId={tour._id}
+            tour={tour}
+            deleteTour={() => this.props.deleteTour(tour._id)}
           />
         );
       });
@@ -97,4 +102,6 @@ const mapStateToProps = (state) => ({
   tours: state.tours,
 });
 
-export default connect(mapStateToProps, { getTours })(withRouter(ManageTours));
+export default connect(mapStateToProps, { getTours, deleteTour })(
+  withRouter(ManageTours)
+);

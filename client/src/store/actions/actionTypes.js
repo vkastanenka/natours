@@ -14,6 +14,8 @@ export const TOUR_DONE_LOADING = 'TOUR_DONE_LOADING';
 export const GET_TOURS = 'GET_TOURS';
 export const GET_TOUR = 'GET_TOUR';
 export const ADD_TOUR = 'ADD_TOUR';
+export const UPDATE_TOUR = 'UPDATE_TOUR';
+export const DELETE_TOUR = 'DELETE_TOUR';
 
 // Reviews
 export const GET_CURRENT_USER_REVIEWS = 'GET_CURRENT_USER_REVIEWS';

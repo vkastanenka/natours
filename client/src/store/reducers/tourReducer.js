@@ -42,7 +42,30 @@ const addTour = (state, action) => {
   toursCopy.push(action.payload);
   return updateObject(state, {
     tours: toursCopy,
-    loading: false
+    loading: false,
+  });
+};
+
+// Update Tours in the State
+const updateTour = (state, action) => {
+  const tours = [...state.tours];
+  const updatedTours = tours.map((tour) => {
+    if (tour._id === action.payload._id) return action.payload;
+    return tour;
+  });
+  return updateObject(state, {
+    tours: updatedTours,
+  });
+};
+
+// Delete a Tour from the State
+const deleteTour = (state, action) => {
+  const tours = [...state.tours];
+  const filteredTours = tours.filter((tour) => {
+    if (tour._id !== action.payload) return tour;
+  });
+  return updateObject(state, {
+    tours: filteredTours,
   });
 };
 
@@ -56,8 +79,12 @@ export default function (state = initialState, action) {
       return getTours(state, action);
     case actionTypes.GET_TOUR:
       return getTour(state, action);
-      case actionTypes.ADD_TOUR:
-        return addTour(state, action);
+    case actionTypes.ADD_TOUR:
+      return addTour(state, action);
+    case actionTypes.UPDATE_TOUR:
+      return updateTour(state, action);
+    case actionTypes.DELETE_TOUR:
+      return deleteTour(state, action);
     default:
       return state;
   }

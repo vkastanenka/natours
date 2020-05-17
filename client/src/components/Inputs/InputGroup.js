@@ -32,7 +32,6 @@ InputGroup.propTypes = {
   inputClass: PropTypes.string,
   placeholder: PropTypes.string.isRequired,
   minLength: PropTypes.string,
-  value: PropTypes.string,
   required: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
   htmlFor: PropTypes.string,

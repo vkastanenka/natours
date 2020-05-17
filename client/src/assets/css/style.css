@@ -421,7 +421,15 @@ body {
   transition: 0.3s all;
   backface-visibility: hidden;
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  position: relative; }
+  .card__icons {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 20; }
+    .card__icons > :nth-child(2) {
+      margin-left: 1rem; }
   .card__header {
     position: relative; }
   .card__heading {
