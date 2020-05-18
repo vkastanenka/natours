@@ -33,7 +33,9 @@ class ManageTours extends Component {
       (role === "admin" && !tours) ||
       (role === "lead-guide" && !tours)
     ) {
-      this.props.getTours();
+      if (!tours) {
+        this.props.getTours();
+      }
     }
   }
 

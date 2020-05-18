@@ -28,3 +28,13 @@ export const getGuides = () => async (dispatch) => {
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }
 };
+
+export const getUsers = () => async (dispatch) => {
+  dispatch(setUserLoad());
+  try {
+    const res = await axios.get("/api/v1/users/");
+    actionDispatch(actionTypes.GET_USERS, res.data.data, dispatch);
+  } catch (err) {
+    actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
+  }
+};

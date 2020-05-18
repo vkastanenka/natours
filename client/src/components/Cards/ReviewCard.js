@@ -116,7 +116,7 @@ class ReviewCard extends Component {
           <div className="reviews__avatar">
             <img
               src={this.props.imageURL}
-              alt="Jim Brown"
+              alt={this.props.name}
               className="reviews__avatar-img"
             />
             <h6 className="reviews__user">{this.props.name}</h6>

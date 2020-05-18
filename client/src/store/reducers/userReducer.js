@@ -21,12 +21,21 @@ const getGuides = (state, action) => {
   })
 }
 
+const getUsers = (state, action) => {
+  return updateObject(state, {
+    users: action.payload,
+    loading: false
+  })
+}
+
 export default function (state = initialState, action) {
   switch (action.type) {
     case actionTypes.SET_USER_LOAD:
       return userLoading(state, action);
     case actionTypes.GET_GUIDES:
       return getGuides(state, action);
+    case actionTypes.GET_USERS:
+      return getUsers(state, action);
     default:
       return state;
   }
