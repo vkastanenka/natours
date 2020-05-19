@@ -1,5 +1,6 @@
 // React
 import React from "react";
+import { Link } from 'react-router-dom';
 import PropTypes from "prop-types";
 
 const TourCardRotate = (props) => {
@@ -36,9 +37,9 @@ const TourCardRotate = (props) => {
             <p className="card-rotate__price-only">Only</p>
             <p className="card-rotate__price-value">{`$${props.price}`}</p>
           </div>
-          <a href="#popup" className="btn btn--white">
+          <Link to={props.linkTo} className="btn btn--white">
             Book now!
-          </a>
+          </Link>
         </div>
       </div>
     </div>
@@ -56,6 +57,7 @@ TourCardRotate.propTypes = {
   difficulty: PropTypes.string.isRequired,
   backNumber: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
+  linkTo: PropTypes.string.isRequired
 };
 
 export default TourCardRotate;
