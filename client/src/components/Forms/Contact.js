@@ -15,6 +15,7 @@ import InputGroup from "../Inputs/InputGroup";
 import TextAreaGroup from "../Inputs/TextAreaGroup";
 import Auxiliary from "../HigherOrder/Auxiliary";
 
+// Contact form for home page where anyone can send an email to the admin of the site
 class Contact extends Component {
   state = {
     name: "",
@@ -28,8 +29,6 @@ class Contact extends Component {
 
   // If authenticated, auto-fill name and email fields
   componentDidMount() {
-    console.log(this.state.name);
-    console.log(this.state.submittingEmail);
     const { authenticated, user } = this.props.auth;
     if (authenticated) {
       this.setState({ name: user.name, email: user.email });
@@ -41,17 +40,60 @@ class Contact extends Component {
 
   // If errors found from inputs, set them in state
   componentWillReceiveProps(nextProps) {
-    if (nextProps.errors) {
+    // Let user know request is happening / finished
+    if (nextProps.users.loading) {
+      this.setState({
+        submittingEmail: true,
+        disableSubmitButton: true,
+      });
+      // If request finishes and no errors
+    } else if (
+      !nextProps.users.loading &&
+      Object.keys(nextProps.errors).length === 0
+    ) {
+      if (this.props.auth.authenticated) {
+        this.setState({
+          emailBody: "",
+          submittingEmail: false,
+          submittedEmail: true,
+          disableSubmitButton: false,
+        });
+      } else if (!this.props.auth.authenticated) {
+        this.setState({
+          name: "",
+          email: "",
+          emailBody: "",
+          submittingEmail: false,
+          submittedEmail: true,
+          disableSubmitButton: false,
+        });
+      }
+      // Clear success message after 6 seconds
+      this.timer = setTimeout(() => {
+        this.setState({ submittedEmail: false });
+        clearTimeout(this.timer);
+      }, 6000);
+      // If request finishes and errors
+    } else if (
+      !nextProps.users.loading &&
+      Object.keys(nextProps.errors).length > 0
+    ) {
       this.setState({
         errors: nextProps.errors,
         submittingEmail: false,
         disableSubmitButton: false,
       });
 
+      // Clear errors after 6 seconds
       this.timer = setTimeout(() => {
         this.props.clearErrors();
         clearTimeout(this.timer);
       }, 6000);
+    }
+
+    // // If immediately submitting new email remove previous success message
+    if (this.state.submittedReview && nextProps.users.loading) {
+      this.setState({ submittedReview: false });
     }
   }
 
@@ -70,46 +112,21 @@ class Contact extends Component {
   onSubmitEmail = async (e) => {
     e.preventDefault();
 
-    // Clear errors if any
+    // Clear errors if any before submitting
     if (this.props.errors) {
       this.setState({ errors: {} });
       this.props.clearErrors();
     }
 
-    // 1. State to change button text
-    this.setState({
-      submittingEmail: true,
-      disableSubmitButton: true,
-    });
-
-    if (this.state.submittedReview) {
-      this.setState({ submittedReview: false });
-    }
-
-    // 2. Email data to send
+    // 1. Email data to send
     const emailData = {
       name: this.state.name,
       email: this.state.email,
       emailBody: this.state.emailBody,
     };
 
-    // 3. Send email
+    // 2. Send email
     await this.props.sendContactEmail(emailData);
-
-    // 4. Show alert that it worked
-    if (Object.keys(this.state.errors).length === 0) {
-      this.setState({
-        review: "",
-        submittedEmail: true,
-        submittingEmail: false,
-        disableSubmitButton: false,
-      });
-
-      this.timer = setTimeout(() => {
-        this.setState({ submittedEmail: false });
-        clearTimeout(this.timer);
-      }, 6000);
-    }
   };
 
   render() {
@@ -185,11 +202,13 @@ class Contact extends Component {
 
 Contact.propTypes = {
   auth: PropTypes.object.isRequired,
+  users: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  users: state.users,
   errors: state.errors,
 });
 

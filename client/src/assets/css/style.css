@@ -2086,7 +2086,7 @@ body {
       padding: 12rem 0; } }
 
 .section-contact {
-  padding: 15rem 0;
+  padding: 13rem 0;
   background-image: linear-gradient(135deg, #7dd56f, #28b487); }
 
 .contact {
@@ -2094,9 +2094,27 @@ body {
   background-size: cover;
   border-radius: 3px;
   box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.15); }
+  @media only screen and (max-width: 50em) {
+    .contact {
+      background-image: linear-gradient(105deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 55%, transparent 55%), url("../images/nat-10.jpg"); } }
+  @media only screen and (max-width: 37.5em) {
+    .contact {
+      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url("../images/nat-10.jpg"); } }
   .contact__form {
     width: 50%;
     padding: 6rem; }
+    @media only screen and (max-width: 50em) {
+      .contact__form {
+        width: 55%; } }
+    @media only screen and (max-width: 37.5em) {
+      .contact__form {
+        width: 100%; } }
+    @media only screen and (max-width: 31.25em) {
+      .contact__form {
+        padding: 6rem 3rem; } }
+    @media only screen and (max-width: 25em) {
+      .contact__form {
+        padding: 6rem 2rem; } }
 
 .section-header-tour {
   position: relative;
