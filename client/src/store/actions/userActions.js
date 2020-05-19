@@ -19,6 +19,17 @@ export const unsetUserLoad = () => {
   };
 };
 
+// @route   POST api/v1/users/sendContactEmail
+// @desc    Sends admin email from contact form on home page
+// @access  Public
+export const sendContactEmail = (data) => async (dispatch) => {
+  try {
+    await axios.post("/api/v1/users/sendContactEmail", data);
+  } catch (err) {
+    actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
+  }
+};
+
 export const getGuides = () => async (dispatch) => {
   dispatch(setUserLoad());
   try {

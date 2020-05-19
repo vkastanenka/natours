@@ -9,7 +9,7 @@ import About from "./Layout/About";
 import Features from "./Layout/Features";
 import Tours from "./Layout/Tours";
 import Stories from "./Layout/Stories";
-import Contact from './Layout/Contact';
+import Contact from "./Layout/Contact";
 import Footer from "../../components/Layout/Footer";
 
 // Home page (route '/')

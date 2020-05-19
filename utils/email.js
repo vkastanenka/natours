@@ -4,9 +4,15 @@ const htmlToText = require("html-to-text");
 
 module.exports = class Email {
   constructor(user, url) {
-    this.to = user.email;
-    this.firstName = user.name.split(" ")[0];
-    this.url = url;
+    if (user) {
+      this.to = user.email;
+      this.firstName = user.name.split(" ")[0];
+    }
+
+    if (url) {
+      this.url = url;
+    }
+    
     this.from = `Victoria Kastanenka <${process.env.EMAIL_FROM}>`;
   }
 
@@ -14,11 +20,11 @@ module.exports = class Email {
     if (process.env.NODE_ENV === "production") {
       // Sendgrid
       return nodemailer.createTransport({
-        service: 'SendGrid',
+        service: "SendGrid",
         auth: {
           user: process.env.SENDGRID_USERNAME,
-          pass: process.env.SENDGRID_PASSWORD
-        }
+          pass: process.env.SENDGRID_PASSWORD,
+        },
       });
     }
 
@@ -28,8 +34,8 @@ module.exports = class Email {
       port: process.env.EMAIL_PORT,
       auth: {
         user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD
-      }
+        pass: process.env.EMAIL_PASSWORD,
+      },
     });
   }
 
@@ -39,7 +45,7 @@ module.exports = class Email {
     const html = pug.renderFile(`${__dirname}/../views/${template}.pug`, {
       firstName: this.firstName,
       url: this.url,
-      subject
+      subject,
     });
 
     // 2. Define email options
@@ -49,10 +55,29 @@ module.exports = class Email {
       subject,
       html,
       // Want to include a text version of our email into the email => Important because better for email delivery rates, and also for spam folders (stripping out HTML, leaving only the content)
-      text: htmlToText.fromString(html)
+      text: htmlToText.fromString(html),
     };
 
     // 3. Create a transport and send email
+    await this.newTransport().sendMail(mailOptions);
+  }
+
+  async sendContact(reqBody) {
+    const html = pug.renderFile(`${__dirname}/../views/contact.pug`, {
+      subject: "New Natours Contact Request",
+      name: reqBody.name,
+      email: reqBody.email,
+      content: reqBody.emailBody,
+    });
+
+    const mailOptions = {
+      from: `${reqBody.name}, ${reqBody.email}`,
+      to: "admin@natours.io",
+      subject: "New Natours Contact Request",
+      html,
+      text: htmlToText.fromString(html),
+    };
+
     await this.newTransport().sendMail(mailOptions);
   }
 

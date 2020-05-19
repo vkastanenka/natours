@@ -1,6 +1,7 @@
 // Utilities
 const sharp = require("sharp");
 const multer = require("multer");
+const Email = require("../utils/email");
 const factory = require("./handlerFactory");
 const createJWT = require("../utils/jwtGenerator");
 
@@ -11,6 +12,7 @@ const catchAsync = require("./../utils/catchAsync");
 // Validation
 const validateUserUpdate = require("../validation/auth/userUpdate");
 const validatePasswordUpdate = require("../validation/auth/passwordUpdate");
+const validateContactForm = require("../validation/contact/contact");
 
 // Models
 const User = require("./../models/userModel");
@@ -83,6 +85,21 @@ exports.getCurrentUser = (req, res, next) => {
 // @desc    Tests users route
 // @access  Public
 exports.test = (req, res, next) => res.json({ message: "Users route secured" });
+
+// @route   POST api/v1/users/sendContactEmail
+// @desc    Sends admin email from contact form on home page
+// @access  Public
+exports.sendContactEmail = catchAsync(async (req, res, next) => {
+  // 1. Validate inputs
+  const { errors, isValid } = validateContactForm(req.body);
+  if (!isValid) return res.status(400).json(errors);
+
+  // 2. Send email
+  await new Email().sendContact(req.body);
+
+  // 3. Respond
+  res.status(200).json({ status: "success" });
+});
 
 ///////////////////
 // Protected Routes

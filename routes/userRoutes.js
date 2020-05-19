@@ -17,6 +17,11 @@ router.get("/test", userController.test);
 // @access  Public
 router.post("/register", authController.register);
 
+// @route   POST api/v1/users/sendContactEmail
+// @desc    Sends admin email from contact form on home page
+// @access  Public
+router.post("/sendContactEmail", userController.sendContactEmail);
+
 // @route   POST api/v1/users/login
 // @desc    Logs in existing user
 // @access  Public
@@ -69,23 +74,23 @@ router.delete("/deleteCurrentUser", userController.deleteCurrentUser);
 // @route   GET api/v1/users
 // @desc    Get all users
 // @access  Protected
-router.get('/', userController.getAllUsers);
+router.get("/", userController.getAllUsers);
 
 // @route   POST api/v1/users
 // @desc    Dummy route => Users are created through /register
 // @access  Protected
-router.post('/', userController.createUser);
+router.post("/", userController.createUser);
 
 // @route   GET api/v1/users/:id
 // @desc    Get user by id
 // @access  Protected
-router.get('/:id', userController.getUser);
+router.get("/:id", userController.getUser);
 
 // @route   DELETE api/v1/users/:id // TODO:
 // @desc    Delete user by id
 // @access  Protected
-router.delete('/:id', userController.deleteUser);
+router.delete("/:id", userController.deleteUser);
 
-router.get('/users/guides', userController.getGuides);
+router.get("/users/guides", userController.getGuides);
 
 module.exports = router;
