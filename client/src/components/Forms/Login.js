@@ -43,6 +43,7 @@ class Login extends Component {
 
   // Clear any timers when form unmounts
   componentWillUnmount() {
+    this.timer = null;
     clearTimeout(this.timer);
   }
 
