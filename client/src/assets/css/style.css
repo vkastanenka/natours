@@ -2074,7 +2074,10 @@ body {
 
 .section-stories {
   padding: 14rem 0;
-  position: relative; }
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
   @media only screen and (max-width: 37.5em) {
     .section-stories {
       padding: 12rem 0; } }

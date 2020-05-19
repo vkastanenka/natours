@@ -7,9 +7,7 @@ import Popup from "./Popup";
 import Auxiliary from "../../../components/HigherOrder/Auxiliary";
 
 class About extends Component {
-  state = {
-    popup: false,
-  };
+  state = { popup: false };
 
   render() {
     return (

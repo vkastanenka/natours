@@ -72,6 +72,10 @@
   padding: 14rem 0;
   position: relative;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   @include respond(bp-small) {
     padding: 12rem 0;
   }

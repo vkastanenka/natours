@@ -26,7 +26,10 @@ const Story = props => {
 };
 
 Story.propTypes = {
-  
+  imgURL: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  story: PropTypes.string.isRequired,
 }
 
 export default Story;
