@@ -50,19 +50,21 @@ class UserCard extends Component {
     return (
       <Auxiliary>
         {alert}
-        <div className={`user__card ${this.props.cardClassName}`}>
+        <div className={`users__card ${this.props.cardClassName}`}>
           {icons}
-          <div className="user__avatar">
+          <div className="users__avatar">
             <img
               src={this.props.imageURL}
               alt={this.props.name}
-              className="user__avatar-img"
+              className="users__avatar-img"
             />
-            <h6 className="user__user">{this.props.name}</h6>
-            <h6 className="user__user">{this.props.email}</h6>
+            <h6 className="users__user">{this.props.name}</h6>
+            <h6 className="users__user">{this.props.email}</h6>
           </div>
-          <p className="user__text">{this.props.active ? "Active" : "Inactive"}</p>
-          <p className="user__text">{this.props.role}</p>
+          <p className="users__text">{this.props.role}</p>
+          <p className="users__text">
+            {this.props.active ? "Active" : "Inactive"}
+          </p>
         </div>
       </Auxiliary>
     );

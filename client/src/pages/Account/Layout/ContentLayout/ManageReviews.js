@@ -150,7 +150,6 @@ class ManageReviews extends Component {
         <Auxiliary>
           <div className="review-filter">
             <p>Filter reviews by:</p>
-            {tourSelect}
             <InputGroup
               type="text"
               name="userFilter"
@@ -159,9 +158,10 @@ class ManageReviews extends Component {
               value={this.state.userFilter}
               onChange={(e) => this.onChange(e)}
             />
+            {tourSelect}
           </div>
-          <div className="review-grid">{reviews}</div>
-          {pageNumbers}
+          <div className="review-grid ma-bt-lg">{reviews}</div>
+          <div className="page-numbers">{pageNumbers}</div>
         </Auxiliary>
       );
     }

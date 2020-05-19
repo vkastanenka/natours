@@ -17,9 +17,11 @@ const InputGroup = (props) => {
         onChange={props.onChange}
         onFocus={props.onFocus}
       />
-      <label htmlFor={props.htmlFor} className="form__label">
-        {props.label}
-      </label>
+      {props.label ? (
+        <label htmlFor={props.htmlFor} className="form__label">
+          {props.label}
+        </label>
+      ) : null}
     </div>
   );
 };

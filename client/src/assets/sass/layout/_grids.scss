@@ -1,9 +1,50 @@
-.review-grid {
+.review-grid,
+.user-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 2rem;
   justify-items: center;
   padding: 0 5rem;
+}
+
+.user-filter,
+.review-filter {
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+  margin: 0 auto 3rem auto;
+
+  & > :first-child {
+    align-self: center;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    font-weight: 400;
+  }
+}
+
+.page-numbers {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+
+  border-bottom: 2px solid $color-primary;
+  padding-bottom: 1rem;
+
+  width: 50%;
+
+  & > * {
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 0.5rem 1rem;
+    margin: 0 1rem;
+
+    &:hover {
+      transform: translateY(-2px);
+      color: $color-white;
+      background: $color-primary;
+    }
+  }
 }
 
 .card-grid {
@@ -64,7 +105,6 @@
   @include respond(bp-small) {
     max-width: 65rem;
     padding: 0 2rem;
-  
   }
 
   @include respond(phone) {

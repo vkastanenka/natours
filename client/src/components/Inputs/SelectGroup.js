@@ -35,9 +35,11 @@ const SelectGroup = (props) => {
       >
         {options}
       </select>
-      <label htmlFor={props.htmlFor} className="form__label">
-        {props.label}
-      </label>
+      {props.label ? (
+        <label htmlFor={props.htmlFor} className="form__label">
+          {props.label}
+        </label>
+      ) : null}
     </div>
   );
 };

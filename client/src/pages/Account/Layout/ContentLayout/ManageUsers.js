@@ -140,7 +140,7 @@ class ManageUsers extends Component {
         return (
           <UserCard
             key={user._id}
-            cardClassName="user__card--border user__card--wider"
+            cardClassName="users__card--border users__card--wider"
             imageURL={require(`../../../../assets/images/users/${user.photo}`)}
             name={user.name}
             email={user.email}
@@ -187,7 +187,7 @@ class ManageUsers extends Component {
             <SelectGroup
               name="activeFilter"
               options={[
-                { value: "", label: "Registered" },
+                { value: "", label: "Registration" },
                 { value: "true", label: "Active" },
                 { value: "false", label: "Inactive" },
               ]}
@@ -196,8 +196,8 @@ class ManageUsers extends Component {
               onChange={(e) => this.onChange(e)}
             />
           </div>
-          <div className="user-grid">{users}</div>
-          {pageNumbers}
+          <div className="user-grid ma-bt-lg">{users}</div>
+          <div className="page-numbers">{pageNumbers}</div>
         </Auxiliary>
       );
     }
