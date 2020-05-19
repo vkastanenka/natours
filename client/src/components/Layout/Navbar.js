@@ -17,7 +17,7 @@ class Navbar extends Component {
     try {
       return require(`../../assets/images/users/${this.props.auth.user.photo}`);
     } catch (err) {
-      return require('../../assets/images/users/default.jpg');
+      return require("../../assets/images/users/default.jpg");
     }
   };
 
@@ -64,10 +64,12 @@ class Navbar extends Component {
             All tours
           </Link>
           <div className="header-tour__logo">
-            <img
-              src={require("../../assets/images/logo-white.png")}
-              alt="Natours Logo"
-            />
+            <Link to="/" className="navbar__el">
+              <img
+                src={require("../../assets/images/logo-white.png")}
+                alt="Natours Logo"
+              />
+            </Link>
           </div>
         </nav>
         <nav className="navbar--user">{navUser}</nav>

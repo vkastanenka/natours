@@ -59,7 +59,7 @@ class Map extends Component {
   render() {
     return (
       <section className="section-map">
-        <div ref={(el) => (this.mapContainer = el)} id='map' />;
+        <div ref={(el) => (this.mapContainer = el)} id='map' SameSite />;
       </section>
     );
   }

@@ -21,7 +21,7 @@ const Header = () => {
             <span className="heading-primary--sub">is where life happens</span>
           </h1>
 
-          <button class="btn btn--white btn--animated">
+          <button className="btn btn--white btn--animated">
             <ScrollLink
               to="section-tours"
               spy={true}

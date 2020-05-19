@@ -82,9 +82,10 @@
   }
 
   &__link {
-
+    &,
     &:link,
     &:visited {
+      cursor: pointer;
       color: $color-white;
       display: inline-block;
       font-size: 3rem;
