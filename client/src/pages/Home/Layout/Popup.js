@@ -1,32 +1,34 @@
+// React
 import React from "react";
+import { Link } from 'react-router-dom';
 
-const Popup = () => {
+const Popup = props => {
   return (
-    <div class="popup" id="popup">
-      <div class="popup__content">
-        <div class="popup__left">
+    <div className="popup" id="popup">
+      <div className="popup__content">
+        <div className="popup__left">
           <img
             src={require("../../../assets/images/nat-8.jpg")}
             alt="Tour photo"
-            class="popup__img"
+            className="popup__img"
           />
           <img
             src={require("../../../assets/images/nat-9.jpg")}
             alt="Tour photo"
-            class="popup__img"
+            className="popup__img"
           />
         </div>
-        <div class="popup__right">
-          <a href="#section-tours" class="popup__close">
+        <div className="popup__right">
+          <p className="popup__close" onClick={props.popupClose}>
             &times;
-          </a>
-          <h2 class="heading-secondary u-margin-bottom-small">
+          </p>
+          <h2 className="heading-secondary ma-bt-sm">
             Start booking now
           </h2>
-          <h3 class="heading-tertiary u-margin-bottom-small">
+          <h3 className="heading-tertiary ma-bt-sm">
             Important &ndash; Please read these terms before booking
           </h3>
-          <p class="popup__text">
+          <p className="popup__text">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed sed
             risus pretium quam. Aliquam sem et tortor consequat id. Volutpat
@@ -42,9 +44,9 @@ const Popup = () => {
             donec. Sit amet facilisis magna etiam. Imperdiet sed euismod nisi
             porta.
           </p>
-          <a href="#" class="btn btn--green">
-            Book now
-          </a>
+          <Link to='/tours' className="btn btn--green">
+            Explore our tours
+          </Link>
         </div>
       </div>
     </div>
