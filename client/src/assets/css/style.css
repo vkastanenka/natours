@@ -768,10 +768,18 @@ body {
   text-align: center;
   border-radius: 0.3rem;
   box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s; }
+  transition: transform 0.3s;
+  height: 37.5rem; }
+  @media only screen and (max-width: 62.5em) {
+    .feature-box {
+      height: 45rem; } }
   @media only screen and (max-width: 50em) {
     .feature-box {
+      height: 42.5rem;
       padding: 4rem 1rem; } }
+  @media only screen and (max-width: 37.5em) {
+    .feature-box {
+      height: auto; } }
   .feature-box__icon {
     font-size: 8rem;
     margin-bottom: 0.5rem;
