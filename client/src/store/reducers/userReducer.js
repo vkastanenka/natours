@@ -10,14 +10,17 @@ const initialState = {
   users: null,
 };
 
+// Sets loading state
 const userLoading = (state, action) => {
   return updateObject(state, { loading: true });
 };
 
+// Unsets loading state
 const unsetUserLoading = (state, action) => {
   return updateObject(state, { loading: false });
 };
 
+// ALl guides added to state
 const getGuides = (state, action) => {
   return updateObject(state, {
     guides: action.payload,
@@ -25,6 +28,7 @@ const getGuides = (state, action) => {
   });
 };
 
+// All users added to state
 const getUsers = (state, action) => {
   return updateObject(state, {
     users: action.payload,

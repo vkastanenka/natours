@@ -51,7 +51,7 @@ class App extends Component {
           <ScrollToTop>
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path="/authenticate/:type" component={Authenticate} />
+              <Route exact path="/authenticate/:type/:token?" component={Authenticate} />
               <Route exact path="/account/:page" component={Account} />
               <Route exact path="/tours" component={ToursOverview} />
               <Route exact path="/tour/:slug" component={Tour} />

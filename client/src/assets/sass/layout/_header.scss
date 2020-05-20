@@ -77,14 +77,6 @@
     padding: 0 3rem;
   }
 
-  &__logo img {
-    height: 3.5rem;
-
-    @include respond(bp-smallest) {
-      display: none;
-    }
-  }
-
   &__hero {
     height: 100%;
   }

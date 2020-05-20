@@ -6,6 +6,10 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+
+  &__center {
+    justify-content: center;
+  }
 }
 
 .span-all-rows {

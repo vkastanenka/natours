@@ -2,6 +2,8 @@
 export const REQUEST_LOADING = 'REQUEST_LOADING';
 
 // Auth
+export const SET_AUTH_LOAD = "SET_AUTH_LOAD";
+export const UNSET_AUTH_LOAD = "UNSET_AUTH_LOAD";
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 
 // Error

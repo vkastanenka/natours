@@ -85,7 +85,7 @@ exports.restrictTo = (...roles) => {
 ////////////////
 // Public Routes
 
-// @route   POST api/v1/users/register TODO: Email
+// @route   POST api/v1/users/register
 // @desc    Registers new user
 // @access  Public
 exports.register = catchAsync(async (req, res, next) => {
@@ -106,12 +106,10 @@ exports.register = catchAsync(async (req, res, next) => {
   });
 
   // 4. Respond
-  res
-    .status(201)
-    .json({ success: "Successfully registered a new account!", newUser });
+  res.status(201).json({ status: "success", newUser });
 
   // 5. Send out a welcome email
-  const url = `${req.protocol}://${req.get("host")}/me`;
+  const url = `http://localhost:3000/account/settings`;
   await new Email(newUser, url).sendWelcome();
 });
 
@@ -166,7 +164,7 @@ exports.sendPasswordResetToken = catchAsync(async (req, res, next) => {
 
   try {
     // 4. Send an email with a link to a form to reset the user's password
-    const resetURL = `http://127.0.0.1:3000/resetPassword/${resetToken}`;
+    const resetURL = `http://127.0.0.1:3000/authenticate/resetPassword/${resetToken}`;
     await new Email(user, resetURL).sendPasswordReset();
 
     // 5. Respond

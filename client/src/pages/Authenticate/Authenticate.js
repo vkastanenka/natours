@@ -9,10 +9,12 @@ import { connect } from "react-redux";
 import PageLayout from "../../components/Layout/PageLayout";
 import Login from "../../components/Forms/Login";
 import Register from "../../components/Forms/Register";
+import ResetPassword from "../../components/Forms/ResetPassword";
 
 class Authenticate extends Component {
   state = {
-    isRegistered: true,
+    page: "login",
+    resettingPassword: false,
   };
 
   // If the user is authenticated, just push them to tours page
@@ -21,9 +23,11 @@ class Authenticate extends Component {
 
     // Change page to login/register depending on URL params
     if (this.props.match.params.type === "login") {
-      this.setState({ isRegistered: true });
-    } else if (this.props.match.params.type === 'register') {
-      this.setState({ isRegistered: false });
+      this.setState({ page: "login" });
+    } else if (this.props.match.params.type === "register") {
+      this.setState({ page: "register" });
+    } else if (this.props.match.params.type === "resetPassword") {
+      this.setState({ page: "resetPassword" });
     }
   }
 
@@ -33,18 +37,23 @@ class Authenticate extends Component {
 
     // Change page to login/register depending on URL params
     if (nextProps.match.params.type === "login") {
-      this.setState({ isRegistered: true });
+      this.setState({ page: "login" });
     } else if (nextProps.match.params.type === "register") {
-      this.setState({ isRegistered: false });
+      this.setState({ page: "register" });
+    } else if (nextProps.match.params.type === "resetPassword") {
+      this.setState({ page: "resetPassword" });
     }
   }
 
   render() {
-    let formContent = <Login />;
-    if (!this.state.isRegistered)
-      formContent = (
-        <Register />
-      );
+    let formContent;
+    if (this.state.page === 'login') {
+      formContent = <Login />
+    } else if (this.state.page === 'register') {
+      formContent = <Register />;
+    } else if (this.state.page === 'resetPassword') {
+      formContent = <ResetPassword />;
+    }
 
     return (
       <PageLayout>

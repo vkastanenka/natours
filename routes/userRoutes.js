@@ -12,15 +12,15 @@ const router = express.Router();
 // @access  Public
 router.get("/test", userController.test);
 
-// @route   POST api/v1/users/register
-// @desc    Registers new user
-// @access  Public
-router.post("/register", authController.register);
-
 // @route   POST api/v1/users/sendContactEmail
 // @desc    Sends admin email from contact form on home page
 // @access  Public
 router.post("/sendContactEmail", userController.sendContactEmail);
+
+// @route   POST api/v1/users/register
+// @desc    Registers new user
+// @access  Public
+router.post("/register", authController.register);
 
 // @route   POST api/v1/users/login
 // @desc    Logs in existing user

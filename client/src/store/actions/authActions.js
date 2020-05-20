@@ -7,6 +7,20 @@ import decodeToken from "../../utils/decodeToken";
 import setAuthToken from "../../utils/setAuthToken";
 import actionDispatch from "../../utils/actionDispatch";
 
+// Sets loading state for booking requests
+export const setAuthLoad = () => {
+  return {
+    type: actionTypes.SET_AUTH_LOAD,
+  };
+};
+
+// Unsets loading state for booking requests
+export const unsetAuthLoad = () => {
+  return {
+    type: actionTypes.UNSET_AUTH_LOAD,
+  };
+};
+
 // Sets a logged in user
 export const setCurrentUser = (decoded) => {
   return {
@@ -22,10 +36,13 @@ export const setCurrentUser = (decoded) => {
 // @desc    Register user
 // @access  Public
 export const register = (userData) => async (dispatch) => {
+  dispatch(setAuthLoad());
   try {
     await axios.post("/api/v1/users/register", userData);
+    dispatch(unsetAuthLoad());
   } catch (err) {
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
+    dispatch(unsetAuthLoad());
   }
 };
 
@@ -33,12 +50,15 @@ export const register = (userData) => async (dispatch) => {
 // @desc    Login User / JWT Response => Sets LS and auth headers
 // @access  Public
 export const login = (userData) => async (dispatch) => {
+  dispatch(setAuthLoad());
   try {
     const res = await axios.post("/api/v1/users/login", userData);
     const decoded = decodeToken(res.data.token);
     dispatch(setCurrentUser(decoded));
+    dispatch(unsetAuthLoad());
   } catch (err) {
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
+    dispatch(unsetAuthLoad());
   }
 };
 
@@ -56,10 +76,13 @@ export const logout = () => (dispatch) => {
 // @desc    Send email with a password reset token
 // @access  Public
 export const sendPasswordResetToken = (email) => async (dispatch) => {
+  dispatch(setAuthLoad());
   try {
     await axios.post("/api/v1/users/sendPasswordResetToken", email);
+    dispatch(unsetAuthLoad());
   } catch (err) {
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
+    dispatch(unsetAuthLoad());
   }
 };
 

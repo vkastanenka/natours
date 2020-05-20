@@ -61,10 +61,7 @@ class Navbar extends Component {
     return (
       <header className="header-tour">
         <nav className="navbar navbar--tours">
-          <Link to="/tours" className="navbar__el">
-            All tours
-          </Link>
-          <div className="header-tour__logo">
+          <div className="navbar__logo">
             <Link to="/" className="navbar__el">
               <img
                 src={require("../../assets/images/logo-white.png")}
@@ -72,6 +69,9 @@ class Navbar extends Component {
               />
             </Link>
           </div>
+          <Link to="/tours" className="navbar__el">
+            All tours
+          </Link>
         </nav>
         <nav className="navbar--user">{navUser}</nav>
       </header>
