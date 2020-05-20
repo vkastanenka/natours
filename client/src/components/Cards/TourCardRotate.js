@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from 'react-router-dom';
 import PropTypes from "prop-types";
 
+// Tour card for home page that rotates on hover with links to tour page
 const TourCardRotate = (props) => {
   return (
     <div className="card-rotate">

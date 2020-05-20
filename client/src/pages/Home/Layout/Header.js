@@ -8,9 +8,9 @@ const Header = () => {
     <header className="section-header-home">
       <div className="header-home">
         <div className="header-home__logo-box">
+          {/* eslint-disable-next-line */}
           <img
             src={require("../../../assets/images/logo-white.png")}
-            // eslint-disable-next-line
             alt="Logo"
             className="header-home__logo"
           />

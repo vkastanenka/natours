@@ -7,6 +7,7 @@ import Popup from "./Popup";
 import Story from "../../../components/Story/Story";
 import Auxiliary from "../../../components/HigherOrder/Auxiliary";
 
+// Stories section of the home page
 class Stories extends Component {
   state = { popup: false };
 
@@ -68,7 +69,7 @@ class Stories extends Component {
             />
           </div>
 
-          <div className="u-center-text">
+          <div>
             <button
               className="btn-text"
               onClick={() => this.setState({ popup: true })}

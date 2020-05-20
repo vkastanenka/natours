@@ -4,6 +4,7 @@ import React from "react";
 // Components
 import ContactForm from "../../../components/Forms/Contact";
 
+// Contact section of home page
 const Contact = () => {
   return (
     <section className="section-contact">

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 // Components
 import TourCardRotate from "../../../components/Cards/TourCardRotate";
 
+// Most popular tours section for home page with links to all tours and most popular tour pages
 const Tours = () => {
   return (
     <section className="section-tours" id="section-tours">

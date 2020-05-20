@@ -2,6 +2,7 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 
+// Popup for home page with link to tours
 const Popup = props => {
   return (
     <div className="popup" id="popup">

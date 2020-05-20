@@ -6,6 +6,7 @@ import { CSSTransition } from "react-transition-group";
 import Popup from "./Popup";
 import Auxiliary from "../../../components/HigherOrder/Auxiliary";
 
+// About section for home page
 class About extends Component {
   state = { popup: false };
 
