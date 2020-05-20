@@ -29,6 +29,7 @@ export const sendContactEmail = (data) => async (dispatch) => {
     dispatch(unsetUserLoad());
   } catch (err) {
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
+    dispatch(unsetUserLoad());
   }
 };
 

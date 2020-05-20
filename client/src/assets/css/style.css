@@ -851,7 +851,7 @@ body {
 .form {
   text-align: center;
   position: relative;
-  z-index: 2000; }
+  z-index: 300; }
   .form__links {
     display: flex;
     justify-content: space-between; }
@@ -1828,7 +1828,7 @@ body {
   top: 6rem;
   right: 6rem;
   border-radius: 50%;
-  z-index: 500;
+  z-index: 600;
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1);
   text-align: center;
   cursor: pointer; }
@@ -1873,7 +1873,8 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1500;
+  z-index: 500;
+  transform: translateX(-30rem);
   opacity: 0;
   width: 0;
   transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
@@ -1916,7 +1917,8 @@ body {
 
 .navigation__checkbox:checked ~ .navigation__nav {
   opacity: 1;
-  width: 100%; }
+  width: 100%;
+  transform: translateX(0); }
 
 .navigation__icon {
   position: relative;

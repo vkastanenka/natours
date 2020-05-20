@@ -24,7 +24,6 @@ class Contact extends Component {
     submittingEmail: false,
     submittedEmail: false,
     disableSubmitButton: false,
-    errors: {},
   };
 
   // If authenticated, auto-fill name and email fields
@@ -79,7 +78,6 @@ class Contact extends Component {
       Object.keys(nextProps.errors).length > 0
     ) {
       this.setState({
-        errors: nextProps.errors,
         submittingEmail: false,
         disableSubmitButton: false,
       });
@@ -99,7 +97,6 @@ class Contact extends Component {
 
   // Clear any timers when form unmounts
   componentWillUnmount() {
-    this.timer = null;
     clearTimeout(this.timer);
   }
 
@@ -113,8 +110,7 @@ class Contact extends Component {
     e.preventDefault();
 
     // Clear errors if any before submitting
-    if (this.props.errors) {
-      this.setState({ errors: {} });
+    if (Object.keys(this.props.errors).length > 0) {
       this.props.clearErrors();
     }
 
@@ -130,12 +126,14 @@ class Contact extends Component {
   };
 
   render() {
+    console.log(this.timer);
+
     const errors = [];
     let buttonText = "Submit email";
 
-    if (Object.keys(this.state.errors).length > 0) {
-      for (let err in this.state.errors) {
-        errors.push(<p key={err}>{this.state.errors[err]}</p>);
+    if (Object.keys(this.props.errors).length > 0) {
+      for (let err in this.props.errors) {
+        errors.push(<p key={err}>{this.props.errors[err]}</p>);
       }
     }
 
@@ -147,7 +145,7 @@ class Contact extends Component {
 
     return (
       <Auxiliary>
-        {Object.keys(this.state.errors).length > 0 ? (
+        {Object.keys(this.props.errors).length > 0 ? (
           <Alert type="error" message={errors} />
         ) : null}
         <form onSubmit={this.onSubmitEmail} className="form">

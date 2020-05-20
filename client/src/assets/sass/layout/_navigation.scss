@@ -11,7 +11,7 @@
     top: 6rem;
     right: 6rem;
     border-radius: 50%;
-    z-index: 500;
+    z-index: 600;
     box-shadow: 0 1rem 3rem rgba($color-black, 0.1);
 
     text-align: center;
@@ -69,8 +69,9 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1500;
+    z-index: 500;
 
+    transform: translateX(-30rem);
     opacity: 0;
     width: 0;
     transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -135,6 +136,7 @@
   &__checkbox:checked ~ &__nav {
     opacity: 1;
     width: 100%;
+    transform: translateX(0);
   }
 
   &__icon {
