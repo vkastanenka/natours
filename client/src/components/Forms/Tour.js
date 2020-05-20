@@ -1,6 +1,6 @@
 // React
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 // Redux
 import { connect } from "react-redux";
@@ -95,11 +95,13 @@ class Tour extends Component {
         }
       );
 
+      // eslint-disable-next-line
       const tourLeadGuide = this.props.tourInfo.guides.filter((guide) => {
         if (guide.role === "lead-guide") return guide;
       });
 
       const guides = this.props.tourInfo.guides
+      // eslint-disable-next-line
         .filter((guide) => {
           if (guide.role === "guide") return guide;
         })
@@ -443,7 +445,6 @@ class Tour extends Component {
             name={`destination${i}Description`}
             id={`destination${i}Description`}
             placeholder="Location"
-            value={this.state.startLocationDescription}
             required={true}
             value={
               this.state.tourDestinations[i - 1][`destination${i}Description`]
@@ -459,10 +460,12 @@ class Tour extends Component {
         </div>
       );
     }
+    
 
     // Obtaining options for guides and lead guides
     if (!loading && guides) {
       const leadGuideOptions = guides
+      // eslint-disable-next-line
         .filter((guide) => {
           if (guide.role === "lead-guide") {
             return guide;
@@ -480,6 +483,7 @@ class Tour extends Component {
       });
 
       const guideOptions = guides
+      // eslint-disable-next-line
         .filter((guide) => {
           if (guide.role === "guide") {
             return guide;

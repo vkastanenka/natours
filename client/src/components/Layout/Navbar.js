@@ -46,6 +46,7 @@ class Navbar extends Component {
             Logout
           </button>
           <Link className="navbar__el" to="/account/settings">
+            {/* eslint-disable-next-line */}
             <img
               src={this.tryRequirePhoto()}
               alt="User Photo"

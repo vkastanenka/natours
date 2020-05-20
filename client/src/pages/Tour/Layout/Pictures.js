@@ -6,6 +6,7 @@ const Pictures = (props) => {
   return (
     <section className="section-pictures">
       <div className="picture-box">
+        {/* eslint-disable-next-line */}
         <img
           src={require(`../../../assets/images/tours/${props.images[0]}`)}
           alt="Tour Image 1"
@@ -13,6 +14,7 @@ const Pictures = (props) => {
         />
       </div>
       <div className="picture-box">
+        {/* eslint-disable-next-line */}
         <img
           src={require(`../../../assets/images/tours/${props.images[1]}`)}
           alt="Tour Image 2"
@@ -20,6 +22,7 @@ const Pictures = (props) => {
         />
       </div>
       <div className="picture-box">
+        {/* eslint-disable-next-line */}
         <img
           src={require(`../../../assets/images/tours/${props.images[2]}`)}
           alt="Tour Image 3"

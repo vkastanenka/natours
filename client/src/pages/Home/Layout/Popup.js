@@ -7,11 +7,13 @@ const Popup = props => {
     <div className="popup" id="popup">
       <div className="popup__content">
         <div className="popup__left">
+          {/* eslint-disable-next-line */}
           <img
             src={require("../../../assets/images/nat-8.jpg")}
             alt="Tour photo"
             className="popup__img"
           />
+          {/* eslint-disable-next-line */}
           <img
             src={require("../../../assets/images/nat-9.jpg")}
             alt="Tour photo"

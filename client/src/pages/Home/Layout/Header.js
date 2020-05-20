@@ -10,6 +10,7 @@ const Header = () => {
         <div className="header-home__logo-box">
           <img
             src={require("../../../assets/images/logo-white.png")}
+            // eslint-disable-next-line
             alt="Logo"
             className="header-home__logo"
           />

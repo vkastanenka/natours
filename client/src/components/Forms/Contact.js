@@ -150,9 +150,9 @@ class Contact extends Component {
         {Object.keys(this.state.errors).length > 0 ? (
           <Alert type="error" message={errors} />
         ) : null}
-        <form onSubmit={this.onSubmitEmail} class="form">
-          <div class="ma-bt-md">
-            <h2 class="heading-secondary heading-secondary--large">
+        <form onSubmit={this.onSubmitEmail} className="form">
+          <div className="ma-bt-md">
+            <h2 className="heading-secondary heading-secondary--large">
               Contact Natours
             </h2>
           </div>
@@ -181,7 +181,7 @@ class Contact extends Component {
           <TextAreaGroup
             name="emailBody"
             id="emailBody"
-            inputClass="form__textarea"
+            inputClassName="form__textarea"
             placeholder="Write your email here"
             value={this.state.emailBody}
             required={true}
@@ -189,8 +189,8 @@ class Contact extends Component {
             htmlFor="emailBody"
             label="Contact Body"
           />
-          <div class="form__group">
-            <button type="submit" class="btn btn--green">
+          <div className="form__group">
+            <button type="submit" className="btn btn--green">
               {buttonText}
             </button>
           </div>

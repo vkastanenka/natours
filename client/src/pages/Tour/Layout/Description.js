@@ -13,6 +13,7 @@ const Description = (props) => {
 
     return (
       <div className="overview-box__detail" key={guide._id}>
+        {/* eslint-disable-next-line */}
         <img
           src={require(`../../../assets/images/users/${guide.photo}`)}
           alt={`Photo of ${guide.name}`}

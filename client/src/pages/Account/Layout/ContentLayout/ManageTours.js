@@ -1,7 +1,7 @@
 // React
 import React, { Component } from "react";
 import { withRouter } from "react-router";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 // Redux
 import { connect } from "react-redux";
@@ -11,8 +11,8 @@ import { getTours } from "../../../../store/actions/tourActions";
 import { deleteTour } from "../../../../store/actions/tourActions";
 
 // Components
-import Icon from "../../../../components/Icon/Icon";
-import Alert from "../../../../components/Alert/Alert";
+// import Icon from "../../../../components/Icon/Icon";
+// import Alert from "../../../../components/Alert/Alert";
 import Popup from "../../../../components/HigherOrder/Popup";
 import Spinner from "../../../../components/Spinner/Spinner";
 import TourCard from "../../../../components/Cards/TourCard";

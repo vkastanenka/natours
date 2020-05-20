@@ -44,6 +44,7 @@ class ManageReviews extends Component {
       this.state.tourFilter !== prevState.tourFilter ||
       this.state.userFilter !== prevState.userFilter
     ) {
+      // eslint-disable-next-line
       const filteredReviews = this.state.reviews.filter((review) => {
         let userName;
         // For tour filter and user filter
@@ -113,6 +114,7 @@ class ManageReviews extends Component {
         />
       );
 
+      // eslint-disable-next-line
       const filteredReviews = allReviews.filter((review, index) => {
         if (
           index < this.state.currentPage * 10 &&

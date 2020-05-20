@@ -21,29 +21,29 @@ const Footer = () => {
           <div className="footer__navigation">
             <ul className="footer__list">
               <li className="footer__item">
-                <a href="#" className="footer__link">
+                <p className="footer__link">
                   Company
-                </a>
+                </p>
               </li>
               <li className="footer__item">
-                <a href="#" className="footer__link">
+                <p className="footer__link">
                   Contact us
-                </a>
+                </p>
               </li>
               <li className="footer__item">
-                <a href="#" className="footer__link">
+                <p className="footer__link">
                   Careers
-                </a>
+                </p>
               </li>
               <li className="footer__item">
-                <a href="#" className="footer__link">
+                <p className="footer__link">
                   Privacy policy
-                </a>
+                </p>
               </li>
               <li className="footer__item">
-                <a href="#" className="footer__link">
+                <p className="footer__link">
                   Terms
-                </a>
+                </p>
               </li>
             </ul>
           </div>

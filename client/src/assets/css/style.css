@@ -1454,7 +1454,8 @@ body {
       @media only screen and (max-width: 31.25em) {
         .footer__item:not(:last-child) {
           margin-right: 2rem; } }
-  .footer__link:link, .footer__link:visited {
+  .footer__link, .footer__link:link, .footer__link:visited {
+    cursor: pointer;
     color: inherit;
     text-decoration: none;
     text-transform: uppercase;
@@ -1827,7 +1828,7 @@ body {
   top: 6rem;
   right: 6rem;
   border-radius: 50%;
-  z-index: 2000;
+  z-index: 500;
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1);
   text-align: center;
   cursor: pointer; }
@@ -1852,7 +1853,7 @@ body {
   top: 6.5rem;
   right: 6.5rem;
   background-image: radial-gradient(#7dd56f, #28b487);
-  z-index: 1000;
+  z-index: 400;
   transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1); }
   @media only screen and (max-width: 50em) {
     .navigation__background {

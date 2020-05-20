@@ -6,10 +6,10 @@ import ContactForm from "../../../components/Forms/Contact";
 
 const Contact = () => {
   return (
-    <section class="section-contact">
-      <div class="row">
-        <div class="contact">
-          <div class="contact__form">
+    <section className="section-contact">
+      <div className="row">
+        <div className="contact">
+          <div className="contact__form">
             <ContactForm />
           </div>
         </div>

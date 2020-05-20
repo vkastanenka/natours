@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 // Redux
 import { connect } from "react-redux";
 
+// Button on top right of home page => Links to sections throughout home page / login + register when no one is authenticated, and account settings when authenticated
 class Navigation extends Component {
   state = {
     active: false,
@@ -20,6 +21,7 @@ class Navigation extends Component {
           className="navigation__checkbox"
           id="navi-toggle"
           checked={this.state.active}
+          readOnly
         />
 
         <label

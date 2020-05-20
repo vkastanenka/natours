@@ -46,6 +46,7 @@ class ManageUsers extends Component {
       roleFilter !== prevState.roleFilter ||
       activeFilter !== prevState.activeFilter
     ) {
+      // eslint-disable-next-line
       const filteredUsers = users.filter((user) => {
         const userName = user.name.toLowerCase();
         if (userFilter && roleFilter && activeFilter === "true") {
@@ -127,6 +128,7 @@ class ManageUsers extends Component {
 
     if (loading || !filteredUsers) content = <Spinner />;
     else {
+      // eslint-disable-next-line
       const filteredPageUsers = filteredUsers.filter((user, index) => {
         if (
           index < this.state.currentPage * 10 &&

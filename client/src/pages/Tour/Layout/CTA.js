@@ -25,6 +25,9 @@ const CTA = (props) => {
 
     // 2. When customer clicks on the button, redirect them to checkout
     const stripe = await stripePromise;
+
+    // TODO:
+    // eslint-disable-next-line
     const { error } = await stripe.redirectToCheckout({
       sessionId,
     });
@@ -53,16 +56,19 @@ const CTA = (props) => {
       <div className="cta">
         <div className="cta__imgs">
           <div className="cta__img cta__img--logo">
+            {/* eslint-disable-next-line */}
             <img
               src={require("../../../assets/images/logo-white.png")}
               alt="Natours Logo"
             />
           </div>
+          {/* eslint-disable-next-line */}
           <img
             src={require(`../../../assets/images/tours/${props.images[1]}`)}
             alt="Tour Image 1"
             className="cta__img cta__img--1"
           />
+          {/* eslint-disable-next-line */}
           <img
             src={require(`../../../assets/images/tours/${props.images[0]}`)}
             alt="Tour Image 2"

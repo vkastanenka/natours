@@ -39,6 +39,7 @@ const updateCurrentUserReview = (state, action) => {
 // Delete a User Review from the State
 const deleteCurrentUserReview = (state, action) => {
   const userReviews = [...state.userReviews];
+  // eslint-disable-next-line
   const filteredReviews = userReviews.filter((review) => {
     if (review._id !== action.payload) return review;
   });
@@ -59,6 +60,7 @@ const getAllReviews = (state, action) => {
 // Delete a review from the State
 const deleteReview = (state, action) => {
   const allReviews = [...state.allReviews];
+  // eslint-disable-next-line
   const filteredReviews = allReviews.filter((review) => {
     if (review._id !== action.payload) return review;
   });

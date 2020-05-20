@@ -1,9 +1,9 @@
 // React
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 // Redux
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 
 // Actions
 // import { deleteUser } from "../../store/actions/reviewActions";

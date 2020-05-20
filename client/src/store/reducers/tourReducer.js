@@ -61,6 +61,7 @@ const updateTour = (state, action) => {
 // Delete a Tour from the State
 const deleteTour = (state, action) => {
   const tours = [...state.tours];
+  // eslint-disable-next-line
   const filteredTours = tours.filter((tour) => {
     if (tour._id !== action.payload) return tour;
   });

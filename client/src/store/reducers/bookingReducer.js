@@ -34,6 +34,7 @@ const setUserBookings = (state, action) => {
 
 const deleteUserBooking = (state, action) => {
   const userBookings = [...state.userBookings];
+  // eslint-disable-next-line
   const filteredBookings = userBookings.filter((booking) => {
     if (booking._id !== action.payload) return reviewReducer;
   });

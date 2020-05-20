@@ -35,6 +35,8 @@ class SideNav extends Component {
       case "manageReviews":
         this.setState({ currentPage: "manageReviews" });
         break;
+      default:
+        this.setState({ currentPage: "settings" });
     }
   }
 
@@ -58,6 +60,8 @@ class SideNav extends Component {
       case "manageReviews":
         this.setState({ currentPage: "manageReviews" });
         break;
+      default:
+        this.setState({ currentPage: "settings" });
     }
   }
 
@@ -141,7 +145,7 @@ SideNav.propTypes = {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  tours: state.tours
+  tours: state.tours,
 });
 
 export default connect(mapStateToProps)(withRouter(SideNav));

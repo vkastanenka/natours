@@ -149,6 +149,7 @@ class UpdateAccount extends Component {
             label="Email address"
           />
           <div className="form__group form__photo-upload">
+            {/* eslint-disable-next-line */}
             <img
               src={this.tryRequirePhoto()}
               alt="User Photo"

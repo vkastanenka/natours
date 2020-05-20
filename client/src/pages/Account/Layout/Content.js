@@ -35,6 +35,8 @@ class Content extends Component {
       case "manageReviews":
         this.setState({ content: <ManageReviews /> });
         break;
+      default:
+        this.setState({ content: <Settings /> });
     }
   }
 
@@ -58,6 +60,8 @@ class Content extends Component {
       case "manageReviews":
         this.setState({ content: <ManageReviews /> });
         break;
+      default:
+        this.setState({ content: <Settings /> });
     }
   }
 

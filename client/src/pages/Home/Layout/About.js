@@ -55,6 +55,7 @@ class About extends Component {
 
             <div className="col-1-of-2">
               <div className="composition">
+                {/* eslint-disable-next-line */}
                 <img
                   srcSet={`${require("../../../assets/images/nat-1.jpg")} 300w, ${require("../../../assets/images/nat-1-large.jpg")} 1000w`}
                   sizes="(max-width: 56.25em) 20vw, (max-width: 37.5em) 30vw, 300px"
@@ -63,6 +64,7 @@ class About extends Component {
                   src={require("../../../assets/images/nat-1-large.jpg")}
                 />
 
+                {/* eslint-disable-next-line */}
                 <img
                   srcSet={`${require("../../../assets/images/nat-2.jpg")} 300w, ${require("../../../assets/images/nat-2-large.jpg")} 1000w`}
                   sizes="(max-width: 56.25em) 20vw, (max-width: 37.5em) 30vw, 300px"
@@ -71,6 +73,7 @@ class About extends Component {
                   src={require("../../../assets/images/nat-2-large.jpg")}
                 />
 
+                {/* eslint-disable-next-line */}
                 <img
                   srcSet={`${require("../../../assets/images/nat-3.jpg")} 300w, ${require("../../../assets/images/nat-3-large.jpg")} 1000w`}
                   sizes="(max-width: 56.25em) 20vw, (max-width: 37.5em) 30vw, 300px"
