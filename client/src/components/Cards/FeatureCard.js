@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 // Styling
 import "../../assets/css/icon-font.css";
 
+// Feature card for home page
 const FeatureCard = (props) => {
   return (
     <div className="feature-box">

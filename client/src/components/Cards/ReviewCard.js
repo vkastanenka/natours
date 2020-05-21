@@ -16,6 +16,7 @@ import ReviewForm from "../Forms/Review";
 import Popup from "../../components/HigherOrder/Popup";
 import Auxiliary from "../../components/HigherOrder/Auxiliary";
 
+// Card containing a user review
 class ReviewCard extends Component {
   state = {
     editingReview: false,
@@ -135,13 +136,14 @@ class ReviewCard extends Component {
 }
 
 ReviewCard.propTypes = {
+  page: PropTypes.string,
+  reviewId: PropTypes.string,
   cardClassName: PropTypes.string,
+  tourName: PropTypes.string,
   imageURL: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   review: PropTypes.string.isRequired,
   rating: PropTypes.number.isRequired,
-  page: PropTypes.string,
-  reviewId: PropTypes.string,
 };
 
 export default connect(null, { deleteReview, deleteCurrentUserReview })(ReviewCard);

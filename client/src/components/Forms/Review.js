@@ -16,14 +16,15 @@ import Icon from "../Icon/Icon";
 import Auxiliary from "../HigherOrder/Auxiliary";
 import TextAreaGroup from "../Inputs/TextAreaGroup";
 
+// Review form to post/patch review documents
 class Review extends Component {
   state = {
     review: "",
     rating: 5,
-    submittingReview: false,
-    submittedReview: false,
-    updatingReview: false,
-    updatedReview: false,
+    submitting: false,
+    submitted: false,
+    updating: false,
+    updated: false,
     disableSubmitButton: false,
     errors: {},
   };
@@ -52,9 +53,9 @@ class Review extends Component {
     }
 
     if (nextProps.errors && this.props.editingReview) {
-      this.setState({ updatingReview: false });
+      this.setState({ updating: false });
     } else {
-      this.setState({ submittingReview: false });
+      this.setState({ submitting: false });
     }
   }
 
@@ -81,12 +82,12 @@ class Review extends Component {
 
     // 1. State to change button text
     this.setState({
-      submittingReview: true,
+      submitting: true,
       disableSubmitButton: true,
     });
 
-    if (this.state.submittedReview) {
-      this.setState({ submittedReview: false });
+    if (this.state.submitted) {
+      this.setState({ submitted: false });
     }
 
     // 2. Review data to post
@@ -104,8 +105,8 @@ class Review extends Component {
     if (Object.keys(this.state.errors).length === 0) {
       this.setState({
         review: "",
-        submittedReview: true,
-        submittingReview: false,
+        submitted: true,
+        submitting: false,
         disableSubmitButton: false,
       });
     }
@@ -117,12 +118,12 @@ class Review extends Component {
 
     // 1. State to change button text
     this.setState({
-      updatingReview: true,
+      updating: true,
       disableSubmitButton: true,
     });
 
-    if (this.state.updatedReview) {
-      this.setState({ updatedReview: false });
+    if (this.state.updated) {
+      this.setState({ updated: false });
     }
 
     // 2. Review data to update
@@ -147,9 +148,9 @@ class Review extends Component {
 
     if (this.props.editingReview) {
       buttonText = "Update review";
-    } else if (this.props.editingReview && this.state.updatingReview) {
+    } else if (this.props.editingReview && this.state.updating) {
       buttonText = "Updating review...";
-    } else if (this.state.submittingReview) {
+    } else if (this.state.submitting) {
       buttonText = "Submitting review...";
     }
 
@@ -158,7 +159,7 @@ class Review extends Component {
         {Object.keys(this.state.errors).length > 0 ? (
           <Alert type="error" message={errors} />
         ) : null}
-        {this.state.submittedReview ? (
+        {this.state.submitted ? (
           <Alert type="success" message="Submitted review!" />
         ) : null}
         <form

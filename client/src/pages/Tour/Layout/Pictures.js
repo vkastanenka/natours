@@ -2,6 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+// Picture gallery for tour page
 const Pictures = (props) => {
   return (
     <section className="section-pictures">

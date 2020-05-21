@@ -1,6 +1,7 @@
 const Validator = require("validator");
 const isEmpty = require("../utils/isEmpty");
 
+// Logging a user in
 module.exports = validateLogin = (data) => {
   const errors = {};
 

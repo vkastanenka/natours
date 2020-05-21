@@ -12,6 +12,7 @@ import { logout } from "../../store/actions/authActions";
 // Components
 import Auxiliary from "../../components/HigherOrder/Auxiliary";
 
+// Navbar for site
 class Navbar extends Component {
   tryRequirePhoto = () => {
     try {

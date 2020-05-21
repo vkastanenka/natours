@@ -1,7 +1,8 @@
 const Validator = require("validator");
 const isEmpty = require("../utils/isEmpty");
 
-module.exports = validateRegistration = (data) => {
+// Updating user information
+module.exports = validateUserUpdate = (data) => {
   const errors = {};
 
   data.name = !isEmpty(data.name) ? data.name : "";

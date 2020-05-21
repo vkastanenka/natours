@@ -75,7 +75,7 @@
   margin-top: calc(0px - var(--section-rotate));
   padding: calc(5rem + var(--section-rotate)) 0;
   position: relative;
-  z-index: 1000;
+  z-index: 200;
   background: linear-gradient(
     to right bottom,
     $color-primary-light,

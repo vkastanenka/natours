@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 // Components
 import Icon from "../../../components/Icon/Icon";
 
+// Header for tour page
 const Header = props => {
   return (
     <section className="section-header-tour">

@@ -1,6 +1,7 @@
 const Validator = require("validator");
 const isEmpty = require("../utils/isEmpty");
 
+// Updating a user's password
 module.exports = validatePasswordUpdate = (data) => {
   const errors = {};
 

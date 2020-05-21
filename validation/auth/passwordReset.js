@@ -1,6 +1,7 @@
 const Validator = require("validator");
 const isEmpty = require("../utils/isEmpty");
 
+// Resetting a user's password
 module.exports = validatePasswordReset = (data) => {
   const errors = {};
 

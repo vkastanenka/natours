@@ -1,6 +1,7 @@
 const Validator = require("validator");
 const isEmpty = require("../utils/isEmpty");
 
+// Registering a new user
 module.exports = validateRegistration = (data) => {
   const errors = {};
 

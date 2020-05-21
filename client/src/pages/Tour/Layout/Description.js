@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 // Components
 import Icon from "../../../components/Icon/Icon";
 
+// Description section for tour page
 const Description = (props) => {
   const guides = props.guides.map((guide) => {
     let role;

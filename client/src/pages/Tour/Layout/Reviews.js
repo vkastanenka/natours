@@ -11,6 +11,7 @@ import ReviewCard from "../../../components/Cards/ReviewCard";
 import Popup from "../../../components/HigherOrder/Popup";
 import ReviewForm from "../../../components/Forms/Review";
 
+// Reviews section of the tour page
 class Reviews extends Component {
   state = {
     writingReview: false,

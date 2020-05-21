@@ -19,6 +19,7 @@ import Reviews from "./Layout/Reviews";
 import CTA from "./Layout/CTA";
 
 class Tour extends Component {
+  // Get the tour on mount
   componentDidMount() {
     this.props.getTour(this.props.match.params.slug);
   }
@@ -26,11 +27,8 @@ class Tour extends Component {
   render() {
     const { tour, loading } = this.props.tours;
     let pageContent = <Spinner />;
-    
-    if (tour && !loading) {
-      // TODO: Remove
-      // console.log(tour);
 
+    if (tour && !loading) {
       pageContent = (
         <main>
           <Header

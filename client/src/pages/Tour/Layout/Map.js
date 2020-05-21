@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 
 // Utilities
 import mapboxgl from "mapbox-gl";
-
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
+// Mapbox map for individual tour
 class Map extends Component {
   state = {
     style: process.env.REACT_APP_MAPBOX_STYLE,
@@ -59,7 +59,7 @@ class Map extends Component {
   render() {
     return (
       <section className="section-map">
-        <div ref={(el) => (this.mapContainer = el)} id='map' SameSite />;
+        <div ref={(el) => (this.mapContainer = el)} id='map' />;
       </section>
     );
   }

@@ -15,6 +15,7 @@ import Alert from "../Alert/Alert";
 import InputGroup from "../Inputs/InputGroup";
 import Auxiliary from "../HigherOrder/Auxiliary";
 
+// Form for registering new users
 class Register extends Component {
   state = {
     name: "",
