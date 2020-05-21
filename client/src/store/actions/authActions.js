@@ -7,14 +7,14 @@ import decodeToken from "../../utils/decodeToken";
 import setAuthToken from "../../utils/setAuthToken";
 import actionDispatch from "../../utils/actionDispatch";
 
-// Sets loading state for booking requests
+// Sets loading state
 export const setAuthLoad = () => {
   return {
     type: actionTypes.SET_AUTH_LOAD,
   };
 };
 
-// Unsets loading state for booking requests
+// Unsets loading state
 export const unsetAuthLoad = () => {
   return {
     type: actionTypes.UNSET_AUTH_LOAD,

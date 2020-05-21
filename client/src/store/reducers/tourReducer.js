@@ -11,12 +11,12 @@ const initialState = {
 };
 
 // To display spinner during request
-const tourLoading = (state, action) => {
+const setTourLoad = (state, action) => {
   return updateObject(state, { loading: true });
 };
 
 // To display spinner during request
-const tourDoneLoading = (state, action) => {
+const unsetTourLoad = (state, action) => {
   return updateObject(state, { loading: false });
 };
 
@@ -72,10 +72,10 @@ const deleteTour = (state, action) => {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.REQUEST_LOADING:
-      return tourLoading(state, action);
-    case actionTypes.TOUR_DONE_LOADING:
-      return tourDoneLoading(state, action);
+    case actionTypes.SET_TOUR_LOAD:
+      return setTourLoad(state, action);
+    case actionTypes.UNSET_TOUR_LOAD:
+      return unsetTourLoad(state, action);
     case actionTypes.GET_TOURS:
       return getTours(state, action);
     case actionTypes.GET_TOUR:

@@ -12,12 +12,12 @@ const initialState = {
 };
 
 // Sets loading state
-const authLoading = (state, action) => {
+const setAuthLoad = (state, action) => {
   return updateObject(state, { loading: true });
 };
 
 // Unsets loading state
-const unsetAuthLoading = (state, action) => {
+const unsetAuthLoad = (state, action) => {
   return updateObject(state, { loading: false });
 };
 
@@ -32,9 +32,9 @@ const setCurrentUser = (state, action) => {
 export default function (state = initialState, action) {
   switch (action.type) {
     case actionTypes.SET_AUTH_LOAD:
-      return authLoading(state, action);
+      return setAuthLoad(state, action);
     case actionTypes.UNSET_AUTH_LOAD:
-      return unsetAuthLoading(state, action);
+      return unsetAuthLoad(state, action);
     case actionTypes.SET_CURRENT_USER:
       return setCurrentUser(state, action);
     default:

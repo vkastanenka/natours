@@ -13,15 +13,33 @@ import PageLayout from "../../components/Layout/PageLayout";
 import TourCard from "../../components/Cards/TourCard";
 import Spinner from "../../components/Spinner/Spinner";
 
+// All tours page showing cards with links to every tour
 class ToursOverview extends Component {
+  // If tours not in state, get the tours
   componentDidMount() {
-    this.props.getTours();
+    if (!this.props.tours.tours) {
+      this.props.getTours();
+    }
   }
 
   render() {
     const { tours, loading } = this.props.tours;
     let cards;
     let pageContent = <Spinner />;
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
 
     if (tours && !loading) {
       cards = tours.map((tour) => {
@@ -34,7 +52,7 @@ class ToursOverview extends Component {
             duration={`${tour.difficulty} ${tour.duration} day tour`}
             summary={tour.summary}
             startLocation={tour.startLocation.description}
-            date={`${startDate.getMonth()}, ${startDate.getFullYear()}`}
+            date={`${months[startDate.getMonth()]}, ${startDate.getFullYear()}`}
             stops={`${tour.locations.length} stops`}
             participants={`${tour.maxGroupSize} people`}
             price={tour.price}

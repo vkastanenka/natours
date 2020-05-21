@@ -10,6 +10,7 @@ import Popup from "../HigherOrder/Popup";
 import TourForm from "../Forms/Tour";
 import Auxiliary from "../HigherOrder/Auxiliary";
 
+// Tour card for tours in the DB
 class TourCard extends Component {
   state = {
     editingTour: false,
@@ -135,6 +136,9 @@ class TourCard extends Component {
 }
 
 TourCard.propTypes = {
+  page: PropTypes.string,
+  tour: PropTypes.object,
+  tourId: PropTypes.string,
   imageURL: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   duration: PropTypes.string.isRequired,

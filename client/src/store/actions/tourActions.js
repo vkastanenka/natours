@@ -5,13 +5,17 @@ import * as actionTypes from "./actionTypes";
 import axios from "axios";
 import actionDispatch from "../../utils/actionDispatch";
 
-// Actions
-import { setRequestLoading } from "./utilActions";
-
-// Set load for asynchronous requests
-export const tourDoneLoading = () => {
+// Sets loading state
+export const setTourLoad = () => {
   return {
-    type: actionTypes.TOUR_DONE_LOADING,
+    type: actionTypes.SET_TOUR_LOAD,
+  };
+};
+
+// Unsets loading state
+export const unsetTourLoad = () => {
+  return {
+    type: actionTypes.UNSET_TOUR_LOAD,
   };
 };
 
@@ -22,7 +26,7 @@ export const tourDoneLoading = () => {
 // @desc    Get all tours
 // @access  Public
 export const getTours = () => async (dispatch) => {
-  dispatch(setRequestLoading());
+  dispatch(setTourLoad());
   try {
     const res = await axios.get("/api/v1/tours");
     actionDispatch(actionTypes.GET_TOURS, res.data.data, dispatch);
@@ -35,7 +39,7 @@ export const getTours = () => async (dispatch) => {
 // @desc    Get tour by slug
 // @access  Public
 export const getTour = (slug) => async (dispatch) => {
-  dispatch(setRequestLoading());
+  dispatch(setTourLoad());
   try {
     const res = await axios.get(`/api/v1/tours/tour/${slug}`);
     actionDispatch(actionTypes.GET_TOUR, res.data.data, dispatch);

@@ -4,6 +4,7 @@ const multer = require("multer");
 const factory = require("./handlerFactory");
 
 // Error Handling
+const query404 = require("../utils/query404");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
@@ -18,6 +19,9 @@ const Tour = require("../models/tourModel");
 
 const multerStorage = multer.memoryStorage();
 
+// TODO: Proper error handling
+
+// Multer filter for images
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
@@ -26,16 +30,19 @@ const multerFilter = (req, file, cb) => {
   }
 };
 
+// Multer upload
 const upload = multer({
   storage: multerStorage,
   fileFilter: multerFilter,
 });
 
+// Multer upload fields
 exports.uploadTourImages = upload.fields([
   { name: "imageCover", maxCount: 1 },
   { name: "images", maxCount: 3 },
 ]);
 
+// Multer editing uploaded pictures, saving to file, and creating name for DB
 exports.resizeTourImages = catchAsync(async (req, res, next) => {
   if (!req.files.imageCover || !req.files.images) return next();
 
@@ -83,25 +90,19 @@ exports.getAllTours = factory.getAll(Tour);
 // @route   GET api/v1/tours/:id
 // @desc    Get tour by id
 // @access  Public
-// exports.getTour = factory.getOne(Tour, "reviews");
 exports.getTour = factory.getOne(Tour, "reviews");
 
 // @route   GET api/v1/tours/tour/:slug
 // @desc    Get tour by slug
 // @access  Public
 exports.getTourBySlug = catchAsync(async (req, res, next) => {
-  const errors = {};
-
   // 1. Find the tour
   const tour = await Tour.findOne({ slug: req.params.slug }).populate(
     "reviews"
   );
 
   // 2. Check if the tour exists
-  if (!tour) {
-    errors.noTour = "There is no tour by that name";
-    return res.status(404).json(errors);
-  }
+  query404(res, tour, "There is no tour with that name");
 
   // 3. Respond
   res.status(200).json({ status: "success", data: tour });
@@ -113,7 +114,7 @@ exports.getTourBySlug = catchAsync(async (req, res, next) => {
 exports.createTour = catchAsync(async (req, res, next) => {
   req.body.startLocation = JSON.parse(req.body.startLocation);
   req.body.locations = JSON.parse(req.body.locations);
-  req.body.startLocation.type = 'Point';
+  req.body.startLocation.type = "Point";
   req.body.locations.forEach((location) => (location.type = "Point"));
 
   // 1. Validate inputs
@@ -136,7 +137,7 @@ exports.createTour = catchAsync(async (req, res, next) => {
 exports.updateTour = catchAsync(async (req, res, next) => {
   req.body.startLocation = JSON.parse(req.body.startLocation);
   req.body.locations = JSON.parse(req.body.locations);
-  req.body.startLocation.type = 'Point';
+  req.body.startLocation.type = "Point";
   req.body.locations.forEach((location) => (location.type = "Point"));
 
   // 1. Validate inputs

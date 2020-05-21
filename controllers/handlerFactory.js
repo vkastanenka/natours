@@ -1,6 +1,6 @@
-const AppError = require("./../utils/appError");
-const catchAsync = require("./../utils/catchAsync");
-const APIFeatures = require("./../utils/apiFeatures");
+const catchAsync = require("../utils/catchAsync");
+const APIFeatures = require("../utils/apiFeatures");
+const query404 = require("../utils/query404");
 
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
@@ -8,7 +8,7 @@ exports.deleteOne = (Model) =>
     const doc = await Model.findByIdAndDelete(req.params.id);
 
     // 2. If no document, respond with an error
-    if (!doc) return next(new AppError("No document found with that ID", 404));
+    query404(res, doc, "No document found with that ID");
 
     // 3. Respond
     res.status(204).json({ status: "success" });
@@ -23,7 +23,7 @@ exports.updateOne = (Model) =>
     });
 
     // 2. If no document, respond with an error
-    if (!doc) return next(new AppError("No document found with that ID", 404));
+    query404(res, doc, "No document found with that ID");
 
     // 3. Respond
     res.status(200).json({
@@ -54,7 +54,7 @@ exports.getOne = (Model, popOptions) =>
     const doc = await query;
 
     // 3. If no document, respond with an error
-    if (!doc) return next(new AppError("No document found with that ID", 404));
+    query404(res, doc, "No document found with that ID");
 
     // 4. Respond
     res.status(200).json({
