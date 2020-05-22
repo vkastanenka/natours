@@ -8,7 +8,6 @@ module.exports = validateReview = (data) => {
   data.review = !isEmpty(data.review) ? data.review : "";
   data.rating = !isEmpty(data.rating) ? data.rating : "";
   data.tour = !isEmpty(data.tour) ? data.tour : "";
-  data.user = !isEmpty(data.user) ? data.user : "";
 
   // Review
   if (Validator.isEmpty(data.review)) {

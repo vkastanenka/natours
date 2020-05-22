@@ -2,8 +2,7 @@ const express = require("express");
 const bookingController = require("./../controllers/bookingController.js");
 const authController = require("./../controllers/authController");
 
-// Merge params allow nested routes
-const router = express.Router({ mergeParams: true });
+const router = express.Router();
 
 /////////////////
 // Public Routes
@@ -26,36 +25,14 @@ router.get("/checkout-session/:tourId", bookingController.getCheckoutSession);
 // TODO: TEMPORARY
 router.post("/", bookingController.createBookingCheckout);
 
+// @route   DELETE api/v1/bookings/:userId
+// @desc    Get bookings for individual user
+// @access  Protected
 router.get("/bookings/:userId", bookingController.getCurrentUserBookings);
 
 // @route   DELETE api/v1/bookings/:id
 // @desc    Delete booking by id
 // @access  Restricted
 router.delete("/booking/:id", bookingController.deleteBooking);
-
-////////////////////
-// Restricted Routes
-
-router.use(authController.restrictTo("admin", "lead-guide"));
-
-// @route   GET api/v1/bookings
-// @desc    Get all bookings
-// @access  Restricted
-router.get("/", bookingController.getAllBookings);
-
-// @route   POST api/v1/bookings
-// @desc    Create a booking
-// @access  Restricted
-// router.post('/', bookingController.createBooking);
-
-// @route   GET api/v1/bookings/:id
-// @desc    Get booking by id
-// @access  Restricted
-router.get("/booking/:id", bookingController.getBooking);
-
-// @route   PATCH api/v1/bookings/:id
-// @desc    Update booking by id
-// @access  Restricted
-router.patch("/booking/:id", bookingController.updateBooking);
 
 module.exports = router;

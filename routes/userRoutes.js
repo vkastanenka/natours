@@ -66,11 +66,6 @@ router.patch(
 // @access  Protected
 router.patch("/updatePassword", authController.updatePassword);
 
-// @route   DELETE api/v1/users/deleteCurrentUser
-// @desc    Deactivate current user's account
-// @access  Protected
-router.delete("/deleteCurrentUser", userController.deleteCurrentUser);
-
 // @route   GET api/v1/users
 // @desc    Get all users
 // @access  Protected

@@ -30,23 +30,16 @@ router.get("/tour/:slug", tourController.getTourBySlug);
 ///////////////////
 // Protected Routes
 
-// router.use(authController.protect);
+router.use(authController.protect);
 
 ////////////////////
 // Restricted Routes
 
-// router.use(authController.restrictTo("admin", "lead-guide"));
+router.use(authController.restrictTo("admin", "lead-guide"));
 
 // @route   POST api/v1/tours
 // @desc    Create new tour
 // @access  Restricted
-// router.post(
-//   "/",
-//   tourController.uploadTourImages,
-//   tourController.resizeTourImages,
-//   tourController.createTour
-// );
-
 router.post(
   "/",
   tourController.uploadTourImages,

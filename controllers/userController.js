@@ -11,7 +11,6 @@ const catchAsync = require("./../utils/catchAsync");
 
 // Validation
 const validateUserUpdate = require("../validation/auth/userUpdate");
-const validatePasswordUpdate = require("../validation/auth/passwordUpdate");
 const validateContactForm = require("../validation/contact/contact");
 
 // Models
@@ -140,17 +139,6 @@ exports.updateCurrentUser = catchAsync(async (req, res, next) => {
     user: updatedUser,
     token,
   });
-});
-
-// @route   DELETE api/v1/users/deleteCurrentUser
-// @desc    Deactivate current user's account
-// @access  Protected
-exports.deleteCurrentUser = catchAsync(async (req, res, next) => {
-  // 1. Find the current user's document and set it's active field to false
-  await User.findByIdAndUpdate(req.user.id, { active: false });
-
-  // 2. Respond
-  res.status(204).json({ status: "success" });
 });
 
 // @route   GET api/v1/users

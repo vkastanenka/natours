@@ -75,25 +75,6 @@ userSchema.pre("save", function (next) {
   next();
 });
 
-// Custom error handling for unique emails
-userSchema.post('save', function(error, doc, next) {
-  if (error.name === 'MongoError' && error.code === 11000) {
-    next(new AppError('Email already registered'));
-  } else {
-    next(error);
-  }
-});
-
-///////////////////
-// Query Middleware
-
-// Pre-find filter for user's who have their active state set to false
-// userSchema.pre(/^find/, function (next) {
-//   // Find users who don't have their active state set to false
-//   this.find({ active: { $ne: false } });
-//   next();
-// });
-
 ////////////////////
 // Instance Methods
 

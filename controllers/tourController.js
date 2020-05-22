@@ -114,17 +114,19 @@ exports.getTourBySlug = catchAsync(async (req, res, next) => {
 exports.createTour = catchAsync(async (req, res, next) => {
   req.body.startLocation = JSON.parse(req.body.startLocation);
   req.body.locations = JSON.parse(req.body.locations);
-  req.body.startLocation.type = "Point";
-  req.body.locations.forEach((location) => (location.type = "Point"));
 
   // 1. Validate inputs
   const { errors, isValid } = validateTour(req.body);
   if (!isValid) return res.status(400).json(errors);
 
-  // 1. Create a new document
+  // 2. Add type "Point" for geoJSON
+  req.body.startLocation.type = "Point";
+  req.body.locations.forEach((location) => (location.type = "Point"));
+
+  // 3. Create a new document
   const doc = await Tour.create(req.body);
 
-  // 2. Respond
+  // 4. Respond
   res.status(201).json({
     status: "success",
     data: doc,
@@ -137,22 +139,24 @@ exports.createTour = catchAsync(async (req, res, next) => {
 exports.updateTour = catchAsync(async (req, res, next) => {
   req.body.startLocation = JSON.parse(req.body.startLocation);
   req.body.locations = JSON.parse(req.body.locations);
-  req.body.startLocation.type = "Point";
-  req.body.locations.forEach((location) => (location.type = "Point"));
 
   // 1. Validate inputs
   const { errors, isValid } = validateTour(req.body);
   if (!isValid) return res.status(400).json(errors);
 
-  // 2. Find document by id and update
+  // 2. Add type "Point" for geoJSON
+  req.body.startLocation.type = "Point";
+  req.body.locations.forEach((location) => (location.type = "Point"));
+
+  // 3. Find document by id and update
   const doc = await Tour.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
-    runValidators: true,
   });
 
-  // 3. If no document, respond with an error// TODO: (query404);
+  // 4. If no document, respond with an error
+  query404(res, doc, 'There is no tour with that id');
 
-  // 4. Respond
+  // 5. Respond
   res.status(200).json({
     status: "success",
     data: doc,
