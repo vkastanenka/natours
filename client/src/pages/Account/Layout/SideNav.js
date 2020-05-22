@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import Icon from "../../../components/Icon/Icon";
 import Auxiliary from "../../../components/HigherOrder/Auxiliary";
 
+// Side nav for account page with links to different page settings
 class SideNav extends Component {
   state = {
     currentPage: "settings",

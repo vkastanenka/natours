@@ -21,48 +21,57 @@ class Review extends Component {
   state = {
     review: "",
     rating: 5,
+    tour: "",
     submitting: false,
     submitted: false,
-    updating: false,
-    updated: false,
     disableSubmitButton: false,
-    errors: {},
   };
 
   componentDidMount() {
     if (this.props.editingReview) {
-      this.setState({ review: this.props.review, rating: this.props.rating });
+      this.setState({
+        review: this.props.review,
+        rating: this.props.rating,
+        tour: this.props.tourId,
+      });
     }
   }
 
   // Binding timer to component instance
   timer = null;
 
-  // If errors found from inputs, set them in state
+  // Alerting user of errors / success / progress
   componentWillReceiveProps(nextProps) {
-    if (nextProps.errors) {
+    // Let user know request is happening / finished
+    if (nextProps.reviews.loading) {
       this.setState({
-        errors: nextProps.errors,
+        submitting: true,
+        disableSubmitButton: true,
+      });
+      // If request finishes and errors
+    } else if (
+      !nextProps.reviews.loading &&
+      Object.keys(nextProps.errors).length > 0
+    ) {
+      this.setState({
+        submitting: false,
         disableSubmitButton: false,
       });
 
+      // Clear errors after 6 seconds
       this.timer = setTimeout(() => {
         this.props.clearErrors();
         clearTimeout(this.timer);
       }, 6000);
-    }
-
-    if (nextProps.errors && this.props.editingReview) {
-      this.setState({ updating: false });
-    } else {
-      this.setState({ submitting: false });
     }
   }
 
   // Clear any timers when form unmounts
   componentWillUnmount() {
     clearTimeout(this.timer);
-    this.timer = null;
+    if (Object.keys(this.props.errors).length > 0) {
+      this.props.clearErrors();
+    }
   }
 
   // State handler for input fields
@@ -73,10 +82,10 @@ class Review extends Component {
   // Make a post request for a new review
   onReviewSubmit = async (e) => {
     e.preventDefault();
+    let reviewData;
 
-    // Clear errors if any
-    if (this.props.errors) {
-      this.setState({ errors: {} });
+    // Clear errors if any before submitting
+    if (Object.keys(this.props.errors).length > 0) {
       this.props.clearErrors();
     }
 
@@ -91,64 +100,50 @@ class Review extends Component {
     }
 
     // 2. Review data to post
-    const reviewData = {
-      review: this.state.review,
-      rating: this.state.rating,
-      tour: this.props.tours.tour.id,
-      user: this.props.auth.user.id,
-    };
-
-    // 3. Post review
-    await this.props.postReview(reviewData);
-
-    // 4. Show alert it worked
-    if (Object.keys(this.state.errors).length === 0) {
-      this.setState({
-        review: "",
-        submitted: true,
-        submitting: false,
-        disableSubmitButton: false,
-      });
-    }
-  };
-
-  // Make a patch request to update a review
-  onReviewUpdate = async (e) => {
-    e.preventDefault();
-
-    // 1. State to change button text
-    this.setState({
-      updating: true,
-      disableSubmitButton: true,
-    });
-
-    if (this.state.updated) {
-      this.setState({ updated: false });
+    if (!this.props.editingReview) {
+      reviewData = {
+        review: this.state.review,
+        rating: this.state.rating,
+        tour: this.props.tours.tour.id,
+      };
+    } else if (this.props.editingReview) {
+      reviewData = {
+        review: this.state.review,
+        rating: this.state.rating,
+        tour: this.state.tour,
+      };
     }
 
-    // 2. Review data to update
-    const reviewData = {
-      review: this.state.review,
-      rating: this.state.rating,
-    };
+    // 3. Post / patch review
+    if (!this.props.editingReview) {
+      await this.props.postReview(reviewData);
 
-    // 3. Patch review
-    await this.props.updateUserReview(this.props.reviewId, reviewData);
+      if (Object.keys(this.props.errors).length === 0) {
+        this.setState({
+          review: "",
+          submitted: true,
+          submitting: false,
+          disableSubmitButton: false,
+        });
+      }
+    } else {
+      await this.props.updateUserReview(this.props.reviewId, reviewData);
+    }
   };
 
   render() {
     const errors = [];
     let buttonText = "Submit review";
 
-    if (this.state.errors) {
-      for (let err in this.state.errors) {
-        errors.push(<p key={err}>{this.state.errors[err]}</p>);
+    if (this.props.errors) {
+      for (let err in this.props.errors) {
+        errors.push(<p key={err}>{this.props.errors[err]}</p>);
       }
     }
 
     if (this.props.editingReview) {
       buttonText = "Update review";
-    } else if (this.props.editingReview && this.state.updating) {
+    } else if (this.props.editingReview && this.state.submitting) {
       buttonText = "Updating review...";
     } else if (this.state.submitting) {
       buttonText = "Submitting review...";
@@ -156,18 +151,13 @@ class Review extends Component {
 
     return (
       <Auxiliary>
-        {Object.keys(this.state.errors).length > 0 ? (
+        {Object.keys(this.props.errors).length > 0 ? (
           <Alert type="error" message={errors} />
         ) : null}
         {this.state.submitted ? (
           <Alert type="success" message="Submitted review!" />
         ) : null}
-        <form
-          className="form authenticate-form"
-          onSubmit={
-            this.props.editingReview ? this.onReviewUpdate : this.onReviewSubmit
-          }
-        >
+        <form className="form authenticate-form" onSubmit={this.onReviewSubmit}>
           <Icon
             type="x"
             className="icon icon--large icon--black-primary icon--translate icon--active form__close-icon"
@@ -254,20 +244,21 @@ class Review extends Component {
 }
 
 Review.propTypes = {
-  auth: PropTypes.object.isRequired,
   tours: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
+  reviews: PropTypes.object.isRequired,
   popupClose: PropTypes.func.isRequired,
   tourName: PropTypes.string,
   review: PropTypes.string,
   rating: PropTypes.number,
+  tourId: PropTypes.string,
   editingReview: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({
-  auth: state.auth,
   tours: state.tours,
   errors: state.errors,
+  reviews: state.reviews,
 });
 
 export default connect(mapStateToProps, {

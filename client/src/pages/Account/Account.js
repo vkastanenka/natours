@@ -10,6 +10,7 @@ import PageLayout from "../../components/Layout/PageLayout";
 import SideNav from "./Layout/SideNav";
 import Content from "./Layout/Content";
 
+// Account page to edit information
 const Account = (props) => {
   if (!props.auth.authenticated) {
     props.history.push("/authenticate/login");

@@ -10,6 +10,7 @@ import ManageTours from "./ContentLayout/ManageTours";
 import ManageUsers from "./ContentLayout/ManageUsers";
 import ManageReviews from "./ContentLayout/ManageReviews";
 
+// Content of the account page where forms and cards are located
 class Content extends Component {
   state = {
     content: <Settings />,

@@ -117,12 +117,15 @@ exports.updateCurrentUserReview = catchAsync(async (req, res, next) => {
   }
 
   // 6. Update the review
-  review
-    .update(req.body, { new: true })
-    .populate({ path: "tour", select: "name" });
+  await review.update(req.body, { new: true });
+
+  const updatedReview = await Review.findById(req.params.id).populate({
+    path: "tour",
+    select: "name",
+  });
 
   // 7. Respond
-  res.status(200).json({ status: "success", data: review });
+  res.status(200).json({ status: "success", data: updatedReview });
 });
 
 // @route   DELETE api/v1/reviews/review/currentUser/:id

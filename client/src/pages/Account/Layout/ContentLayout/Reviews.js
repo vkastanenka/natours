@@ -12,9 +12,10 @@ import { getUserReviews } from "../../../../store/actions/reviewActions";
 import Spinner from "../../../../components/Spinner/Spinner";
 import ReviewCard from "../../../../components/Cards/ReviewCard";
 
+// User reviews section to edit
 class Reviews extends Component {
   componentDidMount() {
-    this.props.getUserReviews(this.props.auth.user.id);
+    this.props.getUserReviews();
   }
 
   render() {
@@ -36,6 +37,7 @@ class Reviews extends Component {
             rating={review.rating}
             page='settings'
             reviewId={review._id}
+            tourId={review.tour._id}
           />
         );
       });
@@ -49,12 +51,10 @@ class Reviews extends Component {
 }
 
 Reviews.propTypes = {
-  auth: PropTypes.object.isRequired,
   reviews: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  auth: state.auth,
   reviews: state.reviews,
 });
 

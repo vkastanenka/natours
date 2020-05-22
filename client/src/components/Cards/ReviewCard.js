@@ -86,6 +86,7 @@ class ReviewCard extends Component {
             review={this.props.review}
             rating={this.props.rating}
             reviewId={this.props.reviewId}
+            tourId={this.props.tourId}
           />
         </Popup>
       );
@@ -138,6 +139,7 @@ class ReviewCard extends Component {
 ReviewCard.propTypes = {
   page: PropTypes.string,
   reviewId: PropTypes.string,
+  tourId: PropTypes.string,
   cardClassName: PropTypes.string,
   tourName: PropTypes.string,
   imageURL: PropTypes.string.isRequired,

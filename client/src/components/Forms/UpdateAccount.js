@@ -19,10 +19,9 @@ class UpdateAccount extends Component {
     name: "",
     email: "",
     photo: "",
-    updatedAccount: false,
-    updatingAccount: false,
-    disableUpdateButton: false,
-    errors: {},
+    submitting: false,
+    submitted: false,
+    disableSubmitButton: false,
   };
 
   componentDidMount() {
@@ -40,9 +39,8 @@ class UpdateAccount extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({
-        errors: nextProps.errors,
-        updatingAccount: false,
-        disableUpdateButton: false,
+        submitted: false,
+        disableSubmitButton: false,
       });
       this.timer = setTimeout(() => {
         this.props.clearErrors();
@@ -70,11 +68,10 @@ class UpdateAccount extends Component {
     e.preventDefault();
 
     if (this.props.errors) {
-      this.setState({ errors: {} });
       this.props.clearErrors();
     }
 
-    this.setState({ updatingAccount: true, disableUpdateButton: true });
+    this.setState({ submitted: true, disableSubmitButton: true });
 
     const form = new FormData();
     form.append("name", this.state.name);
@@ -86,12 +83,12 @@ class UpdateAccount extends Component {
 
     await this.props.updateCurrentUser(form);
 
-    this.setState({ updatingAccount: false, disableUpdateButton: false });
+    this.setState({ submitted: false, disableSubmitButton: false });
 
-    if (Object.keys(this.state.errors).length === 0) {
-      this.setState({ updatedAccount: true });
+    if (Object.keys(this.props.errors).length === 0) {
+      this.setState({ submitting: true });
       this.timer = setTimeout(() => {
-        this.setState({ updatedAccount: false });
+        this.setState({ submitting: false });
         clearTimeout(this.timer);
       }, 6000);
     }
@@ -108,18 +105,18 @@ class UpdateAccount extends Component {
   render() {
     let errors = [];
 
-    if (this.state.errors) {
-      for (let err in this.state.errors) {
-        errors.push(<p key={err}>{this.state.errors[err]}</p>);
+    if (this.props.errors) {
+      for (let err in this.props.errors) {
+        errors.push(<p key={err}>{this.props.errors[err]}</p>);
       }
     }
 
     return (
       <Auxiliary>
-        {this.state.updatedAccount ? (
+        {this.state.submitting ? (
           <Alert type="success" message="Update successful!" />
         ) : null}
-        {Object.keys(this.state.errors).length > 0 ? (
+        {Object.keys(this.props.errors).length > 0 ? (
           <Alert type="error" message={errors} />
         ) : null}
         <form className="form form-user-data" onSubmit={this.onUpdateAccount}>
@@ -170,9 +167,9 @@ class UpdateAccount extends Component {
             <button
               type="submit"
               className="btn-small btn--green"
-              disabled={this.state.disableUpdateButton}
+              disabled={this.state.disableSubmitButton}
             >
-              {!this.state.updatingAccount
+              {!this.state.submitted
                 ? "Save settings"
                 : "Saving settings..."}
             </button>

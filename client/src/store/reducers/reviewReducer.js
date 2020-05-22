@@ -11,7 +11,7 @@ const initialState = {
 };
 
 // To display spinner during request
-const reviewLoading = (state, action) => {
+const setReviewLoad = (state, action) => {
   return updateObject(state, { loading: true });
 };
 
@@ -73,7 +73,7 @@ const deleteReview = (state, action) => {
 export default function (state = initialState, action) {
   switch (action.type) {
     case actionTypes.SET_REVIEW_LOAD:
-      return reviewLoading(state, action);
+      return setReviewLoad(state, action);
     case actionTypes.GET_CURRENT_USER_REVIEWS:
       return getCurrentUserReviews(state, action);
     case actionTypes.UPDATE_CURRENT_USER_REVIEW:
