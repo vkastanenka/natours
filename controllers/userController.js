@@ -3,6 +3,7 @@ const sharp = require("sharp");
 const multer = require("multer");
 const Email = require("../utils/email");
 const factory = require("./handlerFactory");
+const filterObj = require("../utils/filterObj");
 const createJWT = require("../utils/jwtGenerator");
 
 // Error Handling
@@ -14,7 +15,9 @@ const validateUserUpdate = require("../validation/auth/userUpdate");
 const validateContactForm = require("../validation/contact/contact");
 
 // Models
-const User = require("./../models/userModel");
+const User = require("../models/userModel");
+const Review = require("../models/reviewModel");
+const Booking = require("../models/bookingModel");
 
 /////////////
 // Middleware
@@ -56,18 +59,6 @@ exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
 
   next();
 });
-
-// Creates a filtered object that has filtered key value pairs from the passed in object
-const filterObj = (obj, ...allowedFields) => {
-  const newObj = {};
-
-  // For each key in the passed in object, if array of allowedFields includes the element, create a key value pair
-  Object.keys(obj).forEach((el) => {
-    if (allowedFields.includes(el)) newObj[el] = obj[el];
-  });
-
-  return newObj;
-};
 
 // @route   GET api/v1/users/currentUser
 // @desc    Get current user
@@ -141,14 +132,17 @@ exports.updateCurrentUser = catchAsync(async (req, res, next) => {
   });
 });
 
+////////////////////
+// Restricted Routes
+
 // @route   GET api/v1/users
 // @desc    Get all users
-// @access  Protected
+// @access  Restricted
 exports.getAllUsers = factory.getAll(User);
 
 // @route   POST api/v1/users
 // @desc    Dummy route => Users are created through /register
-// @access  Protected
+// @access  Restricted
 exports.createUser = (req, res) => {
   res.status(500).json({
     status: "error",
@@ -158,12 +152,33 @@ exports.createUser = (req, res) => {
 
 // @route   GET api/v1/users/:id
 // @desc    Get user by id
-// @access  Protected
+// @access  Restricted
 exports.getUser = factory.getOne(User);
 
-// TODO:
-exports.deleteUser = factory.deleteOne(User);
+// @route   DELETE api/v1/users/:id
+// @desc    Delete user, their reviews, and their bookings by id
+// @access  Restricted
+exports.deleteUser = catchAsync(async (req, res, next) => {
+  // 1. Find document by id
+  const user = await User.findById(req.params.id);
+  const reviews = await Review.find({ user: req.params.id });
+  const bookings = await Booking.find({ user: req.params.id });
 
+  // 2. If no document, respond with an error
+  query404(res, user, "No user found with that ID");
+
+  // 3. Delete documents
+  // user.deleteOne();
+  if (reviews) await Review.deleteMany({ user: req.params.id });
+  if (bookings) await Booking.deleteMany({ user: req.params.id });
+
+  // 4. Respond
+  res.status(204).json({ status: "success" });
+});
+
+// @route   GET api/v1/users/guides
+// @desc    Get all guides and lead guides
+// @access  Restricted
 exports.getGuides = catchAsync(async (req, res, next) => {
   const guides = await User.find({ role: { $in: ["guide", "lead-guide"] } });
   res.status(200).json({ status: "succes", data: guides });

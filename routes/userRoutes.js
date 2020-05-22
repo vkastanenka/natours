@@ -66,26 +66,34 @@ router.patch(
 // @access  Protected
 router.patch("/updatePassword", authController.updatePassword);
 
+////////////////////
+// Restricted Routes
+
+router.use(authController.restrictTo("admin", "lead-guide"));
+
 // @route   GET api/v1/users
 // @desc    Get all users
-// @access  Protected
+// @access  Restricted
 router.get("/", userController.getAllUsers);
-
-// @route   POST api/v1/users
-// @desc    Dummy route => Users are created through /register
-// @access  Protected
-router.post("/", userController.createUser);
 
 // @route   GET api/v1/users/:id
 // @desc    Get user by id
-// @access  Protected
+// @access  Restricted
 router.get("/:id", userController.getUser);
 
-// @route   DELETE api/v1/users/:id // TODO:
-// @desc    Delete user by id
-// @access  Protected
+// @route   POST api/v1/users
+// @desc    Dummy route => Users are created through /register
+// @access  Restricted
+router.post("/", userController.createUser);
+
+// @route   DELETE api/v1/users/:id
+// @desc    Delete user, their reviews, and their bookings by id
+// @access  Restricted
 router.delete("/:id", userController.deleteUser);
 
+// @route   GET api/v1/users/guides
+// @desc    Get all guides and lead guides
+// @access  Restricted
 router.get("/users/guides", userController.getGuides);
 
 module.exports = router;
