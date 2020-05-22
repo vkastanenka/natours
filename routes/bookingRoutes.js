@@ -25,14 +25,14 @@ router.get("/checkout-session/:tourId", bookingController.getCheckoutSession);
 // TODO: TEMPORARY
 router.post("/", bookingController.createBookingCheckout);
 
-// @route   DELETE api/v1/bookings/:userId
+// @route   GET api/v1/bookings/:userId
 // @desc    Get bookings for individual user
 // @access  Protected
 router.get("/bookings/:userId", bookingController.getCurrentUserBookings);
 
 // @route   DELETE api/v1/bookings/:id
-// @desc    Delete booking by id
-// @access  Restricted
+// @desc    Delete current user booking by id
+// @access  Protected
 router.delete("/booking/:id", bookingController.deleteBooking);
 
 module.exports = router;

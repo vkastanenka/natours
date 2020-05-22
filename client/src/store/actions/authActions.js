@@ -29,8 +29,8 @@ export const setCurrentUser = (decoded) => {
   };
 };
 
-//////////////////////
-// Unprotected Routes
+/////////////////
+// Public Routes
 
 // @route   POST api/v1/users/register
 // @desc    Register user

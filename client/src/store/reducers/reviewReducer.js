@@ -72,7 +72,7 @@ const deleteReview = (state, action) => {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case actionTypes.REQUEST_LOADING:
+    case actionTypes.SET_REVIEW_LOAD:
       return reviewLoading(state, action);
     case actionTypes.GET_CURRENT_USER_REVIEWS:
       return getCurrentUserReviews(state, action);

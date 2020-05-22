@@ -39,7 +39,7 @@ class Map extends Component {
         offset: 30,
       })
         .setLngLat(location.coordinates)
-        .setHTML(`<p>Dat ${location.day}: ${location.description}</p>`)
+        .setHTML(`<p>Day ${location.day}: ${location.description}</p>`)
         .addTo(map);
 
       // 4. Extend map bounds to include current location

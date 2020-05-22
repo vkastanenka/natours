@@ -1,6 +1,3 @@
-// Utils
-export const REQUEST_LOADING = "REQUEST_LOADING";
-
 // Auth
 export const SET_AUTH_LOAD = "SET_AUTH_LOAD";
 export const UNSET_AUTH_LOAD = "UNSET_AUTH_LOAD";
@@ -20,6 +17,8 @@ export const UPDATE_TOUR = "UPDATE_TOUR";
 export const DELETE_TOUR = "DELETE_TOUR";
 
 // Reviews
+export const SET_REVIEW_LOAD = "SET_REVIEW_LOAD";
+export const UNSET_REVIEW_LOAD = "UNSET_REVIEW_LOAD";
 export const GET_REVIEWS = "GET_REVIEWS";
 export const GET_CURRENT_USER_REVIEWS = "GET_CURRENT_USER_REVIEWS";
 export const UPDATE_CURRENT_USER_REVIEW = "UPDATE_CURRENT_USER_REVIEW";
@@ -38,3 +37,4 @@ export const SET_USER_LOAD = "SET_USER_LOAD";
 export const UNSET_USER_LOAD = "UNSET_USER_LOAD";
 export const GET_GUIDES = "GET_GUIDES";
 export const GET_USERS = "GET_USERS";
+export const DELETE_USER = "DELETE_USER";

@@ -48,6 +48,12 @@ export const getTour = (slug) => async (dispatch) => {
   }
 };
 
+////////////////////
+// Restricted Routes
+
+// @route   POST api/v1/tours
+// @desc    Create new tour
+// @access  Restricted
 export const createTour = (data) => async (dispatch) => {
   try {
     await axios.post("/api/v1/tours", data);
@@ -56,6 +62,9 @@ export const createTour = (data) => async (dispatch) => {
   }
 };
 
+// @route   PATCH api/v1/tours/:id
+// @desc    Update tour by id
+// @access  Restricted
 export const updateTour = (tourId, data) => async (dispatch) => {
   try {
     const res = await axios.patch(`/api/v1/tours/${tourId}`, data);
@@ -65,6 +74,9 @@ export const updateTour = (tourId, data) => async (dispatch) => {
   }
 };
 
+// @route   DELETE api/v1/tours/:id
+// @desc    Delete tour by id
+// @access  Restricted
 export const deleteTour = (tourId) => async (dispatch) => {
   try {
     await axios.delete(`/api/v1/tours/${tourId}`);

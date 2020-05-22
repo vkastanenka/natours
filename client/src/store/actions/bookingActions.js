@@ -41,6 +41,9 @@ export const createBookingCheckout = (bookingData) => async (dispatch) => {
   }
 };
 
+// @route   GET api/v1/bookings/:userId
+// @desc    Get bookings for individual user
+// @access  Protected
 export const getCurrentUserBookings = (userId) => async (dispatch) => {
   try {
     dispatch(setBookingLoad());
@@ -55,6 +58,9 @@ export const getCurrentUserBookings = (userId) => async (dispatch) => {
   }
 };
 
+// @route   DELETE api/v1/bookings/:id
+// @desc    Delete current user booking by id
+// @access  Protected
 export const deleteBooking = bookingId => async dispatch => {
   try {
     dispatch(setBookingLoad());

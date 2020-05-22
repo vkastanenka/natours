@@ -11,12 +11,12 @@ const initialState = {
 };
 
 // Sets loading state
-const userLoading = (state, action) => {
+const userLoad = (state, action) => {
   return updateObject(state, { loading: true });
 };
 
 // Unsets loading state
-const unsetUserLoading = (state, action) => {
+const unsetUserLoad = (state, action) => {
   return updateObject(state, { loading: false });
 };
 
@@ -36,16 +36,31 @@ const getUsers = (state, action) => {
   });
 };
 
+// Delete user from state
+const deleteUser = (state, action) => {
+  const users = [...state.users];
+  // eslint-disable-next-line
+  const filteredUsers = users.filter((user) => {
+    if (user._id !== action.payload) return user;
+  });
+  return updateObject(state, {
+    loading: false,
+    userReviews: filteredUsers,
+  });
+};
+
 export default function (state = initialState, action) {
   switch (action.type) {
     case actionTypes.SET_USER_LOAD:
-      return userLoading(state, action);
+      return userLoad(state, action);
     case actionTypes.UNSET_USER_LOAD:
-      return unsetUserLoading(state, action);
+      return unsetUserLoad(state, action);
     case actionTypes.GET_GUIDES:
       return getGuides(state, action);
     case actionTypes.GET_USERS:
       return getUsers(state, action);
+    case actionTypes.DELETE_USER:
+      return deleteUser(state, action);
     default:
       return state;
   }
