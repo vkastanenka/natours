@@ -1,3 +1,4 @@
+const Validator = require("validator");
 const isEmpty = require("../utils/isEmpty");
 
 module.exports = validateCreateTour = (data) => {
@@ -74,22 +75,17 @@ module.exports = validateCreateTour = (data) => {
   }
 
   // Start dates
-  if (Validator.isEmpty(data.startDates)) {
-    errors.startDates = "Tour requires at least 1 start date";
-  }
-
-  // Start dates
-  if (Validator.isEmpty(data.startDates)) {
+  if (data.startDates.length < 1) {
     errors.startDates = "Tour requires at least 1 start date";
   }
 
   // Start location
-  if (Validator.isEmpty(data.startLocation)) {
+  if (Object.keys(data.startLocation).length < 1) {
     errors.startLocation = "Tour requires a start location";
   }
 
   // Guides
-  if (Validator.isEmpty(data.guides)) {
+  if (data.guides.length < 1) {
     errors.guides = "Guides are required";
   } else if (data.guides.length < 2) {
     errors.guides =
@@ -110,8 +106,8 @@ module.exports = validateCreateTour = (data) => {
   }
 
   // Locations
-  if (Validator.isEmpty(data.locations)) {
-    errors.locations = "Tour requires a locations";
+  if (data.locations.length < 1) {
+    errors.locations = "Tour requires locations";
   }
 
   let actualLatitude = true;

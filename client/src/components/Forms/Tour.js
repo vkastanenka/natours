@@ -1,6 +1,6 @@
 // React
 import React, { Component } from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 
 // Redux
 import { connect } from "react-redux";
@@ -20,6 +20,7 @@ import InputGroup from "../Inputs/InputGroup";
 import SelectGroup from "../Inputs/SelectGroup";
 import TextAreaGroup from "../Inputs/TextAreaGroup";
 
+// Form for creating and editing tours
 class Tour extends Component {
   state = {
     // General
@@ -57,6 +58,7 @@ class Tour extends Component {
     // Form States
     submittingTour: false,
     editingTour: false,
+    edited: false,
     disableSubmitButton: false,
 
     // Errors
@@ -101,15 +103,13 @@ class Tour extends Component {
       });
 
       const guides = this.props.tourInfo.guides
-      // eslint-disable-next-line
+        // eslint-disable-next-line
         .filter((guide) => {
           if (guide.role === "guide") return guide;
         })
         .map((guide, i) => {
           return { [`guide${i + 1}`]: guide._id };
         });
-
-      // console.log(bookingDates);
 
       this.setState({
         // General
@@ -167,8 +167,14 @@ class Tour extends Component {
 
   // Clear any timers when form unmounts
   componentWillUnmount() {
+    if (this.state.edited) {
+      this.setState({ edited: false });
+    }
+
+    if (Object.keys(this.state.errors).length > 0) {
+      this.setState({ errors: {} });
+    }
     clearTimeout(this.timer);
-    this.timer = null;
   }
 
   // State handler for input fields
@@ -199,7 +205,7 @@ class Tour extends Component {
     }
 
     // State change to let user know process is happening
-    this.setState({ submittingTour: true, disableSubmitButton: true });
+    this.setState({ submittingTour: true, disableSubmitButton: false });
 
     // Set up new form
     const form = new FormData();
@@ -263,49 +269,61 @@ class Tour extends Component {
     // Post the form
     if (!this.props.editingTour) {
       await this.props.createTour(form);
+
+      // Reset form and state change for success alert
+      if (Object.keys(this.state.errors).length === 0) {
+        this.setState({
+          // General
+          name: "",
+          duration: "",
+          maxGroupSize: "",
+          difficulty: "",
+          price: "",
+          summary: "",
+          description: "",
+          startDestinationAddress: "",
+          startDestinationDescription: "",
+
+          // Photos
+          coverPhoto: "",
+          galleryPhotos: "",
+
+          // Dates
+          bookingDates: [{ bookingDate1: "" }],
+
+          // Destinations
+          tourDestinations: [
+            {
+              destination1Long: "",
+              destination1Lat: "",
+              destination1Day: "",
+              destination1Description: "",
+            },
+          ],
+
+          // Guides
+          leadGuide: "",
+          guides: [{ guide1: "" }],
+
+          // Form States
+          submittingTour: false,
+          disableSubmitButton: false,
+        });
+      }
     } else {
       await this.props.updateTour(this.props.tourInfo._id, form);
-    }
 
-    // Reset form and state change for success alert
-    if (Object.keys(this.state.errors).length === 0) {
-      this.setState({
-        // General
-        name: "",
-        duration: "",
-        maxGroupSize: "",
-        difficulty: "",
-        price: "",
-        summary: "",
-        description: "",
-        startDestinationAddress: "",
-        startDestinationDescription: "",
+      if (Object.keys(this.state.errors).length === 0) {
+        this.setState({
+          edited: true,
+          submittingTour: false,
+          disableSubmitButton: false,
+        });
 
-        // Photos
-        coverPhoto: "",
-        galleryPhotos: "",
-
-        // Dates
-        bookingDates: [{ bookingDate1: "" }],
-
-        // Destinations
-        tourDestinations: [
-          {
-            destination1Long: "",
-            destination1Lat: "",
-            destination1Day: "",
-            destination1Description: "",
-          },
-        ],
-
-        // Guides
-        leadGuide: "",
-        guides: [{ guide1: "" }],
-
-        // Form States
-        submittingTour: false,
-        disableSubmitButton: false,
-      });
+        this.timer = setTimeout(() => {
+          this.setState({ edited: false });
+        }, 6000);
+      }
     }
   };
 
@@ -460,12 +478,11 @@ class Tour extends Component {
         </div>
       );
     }
-    
 
     // Obtaining options for guides and lead guides
     if (!loading && guides) {
       const leadGuideOptions = guides
-      // eslint-disable-next-line
+        // eslint-disable-next-line
         .filter((guide) => {
           if (guide.role === "lead-guide") {
             return guide;
@@ -483,7 +500,7 @@ class Tour extends Component {
       });
 
       const guideOptions = guides
-      // eslint-disable-next-line
+        // eslint-disable-next-line
         .filter((guide) => {
           if (guide.role === "guide") {
             return guide;
@@ -540,6 +557,9 @@ class Tour extends Component {
         <Auxiliary>
           {Object.keys(this.state.errors).length > 0 ? (
             <Alert type="error" message={errors} />
+          ) : null}
+          {this.state.edited ? (
+            <Alert type="success" message="Updated tour!" />
           ) : null}
           <form className="form tour-form" onSubmit={this.onTourSubmit}>
             <Icon
@@ -808,6 +828,15 @@ class Tour extends Component {
     return formContent;
   }
 }
+
+Tour.propTypes = {
+  users: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
+  tours: PropTypes.object.isRequired,
+  popupClose: PropTypes.func.isRequired,
+  editingTour: PropTypes.bool,
+  tourInfo: PropTypes.object,
+};
 
 const mapStateToProps = (state) => ({
   users: state.users,

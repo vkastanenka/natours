@@ -21,6 +21,7 @@ import Account from "./pages/Account/Account";
 import ToursOverview from "./pages/ToursOverview/ToursOverview";
 import Tour from "./pages/Tour/Tour";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
+import TourForm from './components/Forms/Tour';
 
 // Styling
 import "./assets/css/style.css";
@@ -55,6 +56,7 @@ class App extends Component {
               <Route exact path="/account/:page" component={Account} />
               <Route exact path="/tours" component={ToursOverview} />
               <Route exact path="/tour/:slug" component={Tour} />
+              <Route exact path="/tourForm" component={TourForm} />
               <Route path="/*" component={ErrorPage} />
             </Switch>
           </ScrollToTop>

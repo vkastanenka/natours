@@ -31,6 +31,7 @@ export const getTours = () => async (dispatch) => {
     const res = await axios.get("/api/v1/tours");
     actionDispatch(actionTypes.GET_TOURS, res.data.data, dispatch);
   } catch (err) {
+    dispatch(unsetTourLoad());
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }
 };
@@ -44,6 +45,7 @@ export const getTour = (slug) => async (dispatch) => {
     const res = await axios.get(`/api/v1/tours/tour/${slug}`);
     actionDispatch(actionTypes.GET_TOUR, res.data.data, dispatch);
   } catch (err) {
+    dispatch(unsetTourLoad());
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }
 };
@@ -55,9 +57,11 @@ export const getTour = (slug) => async (dispatch) => {
 // @desc    Create new tour
 // @access  Restricted
 export const createTour = (data) => async (dispatch) => {
+  dispatch(setTourLoad());
   try {
     await axios.post("/api/v1/tours", data);
   } catch (err) {
+    dispatch(unsetTourLoad());
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }
 };
@@ -82,6 +86,7 @@ export const deleteTour = (tourId) => async (dispatch) => {
     await axios.delete(`/api/v1/tours/${tourId}`);
     actionDispatch(actionTypes.DELETE_TOUR, tourId, dispatch);
   } catch (err) {
+    dispatch(unsetTourLoad());
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }
 };

@@ -832,7 +832,7 @@ body {
   border-radius: 5px;
   text-align: center;
   max-height: 90vh;
-  overflow: hidden;
+  overflow: auto;
   display: flex;
   flex-direction: column; }
   @media only screen and (max-width: 31.25em) {
@@ -841,8 +841,6 @@ body {
   @media only screen and (max-width: 25em) {
     .tour-form {
       padding: 5rem 2rem; } }
-  .tour-form:hover {
-    overflow: auto; }
   .tour-form .form__photo-upload,
   .tour-form .form__links {
     align-self: center; }

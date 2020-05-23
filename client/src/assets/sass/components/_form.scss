@@ -34,11 +34,7 @@
   }
 
   max-height: 90vh;
-  overflow: hidden;
-
-  &:hover {
-    overflow: auto;
-  }
+  overflow: auto;
 
   display: flex;
   flex-direction: column;
