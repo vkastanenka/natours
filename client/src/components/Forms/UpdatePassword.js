@@ -64,7 +64,7 @@ class UpdatePassword extends Component {
   }
 
   // State handler for input fields
-  handleChange = (e) => {
+  onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -99,6 +99,7 @@ class UpdatePassword extends Component {
         disableSubmitButton: false,
       });
 
+      // Clear success message after 6 seconds
       this.timer = setTimeout(() => {
         this.setState({ submitted: false });
         clearTimeout(this.timer);
@@ -138,7 +139,7 @@ class UpdatePassword extends Component {
             value={this.state.currentPassword}
             minLength="8"
             required={true}
-            onChange={(e) => this.handleChange(e)}
+            onChange={(e) => this.onChange(e)}
             htmlFor="currentPassword"
             label="Current password"
           />
@@ -150,7 +151,7 @@ class UpdatePassword extends Component {
             value={this.state.newPassword}
             minLength="8"
             required={true}
-            onChange={(e) => this.handleChange(e)}
+            onChange={(e) => this.onChange(e)}
             htmlFor="newPassword"
             label="New password"
           />
@@ -162,7 +163,7 @@ class UpdatePassword extends Component {
             value={this.state.newPasswordConfirm}
             minLength="8"
             required={true}
-            onChange={(e) => this.handleChange(e)}
+            onChange={(e) => this.onChange(e)}
             htmlFor="newPasswordConfirm"
             label="Confirm new password"
           />

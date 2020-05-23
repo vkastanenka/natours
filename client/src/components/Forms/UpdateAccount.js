@@ -73,12 +73,12 @@ class UpdateAccount extends Component {
   }
 
   // State handler for input fields
-  handleChange = (e) => {
+  onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
   // State handler for photo upload
-  handlePhoto = (e) => {
+  onPhotoChange = (e) => {
     this.setState({ [e.target.name]: e.target.files[0] });
   };
 
@@ -112,6 +112,7 @@ class UpdateAccount extends Component {
         disableSubmitButton: false,
       });
 
+      // Clear success message after 6 seconds
       this.timer = setTimeout(() => {
         this.setState({ submitted: false });
         clearTimeout(this.timer);
@@ -158,7 +159,7 @@ class UpdateAccount extends Component {
             placeholder="Full name"
             value={this.state.name}
             required={true}
-            onChange={(e) => this.handleChange(e)}
+            onChange={(e) => this.onChange(e)}
             htmlFor="name"
             label="Full name"
           />
@@ -169,7 +170,7 @@ class UpdateAccount extends Component {
             placeholder="Email address"
             value={this.state.email}
             required={true}
-            onChange={(e) => this.handleChange(e)}
+            onChange={(e) => this.onChange(e)}
             htmlFor="email"
             label="Email address"
           />
@@ -188,7 +189,7 @@ class UpdateAccount extends Component {
               type="file"
               name="photo"
               className="invisible"
-              onChange={(e) => this.handlePhoto(e)}
+              onChange={(e) => this.onPhotoChange(e)}
             />
           </div>
           <div className="form__group right">

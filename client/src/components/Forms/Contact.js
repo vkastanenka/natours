@@ -21,9 +21,10 @@ class Contact extends Component {
     name: "",
     email: "",
     emailBody: "",
-    submittingEmail: false,
-    submittedEmail: false,
+    submitting: false,
+    submitted: false,
     disableSubmitButton: false,
+    errors: {},
   };
 
   // If authenticated, auto-fill name and email fields
@@ -40,37 +41,36 @@ class Contact extends Component {
   // Alerting user of errors / success / progress
   componentWillReceiveProps(nextProps) {
     // Let user know request is happening / finished
-    if (nextProps.users.loading) {
+    if (this.state.submitting && Object.keys(nextProps.errors).length > 0) {
       this.setState({
-        submittingEmail: true,
-        disableSubmitButton: true,
-      });
-      // If request finishes and errors
-    } else if (
-      !nextProps.users.loading &&
-      Object.keys(nextProps.errors).length > 0
-    ) {
-      this.setState({
-        submittingEmail: false,
+        errors: nextProps.errors,
+        submitting: false,
         disableSubmitButton: false,
       });
 
-      // Clear errors after 6 seconds
       this.timer = setTimeout(() => {
         this.props.clearErrors();
         clearTimeout(this.timer);
       }, 6000);
     }
 
-    // // If immediately submitting new email remove previous success message
-    if (this.state.submittedReview && nextProps.users.loading) {
-      this.setState({ submittedReview: false });
+    // Clear errors from state when global errors cleared
+    if (
+      Object.keys(this.state.errors).length > 0 &&
+      Object.keys(nextProps.errors).length === 0
+    ) {
+      clearTimeout(this.timer);
+      this.setState({ errors: {} });
     }
   }
 
   // Clear any timers when form unmounts
   componentWillUnmount() {
     clearTimeout(this.timer);
+    if (Object.keys(this.props.errors).length > 0) {
+      this.props.clearErrors();
+      this.setState({ errors: {} });
+    }
   }
 
   // State handler for input fields
@@ -82,28 +82,32 @@ class Contact extends Component {
   onSubmitEmail = async (e) => {
     e.preventDefault();
 
-    // Clear errors if any before submitting
-    if (Object.keys(this.props.errors).length > 0) {
-      this.props.clearErrors();
-    }
+    // Clear any errors when resubmitting
+    if (this.props.errors) this.props.clearErrors();
 
-    // 1. Email data to send
+    // Clear any success messages when resubmitting
+    if (this.state.submitted) this.setState({ submitted: false });
+
+    // Let user know request is happening and disable button
+    this.setState({ submitting: true, disableSubmitButton: true });
+
+    // Email data to send
     const emailData = {
       name: this.state.name,
       email: this.state.email,
       emailBody: this.state.emailBody,
     };
 
-    // 2. Send email
+    // Send email
     await this.props.sendContactEmail(emailData);
 
-    // 3. Let user know process was a success
-    if (Object.keys(this.props.errors).length === 0) {
+    // If successful, alert user
+    if (Object.keys(this.state.errors).length === 0) {
       if (this.props.auth.authenticated) {
         this.setState({
           emailBody: "",
-          submittingEmail: false,
-          submittedEmail: true,
+          submitting: false,
+          submitted: true,
           disableSubmitButton: false,
         });
       } else if (!this.props.auth.authenticated) {
@@ -111,37 +115,34 @@ class Contact extends Component {
           name: "",
           email: "",
           emailBody: "",
-          submittingEmail: false,
-          submittedEmail: true,
+          submitting: false,
+          submitted: true,
           disableSubmitButton: false,
         });
       }
+
       // Clear success message after 6 seconds
       this.timer = setTimeout(() => {
-        this.setState({ submittedEmail: false });
+        this.setState({ submitted: false });
         clearTimeout(this.timer);
       }, 6000);
     }
   };
 
   render() {
+    // Filling alert with errors if found
     const errors = [];
-    let buttonText = "Submit email";
-
-    if (Object.keys(this.props.errors).length > 0) {
-      for (let err in this.props.errors) {
-        errors.push(<p key={err}>{this.props.errors[err]}</p>);
+    if (Object.keys(this.state.errors).length > 0) {
+      for (let err in this.state.errors) {
+        errors.push(<p key={err}>{this.state.errors[err]}</p>);
       }
-    }
-
-    if (this.state.submittingEmail) {
-      buttonText = "Submitting email...";
-    } else if (this.state.submittedEmail) {
-      buttonText = "Submitted email!";
     }
 
     return (
       <Auxiliary>
+        {this.state.submitted ? (
+          <Alert type="success" message="Email sent!" />
+        ) : null}
         {Object.keys(this.props.errors).length > 0 ? (
           <Alert type="error" message={errors} />
         ) : null}
@@ -190,7 +191,7 @@ class Contact extends Component {
               className="btn btn--green"
               disabled={this.state.disableSubmitButton}
             >
-              {buttonText}
+              {!this.state.submitting ? "Submit email" : "Submitting email..."}
             </button>
           </div>
         </form>
