@@ -15,6 +15,7 @@ import ReviewCard from "../../../../components/Cards/ReviewCard";
 import InputGroup from "../../../../components/Inputs/InputGroup";
 import SelectGroup from "../../../../components/Inputs/SelectGroup";
 
+// Page to filter and manage site reviews
 class ManageReviews extends Component {
   state = {
     reviews: null,
@@ -27,18 +28,39 @@ class ManageReviews extends Component {
   };
 
   async componentDidMount() {
-    await this.props.getAllReviews();
-    const { allReviews } = this.props.reviews;
-    const tours = allReviews.map((review) => review.tour.name);
-    const newToursSet = [...new Set(tours)];
-    this.setState({
-      reviews: allReviews,
-      filteredReviews: allReviews,
-      tours: newToursSet,
-      pages: Math.ceil(allReviews.length / 10),
-    });
+    // If role is not admin or lead-guide, push them to their settings page
+    const { role } = this.props.auth.user;
+    if (role === "user" || role === "guide") {
+      this.props.history.push("/account/settings");
+    } else if (role === "admin" || role === "lead-guide") {
+      // Add reviews to global state
+      await this.props.getAllReviews();
+      const { allReviews } = this.props.reviews;
+      const tours = allReviews.map((review) => review.tour.name);
+      const newToursSet = [...new Set(tours)];
+      this.setState({
+        reviews: allReviews,
+        filteredReviews: allReviews,
+        tours: newToursSet,
+        pages: Math.ceil(allReviews.length / 10),
+      });
+    }
   }
 
+  componentWillReceiveProps(nextProps) {
+    // If deleted a review, make sure to update in state
+    if (this.props.reviews.allReviews) {
+      if (this.props.reviews.allReviews.length !== nextProps.reviews.allReviews.length) {
+        this.setState({
+          reviews: nextProps.reviews.allReviews,
+          filteredReviews: nextProps.reviews.allReviews,
+          pages: Math.ceil(nextProps.reviews.allReviews.length / 10),
+        });
+      }
+    }
+  }
+
+  // Handling review filters
   componentDidUpdate(prevProps, prevState) {
     if (
       this.state.tourFilter !== prevState.tourFilter ||
@@ -163,7 +185,7 @@ class ManageReviews extends Component {
             {tourSelect}
           </div>
           <div className="review-grid ma-bt-lg">{reviews}</div>
-          <div className="page-numbers">{pageNumbers}</div>
+          {this.state.pages ? <div className="page-numbers">{pageNumbers}</div> : null}
         </Auxiliary>
       );
     }
@@ -172,10 +194,12 @@ class ManageReviews extends Component {
 }
 
 ManageReviews.propTypes = {
+  auth: PropTypes.object.isRequired,
   reviews: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  auth: state.auth,
   reviews: state.reviews,
 });
 

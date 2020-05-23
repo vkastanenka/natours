@@ -98,11 +98,10 @@ class ReviewCard extends Component {
           type="error"
           message="Are you sure you want to delete this review?"
           prompt={true}
-          deleteId={this.props.reviewId}
           function={
             this.props.page === "manageReviews"
-              ? this.props.deleteReview
-              : this.props.deleteCurrentUserReview
+              ? () => this.props.deleteReview(this.props.reviewId)
+              : () => this.props.deleteCurrentUserReview(this.props.reviewId)
           }
           alertClose={() => this.setState({ deletingReview: false })}
         />
@@ -148,4 +147,6 @@ ReviewCard.propTypes = {
   rating: PropTypes.number.isRequired,
 };
 
-export default connect(null, { deleteReview, deleteCurrentUserReview })(ReviewCard);
+export default connect(null, { deleteReview, deleteCurrentUserReview })(
+  ReviewCard
+);
