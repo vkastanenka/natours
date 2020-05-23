@@ -63,9 +63,13 @@ class UpdateAccount extends Component {
     }
   }
 
-  // Clear any timers when form unmounts
+  // Clear any timers / alerts when form unmounts
   componentWillUnmount() {
     clearTimeout(this.timer);
+    if (Object.keys(this.props.errors).length > 0) {
+      this.props.clearErrors();
+      this.setState({ errors: {} });
+    }
   }
 
   // State handler for input fields
