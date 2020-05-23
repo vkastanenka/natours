@@ -168,7 +168,7 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
   query404(res, user, "No user found with that ID");
 
   // 3. Delete documents
-  // user.deleteOne();
+  user.deleteOne();
   if (reviews) await Review.deleteMany({ user: req.params.id });
   if (bookings) await Booking.deleteMany({ user: req.params.id });
 

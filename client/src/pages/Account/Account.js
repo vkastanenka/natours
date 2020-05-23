@@ -1,5 +1,5 @@
 // React
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 // Redux
@@ -11,22 +11,26 @@ import SideNav from "./Layout/SideNav";
 import Content from "./Layout/Content";
 
 // Account page to edit information
-const Account = (props) => {
-  if (!props.auth.authenticated) {
-    props.history.push("/authenticate/login");
+class Account extends Component {
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.auth.authenticated) {
+      this.props.history.push("/authenticate/login");
+    }
   }
 
-  return (
-    <PageLayout>
-      <main className="main">
-        <div className="user-view">
-          <SideNav />
-          <Content />
-        </div>
-      </main>
-    </PageLayout>
-  );
-};
+  render() {
+    return (
+      <PageLayout>
+        <main className="main">
+          <div className="user-view">
+            <SideNav />
+            <Content />
+          </div>
+        </main>
+      </PageLayout>
+    );
+  }
+}
 
 Account.propTypes = {
   auth: PropTypes.object.isRequired,

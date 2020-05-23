@@ -1,5 +1,6 @@
 // React
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // Redux
@@ -16,73 +17,60 @@ import Review from "../../../../components/Forms/Review";
 import InputGroup from "../../../../components/Inputs/InputGroup";
 import SelectGroup from "../../../../components/Inputs/SelectGroup";
 
+// Page to filter and manage site users
 class ManageUsers extends Component {
   state = {
     users: null,
     filteredUsers: null,
     userFilter: "",
     roleFilter: "",
-    activeFilter: "",
     pages: "",
     currentPage: 1,
   };
 
   async componentDidMount() {
-    await this.props.getUsers();
-    this.setState({
-      users: this.props.users.users,
-      filteredUsers: this.props.users.users,
-      pages: Math.ceil(this.props.users.users.length / 10),
-    });
+    // If role is not admin or lead-guide, push them to their settings page
+    const { role } = this.props.auth.user;
+    if (role === "user" || role === "guide") {
+      this.props.history.push("/account/settings");
+    } else if (role === "admin" || role === "lead-guide") {
+      // Add users to global state
+      await this.props.getUsers();
+      this.setState({
+        users: this.props.users.users,
+        filteredUsers: this.props.users.users,
+        pages: Math.ceil(this.props.users.users.length / 10),
+      });
+    }
   }
 
+  componentWillReceiveProps(nextProps) {
+    // If deleted a user, make sure to update in state
+    if (this.props.users.users) {
+      if (this.props.users.users.length !== nextProps.users.users.length) {
+        this.setState({
+          users: nextProps.users.users,
+          filteredUsers: nextProps.users.users,
+          pages: Math.ceil(nextProps.users.users.length / 10),
+        });
+      }
+    }
+  }
+
+  // Handling user filters
   componentDidUpdate(prevProps, prevState) {
-    let { activeFilter } = this.state;
     const { users, userFilter, roleFilter } = this.state;
     const filterName = userFilter.toLowerCase();
 
     if (
       userFilter !== prevState.userFilter ||
-      roleFilter !== prevState.roleFilter ||
-      activeFilter !== prevState.activeFilter
+      roleFilter !== prevState.roleFilter
     ) {
       // eslint-disable-next-line
       const filteredUsers = users.filter((user) => {
         const userName = user.name.toLowerCase();
-        if (userFilter && roleFilter && activeFilter === "true") {
-          if (
-            userName === filterName &&
-            user.role === roleFilter &&
-            user.active
-          ) {
-            return user;
-          }
-        } else if (userFilter && roleFilter && activeFilter === "false") {
-          if (
-            userName.startsWith(filterName) &&
-            user.role === roleFilter &&
-            !user.active
-          ) {
-            return user;
-          }
-        } else if (userFilter && roleFilter) {
+        if (userFilter && roleFilter) {
           if (userName.startsWith(filterName) && user.role === roleFilter) {
-            return user;
-          }
-        } else if (userFilter && activeFilter === "true") {
-          if (userName.startsWith(filterName) && user.active) {
-            return user;
-          }
-        } else if (userFilter && activeFilter === "false") {
-          if (userName.startsWith(filterName) && !user.active) {
-            return user;
-          }
-        } else if (roleFilter && activeFilter === "true") {
-          if (user.role === roleFilter && user.active) {
-            return user;
-          }
-        } else if (roleFilter && activeFilter === "false") {
-          if (user.role === roleFilter && !user.active) {
             return user;
           }
         } else if (userFilter) {
@@ -91,14 +79,6 @@ class ManageUsers extends Component {
           }
         } else if (roleFilter) {
           if (user.role === roleFilter) {
-            return user;
-          }
-        } else if (activeFilter === "true") {
-          if (user.active) {
-            return user;
-          }
-        } else if (activeFilter === "false") {
-          if (!user.active) {
             return user;
           }
         } else {
@@ -146,9 +126,9 @@ class ManageUsers extends Component {
             imageURL={require(`../../../../assets/images/users/${user.photo}`)}
             name={user.name}
             email={user.email}
-            active={user.active}
             role={user.role}
             userId={user._id}
+            page="manageUsers"
           />
         );
       });
@@ -186,20 +166,11 @@ class ManageUsers extends Component {
               value={this.state.roleFilter}
               onChange={(e) => this.onChange(e)}
             />
-            <SelectGroup
-              name="activeFilter"
-              options={[
-                { value: "", label: "Registration" },
-                { value: "true", label: "Active" },
-                { value: "false", label: "Inactive" },
-              ]}
-              id="activeFilter"
-              value={this.state.activeFilter}
-              onChange={(e) => this.onChange(e)}
-            />
           </div>
           <div className="user-grid ma-bt-lg">{users}</div>
-          <div className="page-numbers">{pageNumbers}</div>
+          {this.state.pages ? (
+            <div className="page-numbers">{pageNumbers}</div>
+          ) : null}
         </Auxiliary>
       );
     }
@@ -218,4 +189,4 @@ const mapStateToProps = (state) => ({
   users: state.users,
 });
 
-export default connect(mapStateToProps, { getUsers })(ManageUsers);
+export default connect(mapStateToProps, { getUsers })(withRouter(ManageUsers));

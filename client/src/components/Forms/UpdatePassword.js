@@ -14,23 +14,23 @@ import Alert from "../Alert/Alert";
 import InputGroup from "../Inputs/InputGroup";
 import Auxiliary from "../HigherOrder/Auxiliary";
 
+// For to update password in account page
 class UpdatePassword extends Component {
   state = {
     currentPassword: "",
     newPassword: "",
     newPasswordConfirm: "",
-    updatedPassword: false,
-    updatingPassword: false,
-    disableUpdateButton: false,
-    errors: {},
+    submitting: false,
+    submitted: false,
+    disableSubmitButton: false,
   };
 
+  // Binding timer to component instance
   timer = null;
 
-  // If errors found from inputs, set them in state
+  // If errors found from inputs clear after 6 seconds
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
       this.timer = setTimeout(() => {
         this.props.clearErrors();
         clearTimeout(this.timer);
@@ -38,23 +38,25 @@ class UpdatePassword extends Component {
     }
   }
 
+  // Clear any timers when form unmounts
   componentWillUnmount() {
     clearTimeout(this.timer);
   }
 
+  // State handler for input fields
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  // Update the password
   onUpdatePassword = async (e) => {
     e.preventDefault();
 
     if (this.props.errors) {
-      this.setState({ errors: {} });
       this.props.clearErrors();
     }
 
-    this.setState({ updatingPassword: true, disableUpdateButton: true });
+    this.setState({ submitting: true, disableSubmitButton: true });
 
     const passwordData = {
       currentPassword: this.state.currentPassword,
@@ -64,12 +66,12 @@ class UpdatePassword extends Component {
 
     await this.props.updatePassword(passwordData);
 
-    this.setState({ updatingPassword: false, disableUpdateButton: false });
+    this.setState({ submitting: false, disableSubmitButton: false });
 
     if (Object.keys(this.props.errors).length === 0) {
-      this.setState({ updatedPassword: true });
+      this.setState({ submitted: true });
       this.timer = setTimeout(() => {
-        this.setState({ updatedPassword: false });
+        this.setState({ submitted: false });
         clearTimeout(this.timer);
       }, 6000);
     }
@@ -78,18 +80,18 @@ class UpdatePassword extends Component {
   render() {
     let errors = [];
 
-    if (this.state.errors) {
-      for (let err in this.state.errors) {
-        errors.push(<p key={err}>{this.state.errors[err]}</p>);
+    if (this.props.errors) {
+      for (let err in this.props.errors) {
+        errors.push(<p key={err}>{this.props.errors[err]}</p>);
       }
     }
 
     return (
       <Auxiliary>
-        {this.state.updatedPassword ? (
+        {this.state.submitted ? (
           <Alert type="success" message="Update successful!" />
         ) : null}
-        {Object.keys(this.state.errors).length > 0 ? (
+        {Object.keys(this.props.errors).length > 0 ? (
           <Alert type="error" message={errors} />
         ) : null}
         <form
@@ -139,9 +141,9 @@ class UpdatePassword extends Component {
             <button
               type="submit"
               className="btn-small btn--green"
-              disabled={this.state.disableUpdateButton}
+              disabled={this.state.disableSubmitButton}
             >
-              {!this.state.updatingPassword
+              {!this.state.submitting
                 ? "Update password"
                 : "Updating password..."}
             </button>

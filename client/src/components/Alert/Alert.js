@@ -11,8 +11,10 @@ const Alert = (props) => {
         <div className="alert__prompt">
           <span
             className="alert__prompt-function"
-            // TODO: Refactor so that this function is sent down as a prop
-            onClick={() => props.function(props.deleteId)}
+            onClick={() => {
+              props.function()
+              props.alertClose();
+            }}
           >
             Yes
           </span>
@@ -31,8 +33,6 @@ Alert.propTypes = {
   message: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
   prompt: PropTypes.bool,
   alertClose: PropTypes.func,
-  // TODO: Get rid of
-  deleteId: PropTypes.string,
   function: PropTypes.func,
 };
 

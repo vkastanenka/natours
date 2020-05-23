@@ -318,11 +318,11 @@ class Tour extends Component {
       buttonText = "Submitting tour...";
     }
 
-    // if (Object.keys(this.state.errors).length > 0) {
-    //   for (let err in this.state.errors) {
-    //     errors.push(<p key={err}>{this.state.errors[err]}</p>);
-    //   }
-    // }
+    if (Object.keys(this.state.errors).length > 0) {
+      for (let err in this.state.errors) {
+        errors.push(<p key={err}>{this.state.errors[err]}</p>);
+      }
+    }
 
     if (this.props.editingTour) {
       buttonText = "Update tour";

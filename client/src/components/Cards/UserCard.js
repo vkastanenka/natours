@@ -1,12 +1,12 @@
 // React
 import React, { Component } from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 
 // Redux
-// import { connect } from "react-redux";
+import { connect } from "react-redux";
 
 // Actions
-// import { deleteUser } from "../../store/actions/reviewActions";
+import { deleteUser } from "../../store/actions/userActions";
 
 // Components
 import Alert from "../Alert/Alert";
@@ -27,22 +27,21 @@ class UserCard extends Component {
         <div className="reviews__icons">
           <Icon
             type="x"
-            onClick={() => this.setState({ deletingReview: true })}
+            onClick={() => this.setState({ deletingUser: true })}
             className="icon icon--large icon--active icon--black-primary icon--translate"
           />
         </div>
       );
     }
 
-    if (this.state.deletingReview) {
+    if (this.state.deletingUser) {
       alert = (
         <Alert
           type="error"
           message="Are you sure you want to delete this user? All information associated with them will be deleted!"
           prompt={true}
-          deleteId={this.props.userId}
-          function={this.props.deleteUser}
-          alertClose={() => this.setState({ deletingReview: false })}
+          function={() => this.props.deleteUser(this.props.userId)}
+          alertClose={() => this.setState({ deletingUser: false })}
         />
       );
     }
@@ -62,13 +61,20 @@ class UserCard extends Component {
             <h6 className="users__user">{this.props.email}</h6>
           </div>
           <p className="users__text">{this.props.role}</p>
-          <p className="users__text">
-            {this.props.active ? "Active" : "Inactive"}
-          </p>
         </div>
       </Auxiliary>
     );
   }
 }
 
-export default UserCard;
+UserCard.propTypes = {
+  cardClassName: PropTypes.string.isRequired,
+  imageURL: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  role: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
+  deleteUser: PropTypes.func.isRequired,
+};
+
+export default connect(null, { deleteUser })(UserCard);

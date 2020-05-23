@@ -45,7 +45,7 @@ const deleteUser = (state, action) => {
   });
   return updateObject(state, {
     loading: false,
-    userReviews: filteredUsers,
+    users: filteredUsers,
   });
 };
 
