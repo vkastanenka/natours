@@ -83,7 +83,7 @@ class Contact extends Component {
     e.preventDefault();
 
     // Clear any errors when resubmitting
-    if (this.props.errors) this.props.clearErrors();
+    if (Object.keys(this.props.errors).length > 0) this.props.clearErrors();
 
     // Clear any success messages when resubmitting
     if (this.state.submitted) this.setState({ submitted: false });

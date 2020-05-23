@@ -23,6 +23,7 @@ class ResetPassword extends Component {
     submitting: false,
     disableSubmitButton: false,
     submitted: false,
+    errors: {},
   };
 
   // Binding timer to component instance
@@ -30,27 +31,26 @@ class ResetPassword extends Component {
 
   // Alerting user of errors / success / progress
   componentWillReceiveProps(nextProps) {
-    // Let user know request is happening / finished
-    if (nextProps.auth.loading) {
+    if (this.state.submitting && Object.keys(nextProps.errors).length > 0) {
       this.setState({
-        submitting: true,
-        disableSubmitButton: true,
-      });
-      // If request finishes and errors
-    } else if (
-      !nextProps.auth.loading &&
-      Object.keys(nextProps.errors).length > 0
-    ) {
-      this.setState({
+        errors: nextProps.errors,
         submitting: false,
         disableSubmitButton: false,
       });
 
-      // Clear errors after 6 seconds
       this.timer = setTimeout(() => {
         this.props.clearErrors();
         clearTimeout(this.timer);
       }, 6000);
+    }
+
+    // Clear errors from state when global errors cleared
+    if (
+      Object.keys(this.state.errors).length > 0 &&
+      Object.keys(nextProps.errors).length === 0
+    ) {
+      clearTimeout(this.timer);
+      this.setState({ errors: {} });
     }
   }
 
@@ -59,6 +59,7 @@ class ResetPassword extends Component {
     clearTimeout(this.timer);
     if (Object.keys(this.props.errors).length > 0) {
       this.props.clearErrors();
+      this.setState({ errors: {} });
     }
   }
 
@@ -71,25 +72,26 @@ class ResetPassword extends Component {
   onPasswordReset = async (e) => {
     e.preventDefault();
 
-    // Clear errors if any before submitting
-    if (Object.keys(this.props.errors).length > 0) {
-      this.props.clearErrors();
-    }
+    // Clear any errors when resubmitting
+    if (Object.keys(this.props.errors).length > 0) this.props.clearErrors();
 
-    // 1. Password data to patch
+    // Let user know request is happening and disable button
+    this.setState({ submitting: true, disableSubmitButton: true });
+
+    // Password data to patch
     const passData = {
       password: this.state.password,
       passwordConfirm: this.state.passwordConfirm,
     };
 
-    // 2. Password reset token
+    // Password reset token
     const passToken = this.props.match.params.token;
 
-    // 3. Submit patch request
+    // Submit patch request
     await this.props.resetPassword(passData, passToken);
 
-    // 4. Let user know it was a success
-    if (Object.keys(this.props.errors).length === 0) {
+    // Let user know it was a success
+    if (Object.keys(this.state.errors).length === 0) {
       this.setState({
         password: "",
         passwordConfirm: "",
@@ -101,10 +103,11 @@ class ResetPassword extends Component {
   };
 
   render() {
+    // Filling alert with errors if found
     const errors = [];
-    if (Object.keys(this.props.errors).length > 0) {
-      for (let err in this.props.errors) {
-        errors.push(<p key={err}>{this.props.errors[err]}</p>);
+    if (Object.keys(this.state.errors).length > 0) {
+      for (let err in this.state.errors) {
+        errors.push(<p key={err}>{this.state.errors[err]}</p>);
       }
     }
 

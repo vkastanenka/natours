@@ -14,16 +14,18 @@ import Alert from "../Alert/Alert";
 import InputGroup from "../Inputs/InputGroup";
 import Auxiliary from "../HigherOrder/Auxiliary";
 
+// Login form to log a user into the iste
 class Login extends Component {
   state = {
     email: "",
     password: "",
-    loggingIn: false,
-    disableLoginButton: false,
+    submitting: false,
+    disableSubmitButton: false,
     forgotPassword: false,
     sendingToken: false,
     disableTokenButton: false,
     sentToken: false,
+    errors: {},
   };
 
   // Binding timer to component instance
@@ -31,52 +33,26 @@ class Login extends Component {
 
   // Alerting user of errors / success / progress
   componentWillReceiveProps(nextProps) {
-    // Let user know request is happening / finished
-    if (nextProps.auth.loading && !this.state.forgotPassword) {
+    if (this.state.submitting && Object.keys(nextProps.errors).length > 0) {
       this.setState({
-        loggingIn: true,
-        disableLoginButton: true,
-      });
-      // If request finishes and errors
-    } else if (
-      !this.state.forgotPassword &&
-      !nextProps.auth.loading &&
-      Object.keys(nextProps.errors).length > 0
-    ) {
-      this.setState({
-        loggingIn: false,
-        disableLoginButton: false,
+        errors: nextProps.errors,
+        submitting: false,
+        disableSubmitButton: false,
       });
 
-      // Clear errors after 6 seconds
       this.timer = setTimeout(() => {
         this.props.clearErrors();
         clearTimeout(this.timer);
       }, 6000);
     }
 
-    // Let user know request is happening / finished
-    if (nextProps.auth.loading && this.state.forgotPassword) {
-      this.setState({
-        sendingToken: true,
-        disableTokenButton: true,
-      });
-      // If request finishes and errors
-    } else if (
-      this.state.forgotPassword &&
-      !nextProps.auth.loading &&
-      Object.keys(nextProps.errors).length > 0
+    // Clear errors from state when global errors cleared
+    if (
+      Object.keys(this.state.errors).length > 0 &&
+      Object.keys(nextProps.errors).length === 0
     ) {
-      this.setState({
-        sendingToken: false,
-        disableTokenButton: false,
-      });
-
-      // Clear errors after 6 seconds
-      this.timer = setTimeout(() => {
-        this.props.clearErrors();
-        clearTimeout(this.timer);
-      }, 6000);
+      clearTimeout(this.timer);
+      this.setState({ errors: {} });
     }
   }
 
@@ -85,6 +61,7 @@ class Login extends Component {
     clearTimeout(this.timer);
     if (Object.keys(this.props.errors).length > 0) {
       this.props.clearErrors();
+      this.setState({ errors: {} });
     }
   }
 
@@ -98,50 +75,49 @@ class Login extends Component {
     e.preventDefault();
 
     // Clear errors if any before submitting
-    if (Object.keys(this.props.errors).length > 0) {
-      this.props.clearErrors();
-    }
+    if (Object.keys(this.props.errors).length > 0) this.props.clearErrors();
 
-    // Change forgot password to make sure errors work for login
-    if (this.state.forgotPassword) {
-      this.setState({ forgotPassword: false });
-    }
+    // Change forgot password
+    if (this.state.forgotPassword) this.setState({ forgotPassword: false });
 
-    // 1. User data to post
+    // Let user know request is happening and disable button
+    this.setState({ submitting: true, disableSubmitButton: true });
+
+    // User data to post
     const userData = {
       email: this.state.email,
       password: this.state.password,
     };
 
-    // 2. Login user
+    // Login user
     await this.props.login(userData);
   };
 
   // Send password reset token to reset password
   onSendPasswordResetToken = async (e) => {
     e.preventDefault();
-    console.log(this.state.email);
 
     // Clear errors if any before submitting
-    if (Object.keys(this.props.errors).length > 0) {
-      this.props.clearErrors();
-    }
+    if (Object.keys(this.props.errors).length > 0) this.props.clearErrors();
 
-    // 1. Send token
+    // Let user know request is happening and disable button
+    this.setState({ sendingToken: true, disableTokenButton: true });
+
+    // Send token
     await this.props.sendPasswordResetToken({ email: this.state.email });
 
-    // 2. Let user know it was a success
+    // If successful, alert user
     if (Object.keys(this.props.errors).length === 0) {
       this.setState({
         sendingToken: false,
         sentToken: true,
+        forgotPassword: false,
       });
 
       // Clear success message after 6 seconds
       this.timer = setTimeout(() => {
         this.setState({
           sentToken: false,
-          forgotPassword: false,
           disableTokenButton: false,
         });
         clearTimeout(this.timer);
@@ -150,22 +126,20 @@ class Login extends Component {
   };
 
   render() {
+    // Filling alert with errors if found
     const errors = [];
-    if (Object.keys(this.props.errors).length > 0) {
-      for (let err in this.props.errors) {
-        errors.push(<p key={err}>{this.props.errors[err]}</p>);
+    if (Object.keys(this.state.errors).length > 0) {
+      for (let err in this.state.errors) {
+        errors.push(<p key={err}>{this.state.errors[err]}</p>);
       }
     }
 
-    let passResetText = "Email password reset token";
-    if (this.state.sendingToken) {
-      passResetText = "Emailing password reset token...";
-    } else if (this.state.sentToken) {
-      passResetText = "Check email for token";
-    }
     return (
       <Auxiliary>
-        {Object.keys(this.props.errors).length > 0 ? (
+        {this.state.sentToken ? (
+          <Alert type="success" message="Success! Check email for token" />
+        ) : null}
+        {Object.keys(this.state.errors).length > 0 ? (
           <Alert type="error" message={errors} />
         ) : null}
         <form className="form" onSubmit={this.onLoginSubmit}>
@@ -199,6 +173,7 @@ class Login extends Component {
               <button
                 className="btn-text"
                 onClick={() => this.setState({ forgotPassword: true })}
+                disabled={this.state.disableTokenButton}
               >
                 Forgot your password?
               </button>
@@ -206,8 +181,11 @@ class Login extends Component {
               <button
                 className="btn-text"
                 onClick={this.onSendPasswordResetToken}
+                disabled={this.state.disableTokenButton}
               >
-                {passResetText}
+                {!this.state.sendingToken
+                  ? "Email password reset token"
+                  : "Emailing password reset token..."}
               </button>
             )}
           </div>
@@ -215,9 +193,9 @@ class Login extends Component {
             <button
               type="submit"
               className="btn btn--green"
-              disabled={this.state.disableLoginButton}
+              disabled={this.state.disableSubmitButton}
             >
-              {!this.state.loggingIn ? "Login" : "Logging In..."}
+              {!this.state.submitting ? "Login" : "Logging In..."}
             </button>
           </div>
         </form>

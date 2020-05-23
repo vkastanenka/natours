@@ -14,7 +14,7 @@ import Alert from "../Alert/Alert";
 import InputGroup from "../Inputs/InputGroup";
 import Auxiliary from "../HigherOrder/Auxiliary";
 
-// For to update password in account page
+// Form to update password in account page
 class UpdatePassword extends Component {
   state = {
     currentPassword: "",
@@ -73,7 +73,7 @@ class UpdatePassword extends Component {
     e.preventDefault();
 
     // Clear any errors when resubmitting
-    if (this.props.errors) this.props.clearErrors();
+    if (Object.keys(this.props.errors).length > 0) this.props.clearErrors();
 
     // Clear any success messages when resubmitting
     if (this.state.submitted) this.setState({ submitted: false });

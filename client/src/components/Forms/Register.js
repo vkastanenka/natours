@@ -22,9 +22,10 @@ class Register extends Component {
     email: "",
     password: "",
     passwordConfirm: "",
-    registering: false,
-    disableRegisterButton: false,
-    justRegistered: false,
+    submitting: false,
+    disableSubmitButton: false,
+    submitted: false,
+    errors: {},
   };
 
   // Binding timer to component instance
@@ -32,27 +33,26 @@ class Register extends Component {
 
   // Alerting user of errors / success / progress
   componentWillReceiveProps(nextProps) {
-    // Let user know request is happening / finished
-    if (nextProps.auth.loading) {
+    if (this.state.submitting && Object.keys(nextProps.errors).length > 0) {
       this.setState({
-        registering: true,
-        disableRegisterButton: true,
-      });
-      // If request finishes and errors
-    } else if (
-      !nextProps.auth.loading &&
-      Object.keys(nextProps.errors).length > 0
-    ) {
-      this.setState({
-        registering: false,
-        disableRegisterButton: false,
+        errors: nextProps.errors,
+        submitting: false,
+        disableSubmitButton: false,
       });
 
-      // Clear errors after 6 seconds
       this.timer = setTimeout(() => {
         this.props.clearErrors();
         clearTimeout(this.timer);
       }, 6000);
+    }
+
+    // Clear errors from state when global errors cleared
+    if (
+      Object.keys(this.state.errors).length > 0 &&
+      Object.keys(nextProps.errors).length === 0
+    ) {
+      clearTimeout(this.timer);
+      this.setState({ errors: {} });
     }
   }
 
@@ -74,11 +74,12 @@ class Register extends Component {
     e.preventDefault();
 
     // Clear errors if any before submitting
-    if (Object.keys(this.props.errors).length > 0) {
-      this.props.clearErrors();
-    }
+    if (Object.keys(this.props.errors).length > 0) this.props.clearErrors();
 
-    // 1. User data to post
+    // Let user know request is happening and disable button
+    this.setState({ submitting: true, disableSubmitButton: true });
+
+    // User data to post
     const newUser = {
       name: this.state.name,
       email: this.state.email,
@@ -86,39 +87,39 @@ class Register extends Component {
       passwordConfirm: this.state.passwordConfirm,
     };
 
-    // 2. Register new user in the DB
+    // Register new user in the DB
     await this.props.register(newUser);
 
     // 3. Let user know it was a success
-    if (Object.keys(this.props.errors).length === 0) {
+    if (Object.keys(this.state.errors).length === 0) {
       this.setState({
         name: "",
         email: "",
         password: "",
         passwordConfirm: "",
-        registering: false,
-        disableRegisterButton: false,
-        justRegistered: true,
+        submitting: false,
+        disableSubmitButton: false,
+        submitted: true,
       });
     }
   };
 
   render() {
     const errors = [];
-    if (Object.keys(this.props.errors).length > 0) {
-      for (let err in this.props.errors) {
-        errors.push(<p key={err}>{this.props.errors[err]}</p>);
+    if (Object.keys(this.state.errors).length > 0) {
+      for (let err in this.state.errors) {
+        errors.push(<p key={err}>{this.state.errors[err]}</p>);
       }
     }
 
     return (
       <Auxiliary>
-        {Object.keys(this.props.errors).length > 0 ? (
+        {Object.keys(this.state.errors).length > 0 ? (
           <Alert type="error" message={errors} />
         ) : null}
         <form className="form" onSubmit={this.onRegisterSubmit}>
           <h2 className="heading-secondary heading-secondary--small ma-bt-lg">
-            {!this.state.justRegistered
+            {!this.state.submitted
               ? "Register your account"
               : "Thank you for joining us!"}
           </h2>
@@ -166,19 +167,19 @@ class Register extends Component {
             htmlFor="passwordConfirm"
             label="Confirm Password"
           />
-          {!this.state.justRegistered ? (
+          {!this.state.submitted ? (
             <div className="form__group">
               <button
                 type="submit"
                 className="btn btn--green"
-                disabled={this.state.disableRegisterButton}
+                disabled={this.state.disableSubmitButton}
               >
-                {!this.state.registering ? "Register" : "Registering..."}
+                {!this.state.submitting ? "Register" : "submitting..."}
               </button>
             </div>
           ) : null}
         </form>
-        {this.state.justRegistered ? (
+        {this.state.submitted ? (
           <button className="btn btn--green">
             <Link to="/authenticate/login" className="link-style">
               Redirect to login

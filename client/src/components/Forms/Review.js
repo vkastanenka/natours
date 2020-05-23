@@ -25,6 +25,7 @@ class Review extends Component {
     submitting: false,
     submitted: false,
     disableSubmitButton: false,
+    errors: {},
   };
 
   componentDidMount() {
@@ -42,27 +43,26 @@ class Review extends Component {
 
   // Alerting user of errors / success / progress
   componentWillReceiveProps(nextProps) {
-    // Let user know request is happening / finished
-    if (nextProps.reviews.loading) {
+    if (this.state.submitting && Object.keys(nextProps.errors).length > 0) {
       this.setState({
-        submitting: true,
-        disableSubmitButton: true,
-      });
-      // If request finishes and errors
-    } else if (
-      !nextProps.reviews.loading &&
-      Object.keys(nextProps.errors).length > 0
-    ) {
-      this.setState({
+        errors: nextProps.errors,
         submitting: false,
         disableSubmitButton: false,
       });
 
-      // Clear errors after 6 seconds
       this.timer = setTimeout(() => {
         this.props.clearErrors();
         clearTimeout(this.timer);
       }, 6000);
+    }
+
+    // Clear errors from state when global errors cleared
+    if (
+      Object.keys(this.state.errors).length > 0 &&
+      Object.keys(nextProps.errors).length === 0
+    ) {
+      clearTimeout(this.timer);
+      this.setState({ errors: {} });
     }
   }
 
@@ -85,21 +85,15 @@ class Review extends Component {
     let reviewData;
 
     // Clear errors if any before submitting
-    if (Object.keys(this.props.errors).length > 0) {
-      this.props.clearErrors();
-    }
+    if (Object.keys(this.props.errors).length > 0) this.props.clearErrors();
 
-    // 1. State to change button text
-    this.setState({
-      submitting: true,
-      disableSubmitButton: true,
-    });
+    // Clear any success messages when resubmitting
+    if (this.state.submitted) this.setState({ submitted: false });
 
-    if (this.state.submitted) {
-      this.setState({ submitted: false });
-    }
+    // Let user know request is happening and disable button
+    this.setState({ submitting: true, disableSubmitButton: true });
 
-    // 2. Review data to post
+    // Review data to post
     if (!this.props.editingReview) {
       reviewData = {
         review: this.state.review,
@@ -114,7 +108,7 @@ class Review extends Component {
       };
     }
 
-    // 3. Post / patch review
+    // Post / patch review
     if (!this.props.editingReview) {
       await this.props.postReview(reviewData);
 
