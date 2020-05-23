@@ -42,7 +42,6 @@ const addTour = (state, action) => {
   toursCopy.push(action.payload);
   return updateObject(state, {
     tours: toursCopy,
-    loading: false,
   });
 };
 

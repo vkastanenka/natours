@@ -57,11 +57,10 @@ export const getTour = (slug) => async (dispatch) => {
 // @desc    Create new tour
 // @access  Restricted
 export const createTour = (data) => async (dispatch) => {
-  dispatch(setTourLoad());
   try {
-    await axios.post("/api/v1/tours", data);
+    const res = await axios.post("/api/v1/tours", data);
+    actionDispatch(actionTypes.ADD_TOUR, res.data.data, dispatch);
   } catch (err) {
-    dispatch(unsetTourLoad());
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }
 };

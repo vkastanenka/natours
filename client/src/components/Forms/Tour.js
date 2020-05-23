@@ -56,7 +56,7 @@ class Tour extends Component {
     guides: [{ guide1: "" }],
 
     // Form States
-    submittingTour: false,
+    submitting: false,
     editingTour: false,
     edited: false,
     disableSubmitButton: false,
@@ -64,11 +64,12 @@ class Tour extends Component {
     // Errors
     errors: {},
   };
-  componentDidMount() {
-    if (!this.props.users.guides) {
-      this.props.getGuides();
-    }
 
+  componentDidMount() {
+    // Get guides if not in global state
+    if (!this.props.users.guides) this.props.getGuides();
+
+    // Fill fields if editing a tour
     if (this.props.editingTour) {
       const bookingDates = this.props.tourInfo.startDates.map(
         (startDate, i) => {
@@ -146,11 +147,20 @@ class Tour extends Component {
 
   // If errors found from inputs, set them in state
   componentWillReceiveProps(nextProps) {
-    if (nextProps.errors) {
-      this.setState({
-        errors: nextProps.errors,
-        disableSubmitButton: false,
-      });
+    if (Object.keys(nextProps.errors).length > 0) {
+      if (this.state.submitting) {
+        this.setState({
+          errors: nextProps.errors,
+          submitting: false,
+          disableSubmitButton: false,
+        });
+      } else if (this.state.editingTour) {
+        this.setState({
+          errors: nextProps.errors,
+          editingTour: false,
+          disableSubmitButton: false,
+        });
+      }
 
       this.timer = setTimeout(() => {
         this.props.clearErrors();
@@ -158,23 +168,24 @@ class Tour extends Component {
       }, 6000);
     }
 
-    if (nextProps.errors && this.props.editingTour) {
-      this.setState({ editingTour: false });
-    } else {
-      this.setState({ submittingTour: false });
+    // Clear errors from state when global errors cleared
+    if (
+      Object.keys(this.state.errors).length > 0 &&
+      Object.keys(nextProps.errors).length === 0
+    ) {
+      clearTimeout(this.timer);
+      this.setState({ errors: {} });
     }
   }
 
-  // Clear any timers when form unmounts
+  // Clear any timers / alerts when form unmounts
   componentWillUnmount() {
-    if (this.state.edited) {
-      this.setState({ edited: false });
-    }
-
-    if (Object.keys(this.state.errors).length > 0) {
+    clearTimeout(this.timer);
+    if (this.state.edited) this.setState({ edited: false });
+    if (Object.keys(this.props.errors).length > 0) {
+      this.props.clearErrors();
       this.setState({ errors: {} });
     }
-    clearTimeout(this.timer);
   }
 
   // State handler for input fields
@@ -198,14 +209,16 @@ class Tour extends Component {
   onTourSubmit = async (e) => {
     e.preventDefault();
 
-    // Clear errors if any
-    if (this.props.errors) {
-      this.setState({ errors: {} });
-      this.props.clearErrors();
-    }
+    // Clear any errors when resubmitting
+    if (Object.keys(this.props.errors).length > 0) this.props.clearErrors();
 
-    // State change to let user know process is happening
-    this.setState({ submittingTour: true, disableSubmitButton: false });
+    // Clear any success messages when resubmitting
+    if (this.props.editingTour) {
+      if (this.state.edited) this.setState({ edited: false });
+      this.setState({ editingTour: true, disableSubmitButton: true });
+    } else {
+      this.setState({ submitting: true, disableSubmitButton: true });
+    }
 
     // Set up new form
     const form = new FormData();
@@ -269,46 +282,8 @@ class Tour extends Component {
     // Post the form
     if (!this.props.editingTour) {
       await this.props.createTour(form);
-
-      // Reset form and state change for success alert
       if (Object.keys(this.state.errors).length === 0) {
-        this.setState({
-          // General
-          name: "",
-          duration: "",
-          maxGroupSize: "",
-          difficulty: "",
-          price: "",
-          summary: "",
-          description: "",
-          startDestinationAddress: "",
-          startDestinationDescription: "",
-
-          // Photos
-          coverPhoto: "",
-          galleryPhotos: "",
-
-          // Dates
-          bookingDates: [{ bookingDate1: "" }],
-
-          // Destinations
-          tourDestinations: [
-            {
-              destination1Long: "",
-              destination1Lat: "",
-              destination1Day: "",
-              destination1Description: "",
-            },
-          ],
-
-          // Guides
-          leadGuide: "",
-          guides: [{ guide1: "" }],
-
-          // Form States
-          submittingTour: false,
-          disableSubmitButton: false,
-        });
+        this.props.popupClose();
       }
     } else {
       await this.props.updateTour(this.props.tourInfo._id, form);
@@ -316,7 +291,7 @@ class Tour extends Component {
       if (Object.keys(this.state.errors).length === 0) {
         this.setState({
           edited: true,
-          submittingTour: false,
+          editingTour: false,
           disableSubmitButton: false,
         });
 
@@ -328,19 +303,19 @@ class Tour extends Component {
   };
 
   render() {
+    // Filling alert with errors if found
     const errors = [];
-    const { loading, guides } = this.props.users;
-    let buttonText = "Submit tour";
-
-    if (this.state.submittingTour) {
-      buttonText = "Submitting tour...";
-    }
-
-    if (Object.keys(this.state.errors).length > 0) {
-      for (let err in this.state.errors) {
-        errors.push(<p key={err}>{this.state.errors[err]}</p>);
+    if (this.state.errors.status === "error") {
+      errors.push(<p key="error">{this.props.errors.error.error}</p>);
+    } else if (Object.keys(this.props.errors).length > 0) {
+      for (let err in this.props.errors) {
+        errors.push(<p key={err}>{this.props.errors[err]}</p>);
       }
     }
+
+    const { loading, guides } = this.props.users;
+    let buttonText = "Submit tour";
+    if (this.state.submitting) buttonText = "Submitting tour...";
 
     if (this.props.editingTour) {
       buttonText = "Update tour";

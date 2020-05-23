@@ -5,7 +5,6 @@ const factory = require("./handlerFactory");
 
 // Error Handling
 const query404 = require("../utils/query404");
-const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
 // Validation
@@ -19,14 +18,12 @@ const Tour = require("../models/tourModel");
 
 const multerStorage = multer.memoryStorage();
 
-// TODO: Proper error handling
-
 // Multer filter for images
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
   } else {
-    cb(new AppError("Not an image! Please upload only images.", 400), false);
+    cb({ error: "Not an image! Please upload only images..." }, false);
   }
 };
 
