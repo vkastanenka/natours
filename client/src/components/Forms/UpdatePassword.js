@@ -23,6 +23,7 @@ class UpdatePassword extends Component {
     submitting: false,
     submitted: false,
     disableSubmitButton: false,
+    errors: {}
   };
 
   // Binding timer to component instance
@@ -30,7 +31,8 @@ class UpdatePassword extends Component {
 
   // If errors found from inputs clear after 6 seconds
   componentWillReceiveProps(nextProps) {
-    if (nextProps.errors) {
+    if (this.state.submitting && nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
       this.timer = setTimeout(() => {
         this.props.clearErrors();
         clearTimeout(this.timer);
@@ -68,7 +70,7 @@ class UpdatePassword extends Component {
 
     this.setState({ submitting: false, disableSubmitButton: false });
 
-    if (Object.keys(this.props.errors).length === 0) {
+    if (Object.keys(this.state.errors).length === 0) {
       this.setState({ submitted: true });
       this.timer = setTimeout(() => {
         this.setState({ submitted: false });
@@ -80,9 +82,9 @@ class UpdatePassword extends Component {
   render() {
     let errors = [];
 
-    if (this.props.errors) {
-      for (let err in this.props.errors) {
-        errors.push(<p key={err}>{this.props.errors[err]}</p>);
+    if (Object.keys(this.state.errors).length > 0) {
+      for (let err in this.state.errors) {
+        errors.push(<p key={err}>{this.state.errors[err]}</p>);
       }
     }
 
@@ -91,7 +93,7 @@ class UpdatePassword extends Component {
         {this.state.submitted ? (
           <Alert type="success" message="Update successful!" />
         ) : null}
-        {Object.keys(this.props.errors).length > 0 ? (
+        {Object.keys(this.state.errors).length > 0 ? (
           <Alert type="error" message={errors} />
         ) : null}
         <form
