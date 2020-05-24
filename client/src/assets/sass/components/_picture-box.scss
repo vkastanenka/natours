@@ -5,6 +5,10 @@
     height: 110%;
     object-fit: cover;
 
+    @include respond(bp-small) {
+      height: 100%;
+    }
+
     &--1 {
       padding-top: 15%;
     }

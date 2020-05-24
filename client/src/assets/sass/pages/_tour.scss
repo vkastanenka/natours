@@ -55,6 +55,7 @@
   @include respond(bp-small) {
     flex-direction: column;
     clip-path: none;
+    padding-bottom: 10rem;
   }
 }
 

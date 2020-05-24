@@ -21,13 +21,30 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+    text-align: center;
 
     &--border {
       border: 2px solid $color-primary;
     }
 
     &--wider {
-      width: 35rem !important;
+      width: auto !important;
+
+      @include respond(bp-medium) {
+        width: 30rem !important;
+      }
+
+      @include respond(bp-small) {
+        width: auto !important;
+      }
+
+      @include respond(bp-smaller) {
+        width: 35rem !important;
+      }
+
+      @include respond(bp-smallest) {
+        width: 25rem !important;
+      }
     }
   }
 
