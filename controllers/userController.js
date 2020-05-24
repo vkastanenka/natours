@@ -7,7 +7,6 @@ const filterObj = require("../utils/filterObj");
 const createJWT = require("../utils/jwtGenerator");
 
 // Error Handling
-const AppError = require("./../utils/appError");
 const catchAsync = require("./../utils/catchAsync");
 
 // Validation
