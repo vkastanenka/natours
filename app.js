@@ -79,11 +79,17 @@ app.use((req, res, next) => {
   next();
 });
 
+// Serving static assets
+app.use(express.static('client/build'));
+
 // Routes
 app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/bookings", bookingRouter);
+app.use((req, res, next) => {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+})
 
 // Handling Unhandled Routes
 app.all("*", (req, res, next) => {
