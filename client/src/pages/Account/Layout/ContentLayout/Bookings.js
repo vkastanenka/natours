@@ -8,13 +8,9 @@ import { connect } from "react-redux";
 
 // Actions
 import {
-  createBookingCheckout,
   getCurrentUserBookings,
   deleteBooking,
 } from "../../../../store/actions/bookingActions";
-
-// Utilities
-import queryString from "query-string";
 
 // Components
 import Alert from "../../../../components/Alert/Alert";
@@ -30,32 +26,7 @@ class Bookings extends Component {
   };
 
   async componentDidMount() {
-    if (this.props.location.search) {
-      const search = queryString.parse(this.props.location.search);
-
-      if (search.tour && search.user && search.price) {
-        const bookingData = {
-          tour: search.tour,
-          user: search.user,
-          price: search.price,
-          date: search.date,
-        };
-
-        await this.props.createBookingCheckout(bookingData);
-
-        this.props.history.push("/account/bookings");
-      }
-    } else if (!this.props.location.search) {
-      // Get bookings
-      this.props.getCurrentUserBookings(this.props.auth.user.id);
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.location.search && !this.props.location.search) {
-      // Get bookings after redirect from creating the booking
-      this.props.getCurrentUserBookings(this.props.auth.user.id);
-    }
+    this.props.getCurrentUserBookings(this.props.auth.user.id);
   }
 
   render() {
@@ -135,7 +106,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  createBookingCheckout,
   getCurrentUserBookings,
   deleteBooking,
 })(withRouter(Bookings));

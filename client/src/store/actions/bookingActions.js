@@ -24,18 +24,13 @@ export const unsetBookingLoad = () => {
 // @access  Protected
 export const createCheckoutSession = (tourId) => async (dispatch) => {
   try {
+    // 1. Obtain session id
     const res = await axios.get(`/api/v1/bookings/checkout-session/${tourId}`);
-    return res.data.session.id;
-  } catch (err) {
-    actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
-  }
-};
-
-export const createBookingCheckout = (bookingData) => async (dispatch) => {
-  try {
-    dispatch(setBookingLoad());
-    await axios.post("/api/v1/bookings", bookingData);
-    dispatch(unsetBookingLoad());
+    actionDispatch(
+      actionTypes.SET_CHECKOUT_SESSION,
+      res.data.session,
+      dispatch
+    );
   } catch (err) {
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }

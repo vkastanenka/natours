@@ -23,7 +23,7 @@ router.use(authController.protect);
 router.get("/checkout-session/:tourId", bookingController.getCheckoutSession);
 
 // TODO: TEMPORARY
-router.post("/", bookingController.createBookingCheckout);
+// router.post("/", bookingController.createBookingCheckout);
 
 // @route   GET api/v1/bookings/:userId
 // @desc    Get bookings for individual user

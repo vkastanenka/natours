@@ -6,12 +6,12 @@ import PropTypes from "prop-types";
 // Redux
 import { connect } from "react-redux";
 
+// Actions
+import { createCheckoutSession } from "../../../store/actions/bookingActions";
+
 // Components
 import Alert from "../../../components/Alert/Alert";
 import Auxiliary from "../../../components/HigherOrder/Auxiliary";
-
-// Utilities
-import axios from "axios";
 
 // Stripe
 import { loadStripe } from "@stripe/stripe-js";
@@ -32,29 +32,22 @@ class CTA extends Component {
     this.setState({ errorMessage: "" });
   }
 
-  // Handles bookings by redirecting to checkouts
-  createCheckoutSession = async () => {
-    // 1. Obtain session id
-    const res = await axios.get(
-      `/api/v1/bookings/checkout-session/${this.props.tours.tour.id}`
-    );
-    const sessionId = res.data.session.id;
-
-    // 2. When customer clicks on the button, redirect them to checkout
-    const stripe = await stripePromise;
-    const { error } = await stripe.redirectToCheckout({
-      sessionId,
-    });
-
-    // 3. If redirectToCheckout fails due to a browser or network error, display the localized error message to customer using error.message
-    if (error.message) {
-      this.setState({ errorMessage: error.message });
-
-      this.timer = setTimeout(() => {
-        this.setState({ errorMessage: "" });
-        clearTimeout(this.timer);
-      }, 6000);
+  // Once checkout session data in state, redirect to checkout
+  async componentWillReceiveProps(nextProps) {
+    if (
+      !this.props.bookings.checkoutSession &&
+      nextProps.bookings.checkoutSession
+    ) {
+      const sessionId = nextProps.bookings.checkoutSession.id;
+      // 2. When customer clicks on the button, redirect them to checkout
+      const stripe = await stripePromise;
+      await stripe.redirectToCheckout({ sessionId });
     }
+  }
+
+  onCreateCheckoutSession = async (e) => {
+    e.preventDefault();
+    await this.props.createCheckoutSession(this.props.tours.tour.id);
   };
 
   render() {
@@ -70,7 +63,7 @@ class CTA extends Component {
       button = (
         <button
           className="btn btn--green span-all-rows"
-          onClick={this.createCheckoutSession}
+          onClick={this.onCreateCheckoutSession}
         >
           Book the Tour Now!
         </button>
@@ -135,4 +128,4 @@ const mapStateToProps = (state) => ({
   errors: state.errors,
 });
 
-export default connect(mapStateToProps)(CTA);
+export default connect(mapStateToProps, { createCheckoutSession })(CTA);
