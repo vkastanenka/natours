@@ -13,6 +13,7 @@ import Alert from "../Alert/Alert";
 import Icon from "../Icon/Icon";
 import Auxiliary from "../../components/HigherOrder/Auxiliary";
 
+// Card for the site's users
 class UserCard extends Component {
   state = {
     deletingUser: false,

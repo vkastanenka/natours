@@ -6,7 +6,7 @@ import Auxiliary from "../HigherOrder/Auxiliary";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
-// Layour for page with navbar and footer
+// Layout for page with navbar and footer
 const PageLayout = (props) => {
   return (
     <Auxiliary>

@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 // Story card for home page
-const Story = props => {
+const StoryCard = props => {
   return (
     <div className="story">
       <figure className="story__shape">
@@ -26,11 +26,11 @@ const Story = props => {
   );
 };
 
-Story.propTypes = {
+StoryCard.propTypes = {
   imgURL: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   story: PropTypes.string.isRequired,
 }
 
-export default Story;
+export default StoryCard;

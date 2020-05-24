@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+// Form textarea group
 const TextAreaGroup = (props) => {
   return (
     <div className={`form__group ${props.groupClass}`}>

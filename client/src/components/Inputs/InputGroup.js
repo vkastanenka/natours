@@ -2,6 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+// Form input group
 const InputGroup = (props) => {
   return (
     <div className={`form__group ${props.groupClass}`}>

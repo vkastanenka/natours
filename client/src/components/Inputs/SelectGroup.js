@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+// Form select group
 const SelectGroup = (props) => {
   const options = props.options.map((option) => {
     if (option.value === "") {

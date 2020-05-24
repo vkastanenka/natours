@@ -11,6 +11,7 @@ import Login from "../../components/Forms/Login";
 import Register from "../../components/Forms/Register";
 import ResetPassword from "../../components/Forms/ResetPassword";
 
+// Login, registration, and reset password page
 class Authenticate extends Component {
   state = {
     page: "login",

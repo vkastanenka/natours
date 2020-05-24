@@ -22,6 +22,7 @@ import Spinner from "../../../../components/Spinner/Spinner";
 import TourCard from "../../../../components/Cards/TourCard";
 import Auxiliary from "../../../../components/HigherOrder/Auxiliary";
 
+// User bookings
 class Bookings extends Component {
   state = {
     deletingBooking: false,

@@ -6,6 +6,7 @@ import Auxiliary from "../../../../components/HigherOrder/Auxiliary";
 import UpdateAccount from "../../../../components/Forms/UpdateAccount";
 import UpdatePassword from "../../../../components/Forms/UpdatePassword";
 
+// Settings page for user's account and password
 const Settings = () => {
   return (
     <Auxiliary>

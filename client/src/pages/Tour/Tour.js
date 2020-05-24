@@ -18,6 +18,7 @@ import Map from "./Layout/Map";
 import Reviews from "./Layout/Reviews";
 import CTA from "./Layout/CTA";
 
+// Page for an individual tour
 class Tour extends Component {
   // Get the tour on mount
   componentDidMount() {

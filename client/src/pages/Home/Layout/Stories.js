@@ -4,7 +4,7 @@ import { CSSTransition } from "react-transition-group";
 
 // Components
 import Popup from "./Popup";
-import Story from "../../../components/Story/Story";
+import StoryCard from "../../../components/Cards/StoryCard";
 import Auxiliary from "../../../components/HigherOrder/Auxiliary";
 
 // Stories section of the home page
@@ -44,7 +44,7 @@ class Stories extends Component {
           </div>
 
           <div className="row">
-            <Story
+            <StoryCard
               imgURL={require("../../../assets/images/nat-8.jpg")}
               name="Mary Smith"
               title="I had the best week ever with my family"
@@ -57,7 +57,7 @@ class Stories extends Component {
           </div>
 
           <div className="row">
-            <Story
+            <StoryCard
               imgURL={require("../../../assets/images/nat-9.jpg")}
               name="Jack Wilson"
               title="I've never felt so at peace with myself"

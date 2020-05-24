@@ -61,12 +61,16 @@ export const getCurrentUserBookings = (userId) => async (dispatch) => {
 // @route   DELETE api/v1/bookings/:id
 // @desc    Delete current user booking by id
 // @access  Protected
-export const deleteBooking = bookingId => async dispatch => {
+export const deleteBooking = (bookingId) => async (dispatch) => {
   try {
     dispatch(setBookingLoad());
     await axios.delete(`/api/v1/bookings/booking/${bookingId}`);
-    actionDispatch(actionTypes.DELETE_CURRENT_USER_BOOKING, bookingId, dispatch);
+    actionDispatch(
+      actionTypes.DELETE_CURRENT_USER_BOOKING,
+      bookingId,
+      dispatch
+    );
   } catch (err) {
     actionDispatch(actionTypes.GET_ERRORS, err.response.data, dispatch);
   }
-}
+};
