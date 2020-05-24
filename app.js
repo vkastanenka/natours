@@ -7,7 +7,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const cookieParser = require('cookie-parser');
-// const cors = require('cors');
+const compression = require('compression');
 
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
@@ -37,14 +37,14 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Implementing rate limiting: 100 requests every hour
-// const limiter = rateLimit({
-//   max: 100,
-//   windowMs: 60 * 60 * 1000,
-//   message: "Too many requests from this IP, please try again in an hour!"
-// });
+const limiter = rateLimit({
+  max: 500,
+  windowMs: 60 * 60 * 1000,
+  message: "Too many requests from this IP, please try again in an hour!"
+});
 
 // Will now have X-RateLimit-Limit and X-RateLimit-Remaining headers
-// app.use("/api", limiter);
+app.use("/api", limiter);
 
 // Body parser, reading data from body into req.body => Body larger than 10kb will not be accepted
 app.use(express.json({ limit: "10kb" }));
@@ -70,8 +70,8 @@ app.use(
   })
 );
 
-// app.use(cors());
-// app.options('*', cors());
+// Compression of text sent to clients.
+app.use(compression());
 
 // Test middleware
 app.use((req, res, next) => {
