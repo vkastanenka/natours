@@ -42,8 +42,7 @@ class Bookings extends Component {
           type="error"
           message="Are you sure you want to cancel your tour?"
           prompt={true}
-          deleteId={this.state.bookingToDelete}
-          function={this.props.deleteBooking}
+          function={this.props.deleteBooking(this.state.bookingToDelete)}
           alertClose={() =>
             this.setState({ deletingBooking: false, bookingToDelete: "" })
           }
