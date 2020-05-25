@@ -32,7 +32,7 @@ app.use(cors());
 app.options("*", cors());
 
 // Serving static files
-app.use('/static', express.static(path.join(__dirname, "client/build")));
+app.use('/static', express.static(path.join(__dirname, "./client/build")));
 
 // Sets security headers
 app.use(helmet());
