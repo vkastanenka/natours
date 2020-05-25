@@ -109,7 +109,7 @@ exports.register = catchAsync(async (req, res, next) => {
   res.status(201).json({ status: "success", newUser });
 
   // 5. Send out a welcome email
-  const url = `http://localhost:3000/account/settings`;
+  const url = `${req.protocol}://${req.get("host")}/account/settings`;
   await new Email(newUser, url).sendWelcome();
 });
 
@@ -164,7 +164,7 @@ exports.sendPasswordResetToken = catchAsync(async (req, res, next) => {
 
   try {
     // 4. Send an email with a link to a form to reset the user's password
-    const resetURL = `http://127.0.0.1:3000/authenticate/resetPassword/${resetToken}`;
+    const resetURL = `${req.protocol}://${req.get("host")}/authenticate/resetPassword/${resetToken}`;
     await new Email(user, resetURL).sendPasswordReset();
 
     // 5. Respond
