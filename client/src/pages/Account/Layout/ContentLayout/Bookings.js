@@ -42,7 +42,7 @@ class Bookings extends Component {
           type="error"
           message="Are you sure you want to cancel your tour?"
           prompt={true}
-          function={this.props.deleteBooking(this.state.bookingToDelete)}
+          function={() => this.props.deleteBooking(this.state.bookingToDelete)}
           alertClose={() =>
             this.setState({ deletingBooking: false, bookingToDelete: "" })
           }
@@ -61,7 +61,7 @@ class Bookings extends Component {
         const startDate = new Date(booking.tour.startDates[0]);
         return (
           <TourCard
-            key={booking.tour.slug}
+            key={booking.tour.id}
             imageURL={require(`../../../../assets/images/tours/${booking.tour.imageCover}`)}
             name={booking.tour.name}
             duration={`${booking.tour.difficulty} ${booking.tour.duration} day tour`}

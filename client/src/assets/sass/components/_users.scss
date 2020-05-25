@@ -27,7 +27,23 @@
     }
 
     &--wider {
-      width: 35rem !important;
+      width: 100% !important;
+
+      @include respond(bp-medium) {
+        width: 30rem !important;
+      }
+
+      @include respond(bp-small) {
+        width: 100% !important;
+      }
+
+      @include respond(bp-smaller) {
+        width: 35rem !important;
+      }
+
+      @include respond(bp-smallest) {
+        width: 25rem !important;
+      }
     }
   }
 

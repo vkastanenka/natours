@@ -1391,7 +1391,19 @@ body {
     .users__card--border {
       border: 2px solid #55c57a; }
     .users__card--wider {
-      width: 35rem !important; }
+      width: 100% !important; }
+      @media only screen and (max-width: 50em) {
+        .users__card--wider {
+          width: 30rem !important; } }
+      @media only screen and (max-width: 37.5em) {
+        .users__card--wider {
+          width: 100% !important; } }
+      @media only screen and (max-width: 31.25em) {
+        .users__card--wider {
+          width: 35rem !important; } }
+      @media only screen and (max-width: 25em) {
+        .users__card--wider {
+          width: 25rem !important; } }
   .users:before, .users:after {
     content: "";
     width: 2rem; }

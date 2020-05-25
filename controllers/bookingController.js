@@ -40,9 +40,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
       {
         name: `${tour.name} Tour`,
         description: tour.summary,
-        images: [
-          `${req.protocol}://${req.get("host")}/static/media/${tour.imageCover}`,
-        ],
+        images: [`https://www.natours.dev/img/tours/${tour.imageCover}`],
         amount: tour.price * 100,
         currency: "usd",
         quantity: 1,
@@ -57,7 +55,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   });
 });
 
-
+// Create new booking with data from stripe session
 const createBooking = async (sessionData) => {
   const tour = sessionData.client_reference_id;
   const user = (await User.findOne({ email: sessionData.customer_email })).id;
