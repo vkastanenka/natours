@@ -8,7 +8,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const compression = require("compression");
 const cors = require("cors");
-const csp = require('express-csp-header');
+const { expressCspHeader, NONE, SELF } = require('express-csp-header');
 
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
@@ -28,10 +28,10 @@ app.set("views", path.join(__dirname, "./views"));
 // Middleware
 
 // Prevent blocking of favicon
-app.use(csp({
+app.use(expressCspHeader({
   policies: {
-      'default-src': [csp.NONE],
-      'img-src': [csp.SELF],
+      'default-src': [NONE],
+      'img-src': [SELF],
   }
 }));
 
