@@ -139,7 +139,7 @@ TourCard.propTypes = {
   page: PropTypes.string,
   tour: PropTypes.object,
   tourId: PropTypes.string,
-  imageURL: PropTypes.string.isRequired,
+  imageURL: PropTypes.string,
   name: PropTypes.string.isRequired,
   duration: PropTypes.string.isRequired,
   summary: PropTypes.string.isRequired,

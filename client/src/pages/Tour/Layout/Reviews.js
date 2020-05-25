@@ -34,7 +34,9 @@ class Reviews extends Component {
     if (this.state.writingReview) {
       popup = (
         <Popup>
-          <ReviewForm popupClose={() => this.setState({ writingReview: false })} />
+          <ReviewForm
+            popupClose={() => this.setState({ writingReview: false })}
+          />
         </Popup>
       );
     }
@@ -44,13 +46,16 @@ class Reviews extends Component {
         {popup}
         <section className="section-reviews">
           <div className="reviews ma-bt-lg">{reviews}</div>
-          <button
-            type="submit"
-            className="btn btn--white section-reviews__btn"
-            onClick={() => this.setState({ writingReview: true })}
-          >
-            Write a Review
-          </button>
+          {this.props.auth.authenticated &&
+          this.props.auth.user.role === "user" ? (
+            <button
+              type="submit"
+              className="btn btn--white section-reviews__btn"
+              onClick={() => this.setState({ writingReview: true })}
+            >
+              Write a Review
+            </button>
+          ) : null}
         </section>
       </Auxiliary>
     );

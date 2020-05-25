@@ -33,12 +33,21 @@ class ManageTours extends Component {
       (role === "admin" && !tours) ||
       (role === "lead-guide" && !tours)
     ) {
-       // Add users to global state
+      // Add users to global state
       if (!tours) {
         this.props.getTours();
       }
     }
   }
+
+  // Prevents requiring a photo that doesn't exist
+  tryRequirePhoto = (tour) => {
+    try {
+      return require(`../../../../assets/images/tours/${tour}`);
+    } catch (err) {
+      return null;
+    }
+  };
 
   render() {
     const { tours, loading } = this.props.tours;
@@ -61,7 +70,7 @@ class ManageTours extends Component {
         return (
           <TourCard
             key={tour.slug}
-            imageURL={require(`../../../../assets/images/tours/${tour.imageCover}`)}
+            imageURL={this.tryRequirePhoto(tour.imageCover)}
             name={tour.name}
             duration={`${tour.difficulty} ${tour.duration} day tour`}
             summary={tour.summary}
@@ -102,8 +111,8 @@ class ManageTours extends Component {
 
 ManageTours.propTypes = {
   auth: PropTypes.object.isRequired,
-  tours: PropTypes.object.isRequired
-}
+  tours: PropTypes.object.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
