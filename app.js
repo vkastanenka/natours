@@ -31,9 +31,6 @@ app.use(cors());
 // Access-Control-Allow-Origin *
 app.options("*", cors());
 
-// Serving static files
-app.use('/static', express.static(path.join(__dirname, "client/build")));
-
 // Sets security headers
 app.use(helmet());
 
@@ -97,9 +94,13 @@ app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/bookings", bookingRouter);
-// app.use((req, res, next) => {
-//   res.sendFile(path.join(__dirname, "./client/build/index.html"));
-// });
+
+
+// Serving static files
+app.use('/static', express.static(path.join(__dirname, "client/build")));
+app.use((req, res, next) => {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+});
 
 // Handling Unhandled Routes
 app.all("*", (req, res, next) => {
