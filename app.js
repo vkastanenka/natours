@@ -26,6 +26,9 @@ app.set("views", path.join(__dirname, "./views"));
 
 // Middleware
 
+// Serving static files
+app.use(express.static(path.join(__dirname, "client/build")));
+
 // Implement CORS
 app.use(cors());
 // Access-Control-Allow-Origin *
@@ -94,10 +97,6 @@ app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/bookings", bookingRouter);
-
-
-// Serving static files
-app.use('/static', express.static(path.join(__dirname, "client/build")));
 app.use((req, res, next) => {
   res.sendFile(path.join(__dirname, "client/build/index.html"));
 });
