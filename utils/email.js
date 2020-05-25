@@ -72,7 +72,7 @@ module.exports = class Email {
 
     const mailOptions = {
       from: `${reqBody.name}, ${reqBody.email}`,
-      to: "admin@natours.io",
+      to: "vkastanenka@gmail.com",
       subject: "New Natours Contact Request",
       html,
       text: htmlToText.fromString(html),
