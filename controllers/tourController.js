@@ -109,25 +109,30 @@ exports.getTourBySlug = catchAsync(async (req, res, next) => {
 // @desc    Create new tour
 // @access  Restricted
 exports.createTour = catchAsync(async (req, res, next) => {
-  req.body.startLocation = JSON.parse(req.body.startLocation);
-  req.body.locations = JSON.parse(req.body.locations);
+  return res
+    .status(400)
+    .json({
+      featureUnavailable: "Create tour feature unavailable in production!",
+    });
+  // req.body.startLocation = JSON.parse(req.body.startLocation);
+  // req.body.locations = JSON.parse(req.body.locations);
 
-  // 1. Validate inputs
-  const { errors, isValid } = validateTour(req.body);
-  if (!isValid) return res.status(400).json(errors);
+  // // 1. Validate inputs
+  // const { errors, isValid } = validateTour(req.body);
+  // if (!isValid) return res.status(400).json(errors);
 
-  // 2. Add type "Point" for geoJSON
-  req.body.startLocation.type = "Point";
-  req.body.locations.forEach((location) => (location.type = "Point"));
+  // // 2. Add type "Point" for geoJSON
+  // req.body.startLocation.type = "Point";
+  // req.body.locations.forEach((location) => (location.type = "Point"));
 
-  // 3. Create a new document
-  const doc = await Tour.create(req.body);
+  // // 3. Create a new document
+  // const doc = await Tour.create(req.body);
 
-  // 4. Respond
-  res.status(201).json({
-    status: "success",
-    data: doc,
-  });
+  // // 4. Respond
+  // res.status(201).json({
+  //   status: "success",
+  //   data: doc,
+  // });
 });
 
 // @route   PATCH api/v1/tours/:id
@@ -151,7 +156,7 @@ exports.updateTour = catchAsync(async (req, res, next) => {
   });
 
   // 4. If no document, respond with an error
-  query404(res, doc, 'There is no tour with that id');
+  query404(res, doc, "There is no tour with that id");
 
   // 5. Respond
   res.status(200).json({

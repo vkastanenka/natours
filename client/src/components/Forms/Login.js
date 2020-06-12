@@ -14,7 +14,7 @@ import Alert from "../Alert/Alert";
 import InputGroup from "../Inputs/InputGroup";
 import Auxiliary from "../HigherOrder/Auxiliary";
 
-// Login form to log a user into the iste
+// Login form to log a user into the site
 class Login extends Component {
   state = {
     email: "",
@@ -56,7 +56,7 @@ class Login extends Component {
     }
   }
 
-  // Clear any timers when form unmounts
+  // Clear any timers and errors when form unmounts
   componentWillUnmount() {
     clearTimeout(this.timer);
     if (Object.keys(this.props.errors).length > 0) {

@@ -56,8 +56,8 @@ router.get(
 // @access  Protected
 router.patch(
   "/updateCurrentUser",
-  userController.uploadUserPhoto,
-  userController.resizeUserPhoto,
+  // userController.uploadUserPhoto,
+  // userController.resizeUserPhoto,
   userController.updateCurrentUser
 );
 

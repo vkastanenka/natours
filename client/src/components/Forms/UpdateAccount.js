@@ -96,10 +96,11 @@ class UpdateAccount extends Component {
     this.setState({ submitting: true, disableSubmitButton: true });
 
     // Create the form
-    const form = new FormData();
-    form.append("name", this.state.name);
-    form.append("email", this.state.email);
-    if (this.state.photo) form.append("photo", this.state.photo);
+    // const form = new FormData();
+    // form.append("name", this.state.name);
+    // form.append("email", this.state.email);
+    // if (this.state.photo) form.append("photo", this.state.photo);
+    const form = { name: this.state.name, email: this.state.email };
 
     // Update the user
     await this.props.updateCurrentUser(form);
@@ -130,6 +131,9 @@ class UpdateAccount extends Component {
   };
 
   render() {
+    console.log(this.state.name);
+    console.log(this.state.email);
+
     // Filling alert with errors if found
     const errors = [];
     if (this.state.errors.status === "error") {
@@ -182,7 +186,7 @@ class UpdateAccount extends Component {
               className="form__user-photo"
             />
             <label htmlFor="photo" className="btn-text">
-              Choose new photo
+              Choose new photo (unavailable in production)
             </label>
             <input
               id="photo"

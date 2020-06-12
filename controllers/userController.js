@@ -112,7 +112,7 @@ exports.updateCurrentUser = catchAsync(async (req, res, next) => {
   const filteredBody = filterObj(req.body, "name", "email");
 
   // 4. If photo, add uploaded photo to filteredBody
-  if (req.file) filteredBody.photo = req.file.filename;
+  // if (req.file) filteredBody.photo = req.file.filename;
 
   // 5. Update user document
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {

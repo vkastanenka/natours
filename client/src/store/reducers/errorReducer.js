@@ -7,8 +7,8 @@ const getErrors = (state, action) => {
   const errors = {};
   if (typeof action.payload === "string") {
     errors.server500 = "Internal server error, please try again later!";
+    return errors;
   }
-  if (errors.server500) return errors;
   return action.payload;
 };
 

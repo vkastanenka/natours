@@ -13,7 +13,6 @@ import { getUsers } from "../../../../store/actions/userActions";
 import Auxiliary from "../../../../components/HigherOrder/Auxiliary";
 import Spinner from "../../../../components/Spinner/Spinner";
 import UserCard from "../../../../components/Cards/UserCard";
-import Review from "../../../../components/Forms/Review";
 import InputGroup from "../../../../components/Inputs/InputGroup";
 import SelectGroup from "../../../../components/Inputs/SelectGroup";
 
@@ -114,7 +113,7 @@ class ManageUsers extends Component {
           index < this.state.currentPage * 10 &&
           index >= this.state.currentPage * 10 - 10
         ) {
-          return Review;
+          return user;
         }
       });
 

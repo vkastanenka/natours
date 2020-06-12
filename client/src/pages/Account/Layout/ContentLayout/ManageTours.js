@@ -98,7 +98,7 @@ class ManageTours extends Component {
             className="btn-text user-view__link user-view__link--top-right"
             onClick={() => this.setState({ addingTour: true })}
           >
-            Add Tour
+            Add Tour (unavailable in production)
           </button>
           <div className="bookings-grid">{cards}</div>
         </Auxiliary>

@@ -23,16 +23,6 @@
     font-size: 1.4rem
   }
 
-  &:hover {
-    transform: translateY(-0.3rem);
-    box-shadow: $btn-hover-shadow;
-
-    &::after {
-      transform: scale(1.2);
-      opacity: 0;
-    }
-  }
-
   &:active {
     transform: translateY(-0.1rem);
     box-shadow: $btn-active-shadow;

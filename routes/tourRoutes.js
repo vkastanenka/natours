@@ -42,8 +42,8 @@ router.use(authController.restrictTo("admin", "lead-guide"));
 // @access  Restricted
 router.post(
   "/",
-  tourController.uploadTourImages,
-  tourController.resizeTourImages,
+  // tourController.uploadTourImages,
+  // tourController.resizeTourImages,
   tourController.createTour
 );
 
