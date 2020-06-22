@@ -1,6 +1,15 @@
 {
-  "name": "client",
-  "version": "0.1.0",
+  "name": "eventhorizons",
+  "version": "1.0.0",
+  "license": "ISC",
+  "author": "Victoria Kastanenka",
+  "description": "Client side dependencies required for Event Horizons",
+  "keywords": [
+    "react",
+    "redux",
+    "state management",
+    "client side"
+  ],
   "private": true,
   "dependencies": {
     "@stripe/stripe-js": "^1.5.0",
