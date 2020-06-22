@@ -1,9 +1,9 @@
 {
-  "name": "eventhorizons",
+  "name": "natours",
   "version": "1.0.0",
   "license": "ISC",
   "author": "Victoria Kastanenka",
-  "description": "Client side dependencies required for Event Horizons",
+  "description": "Client side dependencies required for Natours",
   "keywords": [
     "react",
     "redux",

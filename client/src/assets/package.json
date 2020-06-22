@@ -1,9 +1,9 @@
 {
-  "name": "eventhorizons",
+  "name": "natours",
   "version": "1.0.0",
   "license": "ISC",
   "author": "Victoria Kastanenka",
-  "description": "Client side developer dependencies needed for styling eventhorizons",
+  "description": "Client side developer dependencies needed for styling Natours",
   "scripts": {
     "start": "node-sass sass/main.scss css/style.css -w",
     "compile:sass": "node-sass sass/main.scss css/style.comp.css",
